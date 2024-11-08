@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyyperlink - Mining Simulator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lekton:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Include the same styles from index.html -->
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Lekton', monospace;
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .mining-stats {
+            background: rgba(51, 51, 51, 0.2);
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            color: #fff;
+            font-size: 1.5rem;
+            font-family: 'Lekton', monospace;
+        }
+
+        .download-btn {
+            background-color: #000;
+            color: #ccc;
+            border: 2px solid #ccc;
+            padding: 1em 2em;
+            border-radius: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            color: #fff;
+            border: 2px solid #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.5);
+        }
+
+        .mining-chart {
+            background: rgba(51, 51, 51, 0.2);
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        #earningsChart {
+            width: 100%;
+            max-height: 400px;
+        }
+
+        .wallet-info {
+            background: rgba(51, 51, 51, 0.2);
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 2rem;
+            margin-top: 2rem;
+            word-break: break-all;
+        }
+
+        .address-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: monospace;
+        }
+
+        .discovery-log {
+            background: rgba(51, 51, 51, 0.2);
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .discovery-item {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 4px;
+            font-family: 'Lekton', monospace;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .discovery-item.common {
+            background: rgba(75, 192, 192, 0.1);
+            border: 1px solid rgba(75, 192, 192, 0.2);
+        }
+
+        .discovery-item.rare {
+            background: rgba(147, 112, 219, 0.1);
+            border: 1px solid rgba(147, 112, 219, 0.2);
+        }
+
+        .discovery-item.epic {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .discovery-item.legendary {
+            background: rgba(255, 69, 0, 0.1);
+            border: 1px solid rgba(255, 69, 0, 0.2);
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(255, 69, 0, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(255, 69, 0, 0.4); }
+            100% { box-shadow: 0 0 5px rgba(255, 69, 0, 0.2); }
+        }
+
+        .discovery-reward {
+            font-weight: bold;
+        }
+
+        .discovery-difficulty {
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        .info-panel {
+            background: rgba(51, 51, 51, 0.2);
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 2rem;
+            height: 100%;
+        }
+
+        .info-panel h4 {
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .info-panel p {
+            color: #ccc;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .info-panel ul {
+            color: #ccc;
+            padding-left: 1.2rem;
+        }
+
+        .info-panel ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .comparison-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .comparison-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .comparison-item.active {
+            border-color: #4CAF50;
+        }
+
+        .comparison-item.disabled {
+            opacity: 0.7;
+        }
+
+        .comparison-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .coin-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        .coin-icon img {
+            filter: brightness(0.8);
+        }
+
+        .coin-name {
+            font-family: 'Lekton', monospace;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .coin-estimate {
+            font-family: 'Lekton', monospace;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #4CAF50;
+        }
+
+        .coin-note {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .comparison-item.disabled .coin-estimate {
+            color: #666;
+        }
+
+        .stat-subtext {
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+    </style>
+
+    <!-- Load scripts in order with defer -->
+    <script src="https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl-fast.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function createWorker() {
+            const workerCode = `
+                importScripts('https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl-fast.min.js');
+                
+                self.onmessage = function(e) {
+                    if (e.data.cmd === 'mine') {
+                        const batchSize = 1000;
+                        const results = [];
+                        
+                        const hexChars = '0123456789abcdef';
+                        
+                        for (let i = 0; i < batchSize; i++) {
+                            const keyPair = nacl.sign.keyPair();
+                            
+                            let difficulty = 0;
+                            let foundNonZero = false;
+                            
+                            for (let j = 0; j < 4; j++) {
+                                const byte = keyPair.publicKey[j];
+                                const hi = hexChars[byte >> 4];
+                                const lo = hexChars[byte & 0xF];
+                                
+                                if (!foundNonZero) {
+                                    if (hi === '0') {
+                                        difficulty++;
+                                        if (lo === '0') {
+                                            difficulty++;
+                                        } else {
+                                            foundNonZero = true;
+                                        }
+                                    } else {
+                                        foundNonZero = true;
+                                    }
+                                }
+                            }
+                            
+                            if (difficulty >= 4) {
+                                const pubKeyHex = Array.from(keyPair.publicKey)
+                                    .map(b => hexChars[b >> 4] + hexChars[b & 0xF])
+                                    .join('');
+                                results.push({difficulty, pubKeyHex});
+                            }
+                        }
+                        
+                        if (results.length > 0) {
+                            self.postMessage({type: 'discoveries', results});
+                        }
+                        
+                        self.postMessage({type: 'progress', keysGenerated: batchSize});
+                    }
+                };
+            `;
+            
+            const blob = new Blob([workerCode], { type: 'application/javascript' });
+            return new Worker(URL.createObjectURL(blob));
+        }
+
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if required libraries are loaded
+            if (typeof nacl === 'undefined') {
+                console.error('TweetNaCl library not loaded');
+                alert('Error: Required crypto library not loaded. Please refresh the page.');
+                return;
+            }
+
+            // Initialize UI elements
+            const startButton = document.getElementById('startMining');
+            const stopButton = document.getElementById('stopMining');
+            const keysPerSecondEl = document.getElementById('keysPerSecond');
+            const hyyEarnedEl = document.getElementById('hyyEarned');
+            const timeElapsedEl = document.getElementById('timeElapsed');
+            const projectedEarningsEl = document.getElementById('projectedEarnings');
+
+            let isRunning = false;
+            let startTime;
+            let keysGenerated = 0;
+            let hyyEarned = 0;
+            let statsInterval;
+            let lastKeysGenerated = 0;
+            let currentHashrate = 0;
+            let lastHashrateUpdate = Date.now();
+            const MinMinerDifficulty = 4;
+            const MaxUnits = 100000000;
+            const HASHRATE_SAMPLES = 1;
+            const UPDATE_INTERVAL = 100;
+            let recentHashrates = [];
+            let pendingWorkerUpdates = 0;
+
+            // Replace the sha3_256 and keccak256 functions with this implementation
+            async function sha256(input) {
+                const msgBuffer = new TextEncoder().encode(input);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                return new Uint8Array(hashBuffer);
+            }
+
+            function calculateReward(difficulty) {
+                if (difficulty < MinMinerDifficulty) return 0;
+                const multiplier = difficulty - MinMinerDifficulty + 1;
+                return multiplier * MaxUnits;
+            }
+
+            function getRarityClass(difficulty) {
+                if (difficulty >= 7) return 'legendary';
+                if (difficulty >= 6) return 'epic';
+                if (difficulty >= 5) return 'rare';
+                return 'common';
+            }
+
+            function getRarityText(difficulty) {
+                if (difficulty >= 7) return 'LEGENDARY';
+                if (difficulty >= 6) return 'EPIC';
+                if (difficulty >= 5) return 'RARE';
+                return 'COMMON';
+            }
+
+            function addDiscovery(difficulty, reward) {
+                const discoveryLog = document.getElementById('discoveryLog');
+                const rarityClass = getRarityClass(difficulty);
+                const rarityText = getRarityText(difficulty);
+                
+                const discoveryItem = document.createElement('div');
+                discoveryItem.className = `discovery-item ${rarityClass}`;
+                discoveryItem.innerHTML = `
+                    <div class="discovery-info">
+                        <span class="discovery-difficulty">${difficulty} zeros - ${rarityText}</span>
+                    </div>
+                    <div class="discovery-reward">+${(reward / MaxUnits).toFixed(8)} HYY</div>
+                `;
+                
+                discoveryLog.insertBefore(discoveryItem, discoveryLog.firstChild);
+                
+                if (discoveryLog.children.length > 10) {
+                    discoveryLog.removeChild(discoveryLog.lastChild);
+                }
+            }
+
+            let workers = [];
+            const numWorkers = navigator.hardwareConcurrency || 4; // Use available CPU cores
+
+            function startWorkers() {
+                pendingWorkerUpdates = 0;
+                
+                for (let i = 0; i < numWorkers; i++) {
+                    const worker = createWorker();
+                    
+                    worker.onmessage = function(e) {
+                        if (e.data.type === 'discoveries') {
+                            e.data.results.forEach(result => {
+                                const reward = calculateReward(result.difficulty);
+                                hyyEarned += reward;
+                                addDiscovery(result.difficulty, reward);
+                            });
+                        } else if (e.data.type === 'progress') {
+                            keysGenerated += e.data.keysGenerated;
+                            pendingWorkerUpdates++;
+                            
+                            if (pendingWorkerUpdates >= numWorkers) {
+                                const now = Date.now();
+                                const timeDiff = (now - lastHashrateUpdate) / 1000;
+                                
+                                const instantRate = Math.round((keysGenerated - lastKeysGenerated) / timeDiff);
+                                
+                                recentHashrates.push(instantRate);
+                                if (recentHashrates.length > HASHRATE_SAMPLES) {
+                                    recentHashrates.shift();
+                                }
+                                
+                                currentHashrate = Math.round(
+                                    recentHashrates.reduce((a, b) => a + b, 0) / recentHashrates.length
+                                );
+                                
+                                lastKeysGenerated = keysGenerated;
+                                lastHashrateUpdate = now;
+                                pendingWorkerUpdates = 0;
+                                updateStats();
+                            }
+                        }
+                    };
+
+                    worker.onerror = function(e) {
+                        console.error('Worker error:', e);
+                    };
+                    
+                    workers.push(worker);
+                }
+            }
+
+            function mine() {
+                if (!isRunning) return;
+                
+                workers.forEach(worker => {
+                    worker.postMessage({
+                        cmd: 'mine'
+                    });
+                });
+                
+                requestAnimationFrame(mine);
+            }
+
+            function updateStats() {
+                if (!isRunning) return;
+                
+                const elapsed = Math.max((Date.now() - startTime) / 1000, 0.001);
+                timeElapsedEl.textContent = `${Math.floor(elapsed)}s`;
+                
+                keysPerSecondEl.textContent = currentHashrate.toLocaleString();
+                
+                hyyEarnedEl.textContent = (hyyEarned / MaxUnits).toFixed(8);
+                
+                const dailyKeys = currentHashrate * 86400;
+                const projectedHyy = keysGenerated > 0 ? 
+                    (hyyEarned / MaxUnits) * (dailyKeys / keysGenerated) : 0;
+                
+                projectedEarningsEl.textContent = projectedHyy.toFixed(8);
+                
+                const estimateValue = document.querySelector('.comparison-item.active .estimate-value');
+                if (estimateValue) {
+                    estimateValue.textContent = projectedHyy.toFixed(8);
+                }
+            }
+
+            startButton.addEventListener('click', () => {
+                console.log('Starting mining simulation...');
+                isRunning = true;
+                startTime = Date.now();
+                lastHashrateUpdate = Date.now();
+                lastKeysGenerated = 0;
+                currentHashrate = 0;
+                recentHashrates = [];
+                startButton.disabled = true;
+                stopButton.disabled = false;
+                keysGenerated = 0;
+                hyyEarned = 0;
+                
+                keysPerSecondEl.textContent = '0';
+                hyyEarnedEl.textContent = '0.00000000';
+                timeElapsedEl.textContent = '0s';
+                projectedEarningsEl.textContent = '0.00000000';
+                
+                startWorkers();
+                
+                mine();
+                
+                statsInterval = setInterval(updateStats, 100);
+            });
+
+            stopButton.addEventListener('click', () => {
+                console.log('Stopping mining simulation...');
+                isRunning = false;
+                startButton.disabled = false;
+                stopButton.disabled = true;
+                clearInterval(statsInterval);
+                
+                workers.forEach(worker => worker.terminate());
+                workers = [];
+            });
+
+            console.log('Mining simulator initialized and ready');
+        });
+    </script>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <img src="hyyperlink.svg" alt="Hyyperlink" height="128px" width="128px" class="mb-3">
+            <h1 class="display-4 mb-4">Mining Simulator</h1>
+            <p class="lead">Experience Hyyperlink's unique Key Discovery Mining system</p>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-md-4">
+                <div class="info-panel">
+                    <h3>About This Simulation</h3>
+                    <p>This is a browser-based demonstration of Hyyperlink's Key Discovery Mining system. Due to browser limitations, this simulation runs at approximately 1/8th the speed of the actual Hyyperlink wallet.</p>
+                    
+                    <h4 class="mt-4">How It Works</h4>
+                    <p>The mining process follows these steps:</p>
+                    <ol>
+                        <li>Generate an Ed25519 keypair</li>
+                        <li>Encode the public key using Base58</li>
+                        <li>Calculate the SHA3-256 hash of the Base58 string</li>
+                        <li>Count leading zeros in the hash</li>
+                    </ol>
+                    <p>Rewards are based on the number of leading zeros:</p>
+                    <ul>
+                        <li>4 zeros = 1 HYY (Common)</li>
+                        <li>5 zeros = 2 HYY (Rare)</li>
+                        <li>6 zeros = 3 HYY (Epic)</li>
+                        <li>7+ zeros = 4+ HYY (Legendary)</li>
+                    </ul>
+
+                    <h4 class="mt-4">Real Mining Performance</h4>
+                    <p>The actual Hyyperlink wallet:</p>
+                    <ul>
+                        <li>Uses all available CPU cores</li>
+                        <li>Optimized native crypto operations</li>
+                        <li>No browser limitations</li>
+                        <li>~8x faster than this simulation</li>
+                    </ul>
+                    
+                    <div class="mt-4">
+                        <a href="#download" class="btn download-btn">Download Real Wallet</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="mining-stats">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="stat-box">
+                                <div class="stat-label">Mining Rate</div>
+                                <div class="stat-value" id="keysPerSecond">0</div>
+                                <div class="stat-subtext">hashes/sec</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-box">
+                                <div class="stat-label">Time Elapsed</div>
+                                <div class="stat-value" id="timeElapsed">0s</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-box">
+                                <div class="stat-label">HYY Earned</div>
+                                <div class="stat-value" id="hyyEarned">0.00000000</div>
+                                <div class="stat-subtext">
+                                    Projected 24h: <span id="projectedEarnings">0.00000000</span> HYY
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button id="startMining" class="btn download-btn me-3">Start Mining</button>
+                        <button id="stopMining" class="btn download-btn" disabled>Stop Mining</button>
+                    </div>
+                </div>
+
+                <div class="performance-warning mt-3 text-center" style="color: #ff9800;">
+                    Note: Browser performance may vary. The actual Hyyperlink wallet runs significantly faster.
+                </div>
+
+                <div class="discovery-log">
+                    <h3 class="mb-4">Recent Discoveries</h3>
+                    <div class="discovery-items" id="discoveryLog">
+                        <!-- Discoveries will be added here dynamically -->
+                    </div>
+                </div>
+
+                <div class="wallet-info" id="walletInfo" style="display: none;">
+                    <h3>Your Wallet</h3>
+                    <p class="mb-3">This wallet was automatically generated for you and is stored in your browser.</p>
+                    <div class="address-box" id="walletAddress"></div>
+                    <div class="text-center mt-3">
+                        <button id="downloadWallet" class="btn download-btn">Download Wallet</button>
+                    </div>
+                </div>
+
+                <div class="mining-chart">
+                    <h3 class="mb-4">24-Hour Mining Comparison</h3>
+                    <p class="text-muted mb-4">With Hyyperlink, you earn rewards immediately and independently - no pools, no competition, no waiting:</p>
+                    
+                    <div class="comparison-grid">
+                        <div class="comparison-item active">
+                            <div class="coin-icon">
+                                <img src="hyyperlink.svg" alt="Hyyperlink" width="32" height="32">
+                            </div>
+                            <div class="coin-name">Hyyperlink</div>
+                            <div class="coin-estimate" id="hyyEstimate">
+                                <span class="estimate-value">--</span> HYY
+                            </div>
+                            <div class="coin-note">Instant rewards, no pools needed</div>
+                        </div>
+
+                        <div class="comparison-item disabled">
+                            <div class="coin-icon">
+                                <i class="fab fa-bitcoin"></i>
+                            </div>
+                            <div class="coin-name">Bitcoin</div>
+                            <div class="coin-estimate">
+                                <span class="estimate-value">0.00000000</span> BTC
+                            </div>
+                            <div class="coin-note">Requires mining pools & ASIC hardware</div>
+                        </div>
+
+                        <div class="comparison-item disabled">
+                            <div class="coin-icon">
+                                <i class="fab fa-ethereum"></i>
+                            </div>
+                            <div class="coin-name">Ethereum</div>
+                            <div class="coin-estimate">
+                                <span class="estimate-value">0.00000000</span> ETH
+                            </div>
+                            <div class="coin-note">No longer mineable at all</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

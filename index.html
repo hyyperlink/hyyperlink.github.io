@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyyperlink - Key Discovery Mining</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lekton:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Lekton', monospace;
+        }
+
+        .navbar {
+            background-color: transparent;
+            backdrop-filter: none;
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .download-btn {
+            background-color: #000;
+            color: #ccc;
+            border: 2px solid #ccc;
+            padding: 1em 2em;
+            border-radius: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            color: #fff;
+            border: 2px solid #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.5);
+        }
+
+        .roadmap-timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .roadmap-timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background: #333;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+
+        .roadmap-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .roadmap-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #333;
+            border: 4px solid #000;
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+        }
+
+        .roadmap-item.left {
+            left: 0;
+        }
+
+        .roadmap-item.right {
+            left: 50%;
+        }
+
+        .roadmap-item.left::after {
+            right: -10px;
+        }
+
+        .roadmap-item.right::after {
+            left: -10px;
+        }
+
+        .roadmap-item .content {
+            padding: 20px;
+            background: rgba(51, 51, 51, 0.2);
+            border: 1px solid #333;
+            border-radius: 6px;
+            position: relative;
+        }
+
+        .roadmap-item .content::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            top: 10px;
+            border: 10px solid transparent;
+        }
+
+        .roadmap-item.left .content::before {
+            right: -20px;
+            border-left-color: #333;
+        }
+
+        .roadmap-item.right .content::before {
+            left: -20px;
+            border-right-color: #333;
+        }
+
+        .roadmap-item .content h4 {
+            margin: 0 0 10px 0;
+            color: #fff;
+        }
+
+        .roadmap-item .content p {
+            margin: 0;
+            color: #ccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        @media screen and (max-width: 768px) {
+            .roadmap-timeline::after {
+                left: 31px;
+            }
+            
+            .roadmap-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .roadmap-item.right {
+                left: 0;
+            }
+            
+            .roadmap-item.left::after,
+            .roadmap-item.right::after {
+                left: 21px;
+            }
+            
+            .roadmap-item.left .content::before,
+            .roadmap-item.right .content::before {
+                left: -20px;
+                border-right-color: #333;
+                border-left-color: transparent;
+            }
+        }
+
+        .navbar-toggler {
+            padding: 0.25rem;
+            border: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1050;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .navbar-toggler svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .offcanvas-nav {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            height: 100vh;
+            width: 300px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1045;
+            padding: 4rem 2rem 2rem 2rem;
+        }
+
+        .offcanvas-nav.show {
+            transform: translateX(300px);
+        }
+
+        .navbar-nav {
+            margin-top: 2rem;
+        }
+
+        .nav-item {
+            margin: 1rem 0;
+        }
+
+        .nav-link {
+            color: white !important;
+            font-family: 'Lekton', monospace;
+            font-size: 1.2rem;
+            padding: 0.5rem 0;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-link:hover {
+            opacity: 0.8;
+        }
+
+        .navbar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 1040;
+        }
+
+        .navbar-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .close-nav {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        #dag-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .section {
+            position: relative;
+            z-index: 1;
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            border: 1px solid #333;
+            border-radius: 6px;
+            background: rgba(51, 51, 51, 0.2);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(51, 51, 51, 0.4);
+        }
+
+        .faq-question h4 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .toggle-icon {
+            font-size: 1.5rem;
+            font-weight: 200;
+            color: #ccc;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question[aria-expanded="true"] .toggle-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .faq-answer p {
+            margin: 0;
+        }
+
+        .footer-modern {
+            background-color: #111;
+            color: #888;
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+
+        .footer-section h5 {
+            color: #fff;
+            font-family: 'Lekton', monospace;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .social-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .social-links a:hover {
+            color: #fff;
+        }
+
+        .footer-divider {
+            border-color: #333;
+            margin: 2rem 0;
+        }
+
+        .copyright {
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .footer-section {
+                margin-bottom: 2rem;
+            }
+        }
+
+        .nav-header {
+            margin-top: -1rem;
+        }
+        
+        .nav-brand {
+            color: white;
+            font-family: 'Lekton', monospace;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .offcanvas-nav {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-nav {
+            margin-top: 1rem;
+        }
+
+        .team-member {
+            padding: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+
+        .team-avatar {
+            color: #fff;
+            opacity: 0.8;
+        }
+
+        .team-member h4 {
+            color: #fff;
+        }
+
+        .role {
+            color: #888;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .team-description {
+            color: #888;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .contributors-message {
+            padding: 4rem 0 2rem 0;
+        }
+
+        .contributors-message h4 {
+            color: #fff;
+        }
+
+        .contributors-message p {
+            color: #888;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .nav-social-links {
+            padding: 1rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-social-link {
+            display: flex;
+            align-items: center;
+            color: #888;
+            text-decoration: none;
+            padding: 0.75rem 0;
+            transition: color 0.2s ease;
+        }
+
+        .nav-social-link:hover {
+            color: #fff;
+        }
+
+        .nav-social-link i {
+            width: 24px;
+            margin-right: 12px;
+        }
+
+        .nav-social-link span {
+            font-family: 'Lekton', monospace;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <svg id="dag-background"></svg>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark fixed-top">
+        <div class="container-fluid">
+            <button class="navbar-toggler ms-2" type="button" id="navToggle">
+                <svg width="32px" height="32px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="SVGRepo_iconCarrier">
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Dribbble-Light-Preview" transform="translate(-60.000000, -4559.000000)" fill="#ffffff">
+                                <g id="icons" transform="translate(56.000000, 160.000000)">
+                                    <path d="M6.70247571,4412.07175 L12.0994757,4404.08575 C12.3864757,4403.69975 13.0004757,4403.90275 13.0004757,4404.38375 L13.0004757,4415.43475 C13.0004757,4415.82075 12.5804757,4416.06175 12.2474757,4415.86675 L6.85047571,4412.80175 C6.59347571,4412.65075 6.52447571,4412.31075 6.70247571,4412.07175 L6.70247571,4412.07175 Z M21.1494757,4412.80175 L15.7534757,4415.86675 C15.4194757,4416.06175 15.0004757,4415.82075 15.0004757,4415.43475 L15.0004757,4404.38375 C15.0004757,4403.90275 15.6134757,4403.69975 15.9014757,4404.08575 L21.2984757,4412.07175 C21.4754757,4412.31075 21.4064757,4412.65075 21.1494757,4412.80175 L21.1494757,4412.80175 Z M15.0004757,4399.52575 L15.0004757,4399.52575 C14.5184757,4398.82475 13.4824757,4398.82475 13.0004757,4399.52575 L13.0004757,4399.52575 L4.24047571,4412.02975 C3.80847571,4412.60975 3.97647571,4413.43575 4.60047571,4413.80175 L13.0004757,4418.62575 L13.4234757,4418.85375 C13.7834757,4419.04775 14.2164757,4419.04775 14.5764757,4418.85375 L15.0004757,4418.62575 L23.4004757,4413.80175 C24.0234757,4413.43575 24.1914757,4412.60975 23.7604757,4412.02975 L15.0004757,4399.52575 Z" id="3d_modelling_round-[#820]"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Add the sliding nav menu -->
+    <div class="offcanvas-nav" id="offcanvasNav">
+        <button class="close-nav" id="closeNav">×</button>
+        <div class="nav-header text-center mb-4">
+            <img src="hyyperlink.svg" alt="Hyyperlink" height="64px" width="64px" class="mb-2">
+            <h4 class="nav-brand">Hyyperlink</h4>
+        </div>
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="#download">Download</a></li>
+            <li class="nav-item"><a class="nav-link" href="mine.html">Try Mining</a></li>
+            <li class="nav-item"><a class="nav-link" href="#roadmap">Roadmap</a></li>
+            <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
+            <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+            <li class="nav-item"><a class="nav-link" href="/whitepaper.pdf">Whitepaper</a></li>
+        </ul>
+        
+        <div class="nav-social-links mt-auto mb-4">
+            <a href="https://github.com/hyyperlink/hyyperlink" class="nav-social-link">
+                <i class="fab fa-github"></i>
+                <span>GitHub</span>
+            </a>
+            <a href="https://x.com/hyyperlink" class="nav-social-link">
+                <i class="fab fa-x-twitter"></i>
+                <span>X (Twitter)</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Add overlay -->
+    <div class="navbar-overlay" id="navOverlay"></div>
+
+    <!-- Hero Section -->
+    <section class="section d-flex align-items-center">
+        <div class="container text-center">
+            <img src="hyyperlink.svg" alt="Hyyperlink" height="256px" width="256px" class="mb-3">
+            <h1 class="display-1 mb-4">Hyyperlink</h1>
+            <p class="lead mb-4">A New Paradigm for Digital Currency</p>
+            <a href="https://github.com/hyyperlink/hyyperlink/releases" class="btn download-btn">Download Wallet</a>
+            <a href="whitepaper.pdf" class="btn download-btn">Whitepaper</a>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="section">
+        <div class="container">
+            <h2 class="text-center mb-5">Download</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-4 text-center">
+                    <img src="windows.svg" alt="Windows" class="mb-3">
+                    <h3>Windows</h3>
+                    <a href="#" class="btn download-btn mt-3">Download</a>
+                </div>
+                <div class="col-md-4 text-center">
+                    <img src="apple.svg" alt="macOS" class="mb-3">
+                    <h3>macOS</h3>
+                    <a href="#" class="btn download-btn mt-3">Download</a>
+                </div>
+                <div class="col-md-4 text-center">
+                    <img src="linux.svg" alt="Linux" class="mb-3">
+                    <h3>Linux</h3>
+                    <a href="#" class="btn download-btn mt-3">Download</a>
+                </div>
+                <div class="col-md-4 text-center">
+                    <img src="firefox.svg" alt="Firefox" class="mb-3">
+                    <h3>Firefox</h3>
+                    <a href="#" class="btn download-btn mt-3">Download</a>
+                </div>
+                <div class="col-md-4 text-center">
+                    <img src="chrome.svg" alt="Chrome" class="mb-3">
+                    <h3>Chrome</h3>
+                    <a href="#" class="btn download-btn mt-3">Download</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="section">
+        <div class="container">
+            <h2 class="text-center mb-5">Roadmap</h2>
+            <div class="roadmap-timeline">
+                <div class="roadmap-item left">
+                    <div class="content">
+                        <h4>Milestone 1 - Testnet Launch</h4>
+                        <p>Initial release of the Hyyperlink testnet, featuring core wallet functionality and key discovery mining. Early adopters can begin testing the network, providing valuable feedback for mainnet preparation.</p>
+                    </div>
+                </div>
+                <div class="roadmap-item right">
+                    <div class="content">
+                        <h4>Milestone 2 - Token & NFT Platform</h4>
+                        <p>Introduction of token creation capabilities and NFT support. Developers can create custom tokens and NFTs on the Hyyperlink network, expanding the ecosystem's functionality.</p>
+                    </div>
+                </div>
+                <div class="roadmap-item left">
+                    <div class="content">
+                        <h4>Milestone 3 - Smart Contracts</h4>
+                        <p>Launch of smart contract capabilities with developer tools and SDK. Opening the platform for DApp development and enabling complex programmable transactions.</p>
+                    </div>
+                </div>
+                <div class="roadmap-item right">
+                    <div class="content">
+                        <h4>Milestone 4 - Cross-Network Transfers</h4>
+                        <p>Implementation of cross-network functionality enabling seamless asset transfer between major blockchain networks. Enhanced interoperability features for a connected ecosystem.</p>
+                    </div>
+                </div>
+                <div class="roadmap-item left">
+                    <div class="content">
+                        <h4>Milestone 5 - Mainnet Launch</h4>
+                        <p>Official launch of the Hyyperlink mainnet, incorporating all tested features and improvements from the testnet phase. The network goes live with full functionality, security measures, and community participation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="section">
+        <div class="container">
+            <h2 class="text-center mb-5">FAQ</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                <h4>What makes Hyyperlink different from other cryptocurrencies?</h4>
+                                <span class="toggle-icon">+</span>
+                            </div>
+                            <div id="faq1" class="collapse faq-answer">
+                                <p>Hyyperlink introduces a revolutionary approach to cryptocurrency that eliminates competition between miners. Unlike Bitcoin or Ethereum, where miners compete for rewards, Hyyperlink miners work independently to discover special cryptographic keys. This means anyone can mine without expensive hardware or joining mining pools, making it truly decentralized and energy-efficient.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                <h4>How does Key Discovery Mining work?</h4>
+                                <span class="toggle-icon">+</span>
+                            </div>
+                            <div id="faq2" class="collapse faq-answer">
+                                <p>Key Discovery Mining is like finding digital treasures. Your computer generates special cryptographic keys, and when it finds one with rare properties (like several zeros at the start), you receive a reward. The rarer the key you find, the bigger the reward. It's simple, fair, and you can mine independently on any computer without competing with others.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                <h4>What's unique about Hyyperlink's token supply?</h4>
+                                <span class="toggle-icon">+</span>
+                            </div>
+                            <div id="faq3" class="collapse faq-answer">
+                                <p>Hyyperlink starts with zero tokens and grows naturally through mining. The supply is balanced by two forces: new tokens are created through mining, while transaction fees are permanently removed from circulation. This creates a self-regulating economy where network usage directly influences the token supply, helping maintain long-term value.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                <h4>How fast are transactions?</h4>
+                                <span class="toggle-icon">+</span>
+                            </div>
+                            <div id="faq4" class="collapse faq-answer">
+                                <p>Hyyperlink uses a modern DAG (Directed Acyclic Graph) structure instead of a traditional blockchain, allowing multiple transactions to be processed simultaneously. This means faster confirmations and better scalability as the network grows, without the bottlenecks found in traditional cryptocurrencies.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                <h4>What can I do with Hyyperlink?</h4>
+                                <span class="toggle-icon">+</span>
+                            </div>
+                            <div id="faq5" class="collapse faq-answer">
+                                <p>Hyyperlink is designed to be a versatile digital currency. You can mine tokens, send and receive payments, and participate in the network's growth. Future updates will bring smart contracts, mobile wallets, and cross-chain capabilities, making Hyyperlink a comprehensive platform for digital transactions and decentralized applications.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq6">
+                                <h4>How do I start mining Hyyperlink?</h4>
+                                <span class="toggle-icon">+</span>
+                            </div>
+                            <div id="faq6" class="collapse faq-answer">
+                                <p>Getting started with Hyyperlink mining is simple: just download our wallet, create an account, and enable mining. You can mine on any computer - no special hardware required. The wallet includes an easy-to-use mining interface, and you'll start earning rewards as soon as your computer discovers special keys. The more zeros at the start of a discovered key, the bigger your reward!</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq7">
+                                <h4>Is Hyyperlink secure?</h4>
+                                <span class="toggle-icon">+</span>
+                            </div>
+                            <div id="faq7" class="collapse faq-answer">
+                                <p>Yes! Hyyperlink uses advanced cryptography and a reputation-based system to ensure network security. Every transaction is cryptographically signed and verified across the network. Our unique DAG structure and consensus mechanism provide strong protection against common cryptocurrency attacks while maintaining high performance and reliability.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-item">
+                            <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq8">
+                                <h4>Is Hyyperlink based on or forked from another project?</h4>
+                                <span class="toggle-icon">+</span>
+                            </div>
+                            <div id="faq8" class="collapse faq-answer">
+                                <p>No - Hyyperlink is completely original and built from the ground up. Written in Go, it's not a fork, copy, or derivative of any existing cryptocurrency. Every aspect of Hyyperlink, from its innovative Key Discovery Mining to its DAG architecture, has been carefully designed and implemented from scratch to create a truly unique and forward-thinking digital currency platform.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="team">
+        <div class="container">
+            <h2 class="text-center mb-5">Hyyperlink Team</h2>
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <p>Hyyperlink is a team project, some work in public while some prefer to collaborate in private. </p>
+                    <p>Thanks to those who have contributed to Hyyperlink academically or otherwise.</p>
+                </div>
+            </div>
+            <div class="row justify-content-center mb-5">
+                <div class="col-md-4 mb-4">
+                    <div class="team-member text-center">
+                        <div class="team-avatar mb-4">
+                            <i class="fas fa-user-circle fa-4x"></i>
+                        </div>
+                        <h4 class="mb-2">D. A. Good</h4>
+                        <p class="role mb-3">Development</p>
+                        <p class="team-description">Core developer and architect of Hyyperlink</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="team-member text-center">
+                        <div class="team-avatar mb-4">
+                            <i class="fas fa-user-circle fa-4x"></i>
+                        </div>
+                        <h4 class="mb-2">CR</h4>
+                        <p class="role mb-3">Marketing</p>
+                        <p class="team-description">Community engagement and strategic marketing</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="team-member text-center">
+                        <div class="team-avatar mb-4">
+                            <i class="fas fa-user-circle fa-4x"></i>
+                        </div>
+                        <h4 class="mb-2">EH</h4>
+                        <p class="role mb-3">Business</p>
+                        <p class="team-description">Business strategy and development</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Links -->
+    <section class="section">
+        <div class="container text-center">
+            <h2 class="mb-4">Connect With Us</h2>
+            <div class="d-flex justify-content-center gap-4">
+                <a href="https://github.com/hyyperlink/hyyperlink" class="btn download-btn">GitHub</a>
+                <a href="https://x.com/hyyperlink" class="btn download-btn">X (Twitter)</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-modern py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-section">
+                        <img src="hyyperlink.svg" alt="Hyyperlink" height="48px" width="48px" class="mb-3">
+                        <h5 class="mb-3">Hyyperlink</h5>
+                        <p class="mb-3">A New Paradigm for Digital Currency</p>
+                        <div class="social-links">
+                            <a href="https://github.com/hyyperlink/hyyperlink" class="me-3"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="https://x.com/hyyperlink"><i class="fab fa-x-twitter"></i> X (Twitter)</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-section">
+                        <h5 class="mb-3">Downloads</h5>
+                        <ul class="footer-links">
+                            <li><a href="#">Windows</a></li>
+                            <li><a href="#">macOS</a></li>
+                            <li><a href="#">Linux</a></li>
+                            <li><a href="#">Firefox Extension</a></li>
+                            <li><a href="#">Chrome Extension</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-section">
+                        <h5 class="mb-3">Resources</h5>
+                        <ul class="footer-links">
+                            <li><a href="whitepaper.pdf">Whitepaper</a></li>
+                            <li><a href="#">Branding Guide</a></li>
+                            <li><a href="#">Press Kit</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="footer-divider my-4">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="copyright mb-0">&copy; 2025 Hyyperlink. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('navToggle').addEventListener('click', function() {
+            document.getElementById('offcanvasNav').classList.add('show');
+            document.getElementById('navOverlay').classList.add('show');
+        });
+
+        function closeNav() {
+            document.getElementById('offcanvasNav').classList.remove('show');
+            document.getElementById('navOverlay').classList.remove('show');
+        }
+
+        document.getElementById('closeNav').addEventListener('click', closeNav);
+        document.getElementById('navOverlay').addEventListener('click', closeNav);
+
+        // Close nav when clicking a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', closeNav);
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                targetElement.scrollIntoView({ behavior: 'auto', block: 'start' });
+                closeNav();
+            });
+        });
+    </script>
+    <script src="dag.js"></script>
+    <script>
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const isExpanded = question.getAttribute('aria-expanded') === 'true';
+                question.setAttribute('aria-expanded', !isExpanded);
+            });
+        });
+    </script>
+</body>
+</html> 
