@@ -254,6 +254,8 @@
     <!-- Load scripts in order with defer -->
     <script src="https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl-fast.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/base-58@0.0.1/Base58.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-base64@3.7.2/base64.min.js"></script>
 
     <script>
         function createWorker() {
@@ -515,6 +517,51 @@
             });
 
             console.log('Mining simulator initialized and ready');
+        });
+
+        function downloadWallet() {
+            // Generate keypair using TweetNaCl
+            const keyPair = nacl.sign.keyPair();
+            
+            // Convert keys to Base64
+            const privKeyBase64 = Base64.encode(keyPair.secretKey);
+            const pubKeyBase64 = Base64.encode(keyPair.publicKey);
+            
+            // Generate Base58 address from public key
+            const address = Base58.encode(keyPair.publicKey);
+            
+            // Create wallet object
+            const wallet = {
+                PrivKey: privKeyBase64,
+                PubKey: pubKeyBase64,
+                Address: address
+            };
+            
+            // Convert to JSON and create blob
+            const walletJson = JSON.stringify(wallet, null, 2);
+            const blob = new Blob([walletJson], { type: 'application/json' });
+            
+            // Create download link
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'wallet.json';
+            
+            // Trigger download
+            document.body.appendChild(a);
+            a.click();
+            
+            // Cleanup
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Add click handler to download button
+        document.getElementById('downloadWallet').addEventListener('click', downloadWallet);
+
+        // Show wallet info section when mining starts
+        document.getElementById('startMining').addEventListener('click', function() {
+            document.getElementById('walletInfo').style.display = 'block';
         });
     </script>
 </head>
