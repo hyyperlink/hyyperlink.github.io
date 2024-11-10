@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hyyperlink - No blocks, No chains</title>
+    <title>Hyyperlink L1 Network</title>
     
     <!-- Primary Meta Tags -->
-    <meta name="title" content="Hyyperlink - No blocks, No chains">
+    <meta name="title" content="Hyyperlink L1 Network">
     <meta name="description" content="A revolutionary cryptocurrency using Key Discovery Mining - no blocks, no chains">
     <meta name="keywords" content="cryptocurrency, blockchain, DAG, mining, crypto, digital currency, hyyperlink">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hyyperlink.com/">
-    <meta property="og:title" content="Hyyperlink - No blocks, No chains">
+    <meta property="og:title" content="Hyyperlink L1 Network">
     <meta property="og:description" content="A revolutionary cryptocurrency using Key Discovery Mining - no blocks, no chains">
-    <meta property="og:image" content="https://hyyperlink.com/hyyperlink.svg">
+    <meta property="og:image" content="https://hyyperlink.com/banner.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://hyyperlink.com/">
-    <meta property="twitter:title" content="Hyyperlink - No blocks, No chains">
+    <meta property="twitter:title" content="Hyyperlink L1 Network">
     <meta property="twitter:description" content="A revolutionary cryptocurrency using Key Discovery Mining - no blocks, no chains">
-    <meta property="twitter:image" content="https://hyyperlink.com/hyyperlink.svg">
+    <meta property="twitter:image" content="https://hyyperlink.com/banner.png">
     <meta name="twitter:site" content="@hyyperlink">
     <meta name="twitter:creator" content="@hyyperlink">
     
@@ -647,7 +647,7 @@
             <li class="nav-item"><a class="nav-link" href="#roadmap">Roadmap</a></li>
             <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
             <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
-            <li class="nav-item"><a class="nav-link" href="whitepaper.pdf">Whitepaper</a></li>
+            <li class="nav-item"><a class="nav-link" href="whitepaper.pdf" download>Whitepaper</a></li>
         </ul>
         
         <div class="nav-social-links mt-auto mb-4">
@@ -671,7 +671,7 @@
             <img src="hyyperlink.svg" alt="Hyyperlink" height="256px" width="256px" class="mb-3">
             <h1 class="display-1 mb-4">Hyyperlink</h1>
             <p class="lead mb-4">A New Paradigm for Digital Currency</p>
-            <a href="whitepaper.pdf" class="btn download-btn">Download The Whitepaper</a>
+            <a href="whitepaper.pdf" class="btn download-btn" download>Download The Whitepaper</a>
         </div>
     </section>
 
@@ -969,15 +969,15 @@
 
         // Close nav when clicking a link
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', closeNav);
-        });
-
-        document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                targetElement.scrollIntoView({ behavior: 'auto', block: 'start' });
+                const href = this.getAttribute('href');
+                
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(href);
+                    targetElement.scrollIntoView({ behavior: 'auto', block: 'start' });
+                }
+                
                 closeNav();
             });
         });
