@@ -409,492 +409,6 @@
             color: #666;
         }
     </style>
-
-    <!-- Load scripts in order with defer -->
-    <script src="https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl-fast.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/base-58@0.0.1/Base58.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-base64@3.7.2/base64.min.js"></script>
-
-    <script>
-        function createWorker() {
-            const workerCode = `
-                importScripts('https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl-fast.min.js');
-                
-                self.onmessage = function(e) {
-                    if (e.data.cmd === 'mine') {
-                        const batchSize = 1000;
-                        const results = [];
-                        
-                        const hexChars = '0123456789abcdef';
-                        
-                        for (let i = 0; i < batchSize; i++) {
-                            const keyPair = nacl.sign.keyPair();
-                            
-                            let difficulty = 0;
-                            let foundNonZero = false;
-                            
-                            for (let j = 0; j < 4; j++) {
-                                const byte = keyPair.publicKey[j];
-                                const hi = hexChars[byte >> 4];
-                                const lo = hexChars[byte & 0xF];
-                                
-                                if (!foundNonZero) {
-                                    if (hi === '0') {
-                                        difficulty++;
-                                        if (lo === '0') {
-                                            difficulty++;
-                                        } else {
-                                            foundNonZero = true;
-                                        }
-                                    } else {
-                                        foundNonZero = true;
-                                    }
-                                }
-                            }
-                            
-                            if (difficulty >= 4) {
-                                const pubKeyHex = Array.from(keyPair.publicKey)
-                                    .map(b => hexChars[b >> 4] + hexChars[b & 0xF])
-                                    .join('');
-                                results.push({difficulty, pubKeyHex});
-                            }
-                        }
-                        
-                        if (results.length > 0) {
-                            self.postMessage({type: 'discoveries', results});
-                        }
-                        
-                        self.postMessage({type: 'progress', keysGenerated: batchSize});
-                    }
-                };
-            `;
-            
-            const blob = new Blob([workerCode], { type: 'application/javascript' });
-            return new Worker(URL.createObjectURL(blob));
-        }
-
-        // Wait for DOM to be ready
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if required libraries are loaded
-            if (typeof nacl === 'undefined') {
-                console.error('TweetNaCl library not loaded');
-                alert('Error: Required crypto library not loaded. Please refresh the page.');
-                return;
-            }
-
-            // Initialize UI elements
-            const startButton = document.getElementById('startMining');
-            const stopButton = document.getElementById('stopMining');
-            const keysPerSecondEl = document.getElementById('keysPerSecond');
-            const hyyEarnedEl = document.getElementById('hyyEarned');
-            const timeElapsedEl = document.getElementById('timeElapsed');
-            const projectedEarningsEl = document.getElementById('projectedEarnings');
-
-            let isRunning = false;
-            let startTime;
-            let keysGenerated = 0;
-            let hyyEarned = 0;
-            let statsInterval;
-            let lastKeysGenerated = 0;
-            let currentHashrate = 0;
-            let lastHashrateUpdate = Date.now();
-            const MinMinerDifficulty = 4;
-            const MaxUnits = 100000000;
-            const HASHRATE_SAMPLES = 1;
-            const UPDATE_INTERVAL = 100;
-            let recentHashrates = [];
-            let pendingWorkerUpdates = 0;
-
-            // Replace the sha3_256 and keccak256 functions with this implementation
-            async function sha256(input) {
-                const msgBuffer = new TextEncoder().encode(input);
-                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-                return new Uint8Array(hashBuffer);
-            }
-
-            function calculateReward(difficulty) {
-                if (difficulty < MinMinerDifficulty) return 0;
-                const multiplier = difficulty - MinMinerDifficulty + 1;
-                return multiplier * MaxUnits;
-            }
-
-            function getRarityClass(difficulty) {
-                if (difficulty >= 7) return 'legendary';
-                if (difficulty >= 6) return 'epic';
-                if (difficulty >= 5) return 'rare';
-                return 'common';
-            }
-
-            function getRarityText(difficulty) {
-                if (difficulty >= 7) return 'LEGENDARY';
-                if (difficulty >= 6) return 'EPIC';
-                if (difficulty >= 5) return 'RARE';
-                return 'COMMON';
-            }
-
-            function addDiscovery(difficulty, reward) {
-                const discoveryLog = document.getElementById('discoveryLog');
-                const rarityClass = getRarityClass(difficulty);
-                const rarityText = getRarityText(difficulty);
-                
-                const discoveryItem = document.createElement('div');
-                discoveryItem.className = `discovery-item ${rarityClass}`;
-                discoveryItem.innerHTML = `
-                    <div class="discovery-info">
-                        <span class="discovery-difficulty">${difficulty} zeros - ${rarityText}</span>
-                    </div>
-                    <div class="discovery-reward">+${(reward / MaxUnits).toFixed(8)} HYY</div>
-                `;
-                
-                discoveryLog.insertBefore(discoveryItem, discoveryLog.firstChild);
-                
-                if (discoveryLog.children.length > 10) {
-                    discoveryLog.removeChild(discoveryLog.lastChild);
-                }
-            }
-
-            let workers = [];
-            const numWorkers = navigator.hardwareConcurrency || 4; // Use available CPU cores
-
-            function startWorkers() {
-                pendingWorkerUpdates = 0;
-                
-                for (let i = 0; i < numWorkers; i++) {
-                    const worker = createWorker();
-                    
-                    worker.onmessage = function(e) {
-                        if (e.data.type === 'discoveries') {
-                            e.data.results.forEach(result => {
-                                const reward = calculateReward(result.difficulty);
-                                hyyEarned += reward;
-                                addDiscovery(result.difficulty, reward);
-                            });
-                        } else if (e.data.type === 'progress') {
-                            keysGenerated += e.data.keysGenerated;
-                            pendingWorkerUpdates++;
-                            
-                            if (pendingWorkerUpdates >= numWorkers) {
-                                const now = Date.now();
-                                const timeDiff = (now - lastHashrateUpdate) / 1000;
-                                
-                                const instantRate = Math.round((keysGenerated - lastKeysGenerated) / timeDiff);
-                                
-                                recentHashrates.push(instantRate);
-                                if (recentHashrates.length > HASHRATE_SAMPLES) {
-                                    recentHashrates.shift();
-                                }
-                                
-                                currentHashrate = Math.round(
-                                    recentHashrates.reduce((a, b) => a + b, 0) / recentHashrates.length
-                                );
-                                
-                                lastKeysGenerated = keysGenerated;
-                                lastHashrateUpdate = now;
-                                pendingWorkerUpdates = 0;
-                                updateStats();
-                            }
-                        }
-                    };
-
-                    worker.onerror = function(e) {
-                        console.error('Worker error:', e);
-                    };
-                    
-                    workers.push(worker);
-                }
-            }
-
-            function mine() {
-                if (!isRunning) return;
-                
-                workers.forEach(worker => {
-                    worker.postMessage({
-                        cmd: 'mine'
-                    });
-                });
-                
-                requestAnimationFrame(mine);
-            }
-
-            function updateStats() {
-                if (!isRunning) return;
-                
-                const elapsed = Math.max((Date.now() - startTime) / 1000, 0.001);
-                timeElapsedEl.textContent = `${Math.floor(elapsed)}s`;
-                
-                keysPerSecondEl.textContent = currentHashrate.toLocaleString();
-                
-                hyyEarnedEl.textContent = (hyyEarned / MaxUnits).toFixed(8);
-                
-                const dailyKeys = currentHashrate * 86400;
-                const projectedHyy = keysGenerated > 0 ? 
-                    (hyyEarned / MaxUnits) * (dailyKeys / keysGenerated) : 0;
-                
-                projectedEarningsEl.textContent = projectedHyy.toFixed(8);
-                
-                const estimateValue = document.querySelector('.comparison-item.active .estimate-value');
-                if (estimateValue) {
-                    estimateValue.textContent = projectedHyy.toFixed(8);
-                }
-            }
-
-            startButton.addEventListener('click', () => {
-                console.log('Starting mining simulation...');
-                isRunning = true;
-                startTime = Date.now();
-                lastHashrateUpdate = Date.now();
-                lastKeysGenerated = 0;
-                currentHashrate = 0;
-                recentHashrates = [];
-                startButton.disabled = true;
-                stopButton.disabled = false;
-                keysGenerated = 0;
-                hyyEarned = 0;
-                
-                keysPerSecondEl.textContent = '0';
-                hyyEarnedEl.textContent = '0.00000000';
-                timeElapsedEl.textContent = '0s';
-                projectedEarningsEl.textContent = '0.00000000';
-                
-                startWorkers();
-                
-                mine();
-                
-                statsInterval = setInterval(updateStats, 100);
-            });
-
-            stopButton.addEventListener('click', () => {
-                console.log('Stopping mining simulation...');
-                isRunning = false;
-                startButton.disabled = false;
-                stopButton.disabled = true;
-                clearInterval(statsInterval);
-                
-                workers.forEach(worker => worker.terminate());
-                workers = [];
-            });
-
-            console.log('Mining simulator initialized and ready');
-        });
-
-        function downloadWallet() {
-            // Generate keypair using TweetNaCl
-            const keyPair = nacl.sign.keyPair();
-            
-            // Convert keys to Base64
-            const privKeyBase64 = Base64.encode(keyPair.secretKey);
-            const pubKeyBase64 = Base64.encode(keyPair.publicKey);
-            
-            // Generate Base58 address from public key
-            const address = Base58.encode(keyPair.publicKey);
-            
-            // Create wallet object
-            const wallet = {
-                PrivKey: privKeyBase64,
-                PubKey: pubKeyBase64,
-                Address: address
-            };
-            
-            // Convert to JSON and create blob
-            const walletJson = JSON.stringify(wallet, null, 2);
-            const blob = new Blob([walletJson], { type: 'application/json' });
-            
-            // Create download link
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'wallet.json';
-            
-            // Trigger download
-            document.body.appendChild(a);
-            a.click();
-            
-            // Cleanup
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        // Add click handler to download button
-        document.getElementById('downloadWallet').addEventListener('click', downloadWallet);
-
-        // Show wallet info section when mining starts
-        document.getElementById('startMining').addEventListener('click', function() {
-            document.getElementById('walletInfo').style.display = 'block';
-        });
-
-        document.getElementById('navToggle').addEventListener('click', function() {
-            document.getElementById('offcanvasNav').classList.add('show');
-            document.getElementById('navOverlay').classList.add('show');
-        });
-
-        function closeNav() {
-            document.getElementById('offcanvasNav').classList.remove('show');
-            document.getElementById('navOverlay').classList.remove('show');
-        }
-
-        document.getElementById('closeNav').addEventListener('click', closeNav);
-        document.getElementById('navOverlay').addEventListener('click', closeNav);
-
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', closeNav);
-        });
-    </script>
-
-    <script>
-    const WORDLIST_URL = 'https://raw.githubusercontent.com/bitcoin/bips/master/bip-0039/english.txt';
-    let WORDLIST = [];
-
-    // Fetch the wordlist before allowing seed generation
-    fetch(WORDLIST_URL)
-        .then(response => response.text())
-        .then(text => {
-            WORDLIST = text.trim().split('\n');
-            console.log(`Loaded ${WORDLIST.length} BIP39 words`);
-        })
-        .catch(error => {
-            console.error('Error loading BIP39 wordlist:', error);
-        });
-
-    function generateSeedPhrase() {
-        if (WORDLIST.length !== 2048) {
-            alert('Error: BIP39 wordlist not loaded. Please try again.');
-            return;
-        }
-        
-        let entropy = '';
-        let mouseMovements = 0;
-        let keyPresses = 0;
-        const entropyNeeded = 128; // bits of entropy needed
-        
-        const modal = document.createElement('div');
-        modal.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        `;
-        
-        const content = document.createElement('div');
-        content.style.cssText = `
-            background: #111;
-            padding: 2rem;
-            border-radius: 1rem;
-            max-width: 500px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
-        `;
-        
-        const progress = document.createElement('div');
-        progress.style.cssText = `
-            width: 100%;
-            height: 4px;
-            background: #333;
-            margin: 1rem 0;
-            border-radius: 2px;
-        `;
-        
-        const progressBar = document.createElement('div');
-        progressBar.style.cssText = `
-            width: 0%;
-            height: 100%;
-            background: #4CAF50;
-            border-radius: 2px;
-            transition: width 0.1s ease;
-        `;
-        
-        content.innerHTML = `
-            <h3 style="margin-bottom: 1rem;">Generating Seed Phrase</h3>
-            <p>Move your mouse and press random keys to generate entropy</p>
-        `;
-        
-        progress.appendChild(progressBar);
-        content.appendChild(progress);
-        modal.appendChild(content);
-        document.body.appendChild(modal);
-        
-        function updateProgress() {
-            const total = mouseMovements + keyPresses;
-            const percentage = Math.min((total / entropyNeeded) * 100, 100);
-            progressBar.style.width = `${percentage}%`;
-            
-            if (total >= entropyNeeded) {
-                modal.remove();
-                const words = [];
-                // Use collected entropy to select 12 words
-                for (let i = 0; i < 12; i++) {
-                    const randomIndex = Math.floor(Math.abs(new Int32Array(new Uint8Array(entropy.slice(i * 4, (i + 1) * 4)).buffer)[0]) % WORDLIST.length);
-                    words.push(WORDLIST[randomIndex]);
-                }
-                
-                const seedPhrase = words.join(' ');
-                const alertContent = document.createElement('div');
-                alertContent.innerHTML = `
-                    <div style="background: #111; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
-                        <p style="font-family: monospace; word-break: break-all;">${seedPhrase}</p>
-                    </div>
-                    <p style="color: #ff9800; margin-bottom: 1rem;">⚠️ Write this seed phrase down and keep it safe!</p>
-                    <p style="font-size: 0.9rem; color: #666;">This is your wallet's recovery phrase. Anyone with these words can access your wallet.</p>
-                `;
-                
-                const alertModal = new bootstrap.Modal(document.getElementById('seedPhraseModal'));
-                document.getElementById('seedPhraseContent').innerHTML = '';
-                document.getElementById('seedPhraseContent').appendChild(alertContent);
-                alertModal.show();
-            }
-        }
-        
-        document.addEventListener('mousemove', function(e) {
-            if (mouseMovements < entropyNeeded) {
-                entropy += e.clientX + e.clientY + Date.now();
-                mouseMovements++;
-                updateProgress();
-            }
-        });
-        
-        document.addEventListener('keydown', function(e) {
-            if (keyPresses < entropyNeeded) {
-                entropy += e.key + Date.now();
-                keyPresses++;
-                updateProgress();
-            }
-        });
-    }
-
-    // Replace the downloadWallet function with this
-    document.getElementById('downloadWallet').addEventListener('click', generateSeedPhrase);
-    </script>
-
-    <div class="modal fade" id="seedPhraseModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content bg-dark text-white">
-                <div class="modal-header border-secondary">
-                    <h5 class="modal-title">Your Seed Phrase</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="seedPhraseContent">
-                </div>
-                <div class="modal-footer border-secondary">
-                    <button type="button" class="btn download-btn" data-bs-dismiss="modal">I've Written It Down</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Update the wallet info section text -->
-    <div class="wallet-info" id="walletInfo" style="display: none;">
-        <h3>Your Wallet</h3>
-        <p class="mb-3">Generate a secure seed phrase to create your wallet.</p>
-        <div class="text-center mt-3">
-            <button id="downloadWallet" class="btn download-btn">Generate Seed Phrase</button>
-        </div>
-    </div>
 </head>
 <body>
     <nav class="navbar navbar-dark fixed-top">
@@ -1128,5 +642,476 @@
                 </div>
             </div>
         </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl-fast.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/base-58@0.0.1/Base58.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-base64@3.7.2/base64.min.js"></script>
+
+        <div class="modal fade" id="seedPhraseModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title">Your Seed Phrase</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="seedPhraseContent">
+                    </div>
+                    <div class="modal-footer border-secondary">
+                        <button type="button" class="btn download-btn" data-bs-dismiss="modal">I've Written It Down</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const WORDLIST_URL = 'https://raw.githubusercontent.com/bitcoin/bips/master/bip-0039/english.txt';
+            let WORDLIST = [];
+
+            // Fetch the wordlist before allowing seed generation
+            fetch(WORDLIST_URL)
+                .then(response => response.text())
+                .then(text => {
+                    WORDLIST = text.trim().split('\n');
+                    console.log(`Loaded ${WORDLIST.length} BIP39 words`);
+                })
+                .catch(error => {
+                    console.error('Error loading BIP39 wordlist:', error);
+                });
+
+            function generateSeedPhrase() {
+                if (WORDLIST.length !== 2048) {
+                    alert('Error: BIP39 wordlist not loaded. Please try again.');
+                    return;
+                }
+                
+                let entropy = '';
+                let mouseMovements = 0;
+                let keyPresses = 0;
+                const entropyNeeded = 128; // bits of entropy needed
+                
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.9);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 9999;
+                `;
+                
+                const content = document.createElement('div');
+                content.style.cssText = `
+                    background: #111;
+                    padding: 2rem;
+                    border-radius: 1rem;
+                    max-width: 500px;
+                    text-align: center;
+                    border: 1px solid rgba(255,255,255,0.1);
+                `;
+                
+                const progress = document.createElement('div');
+                progress.style.cssText = `
+                    width: 100%;
+                    height: 4px;
+                    background: #333;
+                    margin: 1rem 0;
+                    border-radius: 2px;
+                `;
+                
+                const progressBar = document.createElement('div');
+                progressBar.style.cssText = `
+                    width: 0%;
+                    height: 100%;
+                    background: #4CAF50;
+                    border-radius: 2px;
+                    transition: width 0.1s ease;
+                `;
+                
+                content.innerHTML = `
+                    <h3 style="margin-bottom: 1rem;">Generating Seed Phrase</h3>
+                    <p>Move your mouse and press random keys to generate entropy</p>
+                `;
+                
+                progress.appendChild(progressBar);
+                content.appendChild(progress);
+                modal.appendChild(content);
+                document.body.appendChild(modal);
+                
+                function updateProgress() {
+                    const total = mouseMovements + keyPresses;
+                    const percentage = Math.min((total / entropyNeeded) * 100, 100);
+                    progressBar.style.width = `${percentage}%`;
+                    
+                    if (total >= entropyNeeded) {
+                        modal.remove();
+                        const words = [];
+                        // Use collected entropy to select 12 words
+                        for (let i = 0; i < 12; i++) {
+                            const randomIndex = Math.floor(Math.abs(new Int32Array(new Uint8Array(entropy.slice(i * 4, (i + 1) * 4)).buffer)[0]) % WORDLIST.length);
+                            words.push(WORDLIST[randomIndex]);
+                        }
+                        
+                        const seedPhrase = words.join(' ');
+                        const alertContent = document.createElement('div');
+                        alertContent.innerHTML = `
+                            <div style="background: #111; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+                                <p style="font-family: monospace; word-break: break-all;">${seedPhrase}</p>
+                            </div>
+                            <p style="color: #ff9800; margin-bottom: 1rem;">⚠️ Write this seed phrase down and keep it safe!</p>
+                            <p style="font-size: 0.9rem; color: #666;">This is your wallet's recovery phrase. Anyone with these words can access your wallet.</p>
+                        `;
+                        
+                        const seedPhraseModal = new bootstrap.Modal(document.getElementById('seedPhraseModal'));
+                        const seedPhraseContent = document.getElementById('seedPhraseContent');
+                        if (seedPhraseContent) {
+                            seedPhraseContent.innerHTML = '';
+                            seedPhraseContent.appendChild(alertContent);
+                            seedPhraseModal.show();
+                        }
+                    }
+                }
+                
+                // Event listeners for entropy collection
+                const moveHandler = function(e) {
+                    if (mouseMovements < entropyNeeded) {
+                        entropy += e.clientX + e.clientY + Date.now();
+                        mouseMovements++;
+                        updateProgress();
+                    }
+                };
+                
+                const keyHandler = function(e) {
+                    if (keyPresses < entropyNeeded) {
+                        entropy += e.key + Date.now();
+                        keyPresses++;
+                        updateProgress();
+                    }
+                };
+                
+                document.addEventListener('mousemove', moveHandler);
+                document.addEventListener('keydown', keyHandler);
+                
+                // Cleanup function
+                function cleanup() {
+                    document.removeEventListener('mousemove', moveHandler);
+                    document.removeEventListener('keydown', keyHandler);
+                    if (modal && modal.parentNode) {
+                        modal.parentNode.removeChild(modal);
+                    }
+                }
+                
+                // Add cleanup on modal close
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        cleanup();
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            // Mining simulator code
+            document.addEventListener('DOMContentLoaded', function() {
+                // Check if required libraries are loaded
+                if (typeof nacl === 'undefined') {
+                    console.error('TweetNaCl library not loaded');
+                    alert('Error: Required crypto library not loaded. Please refresh the page.');
+                    return;
+                }
+
+                function createWorker() {
+                    const workerCode = `
+                        importScripts('https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl-fast.min.js');
+                        
+                        self.onmessage = function(e) {
+                            if (e.data.cmd === 'mine') {
+                                const batchSize = 1000;
+                                const results = [];
+                                
+                                const hexChars = '0123456789abcdef';
+                                
+                                for (let i = 0; i < batchSize; i++) {
+                                    const keyPair = nacl.sign.keyPair();
+                                    
+                                    let difficulty = 0;
+                                    let foundNonZero = false;
+                                    
+                                    for (let j = 0; j < 4; j++) {
+                                        const byte = keyPair.publicKey[j];
+                                        const hi = hexChars[byte >> 4];
+                                        const lo = hexChars[byte & 0xF];
+                                        
+                                        if (!foundNonZero) {
+                                            if (hi === '0') {
+                                                difficulty++;
+                                                if (lo === '0') {
+                                                    difficulty++;
+                                                } else {
+                                                    foundNonZero = true;
+                                                }
+                                            } else {
+                                                foundNonZero = true;
+                                            }
+                                        }
+                                    }
+                                    
+                                    if (difficulty >= 4) {
+                                        const pubKeyHex = Array.from(keyPair.publicKey)
+                                            .map(b => hexChars[b >> 4] + hexChars[b & 0xF])
+                                            .join('');
+                                        results.push({difficulty, pubKeyHex});
+                                    }
+                                }
+                                
+                                if (results.length > 0) {
+                                    self.postMessage({type: 'discoveries', results});
+                                }
+                                
+                                self.postMessage({type: 'progress', keysGenerated: batchSize});
+                            }
+                        };
+                    `;
+                    
+                    const blob = new Blob([workerCode], { type: 'application/javascript' });
+                    return new Worker(URL.createObjectURL(blob));
+                }
+
+                // Initialize UI elements
+                const startButton = document.getElementById('startMining');
+                const stopButton = document.getElementById('stopMining');
+                const keysPerSecondEl = document.getElementById('keysPerSecond');
+                const hyyEarnedEl = document.getElementById('hyyEarned');
+                const timeElapsedEl = document.getElementById('timeElapsed');
+                const projectedEarningsEl = document.getElementById('projectedEarnings');
+
+                let isRunning = false;
+                let startTime;
+                let keysGenerated = 0;
+                let hyyEarned = 0;
+                let statsInterval;
+                let lastKeysGenerated = 0;
+                let currentHashrate = 0;
+                let lastHashrateUpdate = Date.now();
+                const MinMinerDifficulty = 4;
+                const MaxUnits = 100000000;
+                const HASHRATE_SAMPLES = 1;
+                let recentHashrates = [];
+                let pendingWorkerUpdates = 0;
+                let workers = [];
+                const numWorkers = navigator.hardwareConcurrency || 4;
+
+                function calculateReward(difficulty) {
+                    if (difficulty < MinMinerDifficulty) return 0;
+                    const multiplier = difficulty - MinMinerDifficulty + 1;
+                    return multiplier * MaxUnits;
+                }
+
+                function getRarityClass(difficulty) {
+                    if (difficulty >= 7) return 'legendary';
+                    if (difficulty >= 6) return 'epic';
+                    if (difficulty >= 5) return 'rare';
+                    return 'common';
+                }
+
+                function getRarityText(difficulty) {
+                    if (difficulty >= 7) return 'LEGENDARY';
+                    if (difficulty >= 6) return 'EPIC';
+                    if (difficulty >= 5) return 'RARE';
+                    return 'COMMON';
+                }
+
+                function addDiscovery(difficulty, reward) {
+                    const discoveryLog = document.getElementById('discoveryLog');
+                    const rarityClass = getRarityClass(difficulty);
+                    const rarityText = getRarityText(difficulty);
+                    
+                    const discoveryItem = document.createElement('div');
+                    discoveryItem.className = `discovery-item ${rarityClass}`;
+                    discoveryItem.innerHTML = `
+                        <div class="discovery-info">
+                            <span class="discovery-difficulty">${difficulty} zeros - ${rarityText}</span>
+                        </div>
+                        <div class="discovery-reward">+${(reward / MaxUnits).toFixed(8)} HYY</div>
+                    `;
+                    
+                    discoveryLog.insertBefore(discoveryItem, discoveryLog.firstChild);
+                    
+                    if (discoveryLog.children.length > 10) {
+                        discoveryLog.removeChild(discoveryLog.lastChild);
+                    }
+                }
+
+                function startWorkers() {
+                    pendingWorkerUpdates = 0;
+                    
+                    for (let i = 0; i < numWorkers; i++) {
+                        const worker = createWorker();
+                        
+                        worker.onmessage = function(e) {
+                            if (e.data.type === 'discoveries') {
+                                e.data.results.forEach(result => {
+                                    const reward = calculateReward(result.difficulty);
+                                    hyyEarned += reward;
+                                    addDiscovery(result.difficulty, reward);
+                                });
+                            } else if (e.data.type === 'progress') {
+                                keysGenerated += e.data.keysGenerated;
+                                pendingWorkerUpdates++;
+                                
+                                if (pendingWorkerUpdates >= numWorkers) {
+                                    const now = Date.now();
+                                    const timeDiff = (now - lastHashrateUpdate) / 1000;
+                                    
+                                    const instantRate = Math.round((keysGenerated - lastKeysGenerated) / timeDiff);
+                                    
+                                    recentHashrates.push(instantRate);
+                                    if (recentHashrates.length > HASHRATE_SAMPLES) {
+                                        recentHashrates.shift();
+                                    }
+                                    
+                                    currentHashrate = Math.round(
+                                        recentHashrates.reduce((a, b) => a + b, 0) / recentHashrates.length
+                                    );
+                                    
+                                    lastKeysGenerated = keysGenerated;
+                                    lastHashrateUpdate = now;
+                                    pendingWorkerUpdates = 0;
+                                    updateStats();
+                                }
+                            }
+                        };
+
+                        worker.onerror = function(e) {
+                            console.error('Worker error:', e);
+                        };
+                        
+                        workers.push(worker);
+                    }
+                }
+
+                function mine() {
+                    if (!isRunning) return;
+                    
+                    workers.forEach(worker => {
+                        worker.postMessage({
+                            cmd: 'mine'
+                        });
+                    });
+                    
+                    requestAnimationFrame(mine);
+                }
+
+                function updateStats() {
+                    if (!isRunning) return;
+                    
+                    const elapsed = Math.max((Date.now() - startTime) / 1000, 0.001);
+                    timeElapsedEl.textContent = `${Math.floor(elapsed)}s`;
+                    
+                    keysPerSecondEl.textContent = currentHashrate.toLocaleString();
+                    
+                    hyyEarnedEl.textContent = (hyyEarned / MaxUnits).toFixed(8);
+                    
+                    const dailyKeys = currentHashrate * 86400;
+                    const projectedHyy = keysGenerated > 0 ? 
+                        (hyyEarned / MaxUnits) * (dailyKeys / keysGenerated) : 0;
+                    
+                    projectedEarningsEl.textContent = projectedHyy.toFixed(8);
+                    
+                    const estimateValue = document.querySelector('.comparison-item.active .estimate-value');
+                    if (estimateValue) {
+                        estimateValue.textContent = projectedHyy.toFixed(8);
+                    }
+                }
+
+                if (startButton) {
+                    startButton.addEventListener('click', () => {
+                        console.log('Starting mining simulation...');
+                        isRunning = true;
+                        startTime = Date.now();
+                        lastHashrateUpdate = Date.now();
+                        lastKeysGenerated = 0;
+                        currentHashrate = 0;
+                        recentHashrates = [];
+                        startButton.disabled = true;
+                        stopButton.disabled = false;
+                        keysGenerated = 0;
+                        hyyEarned = 0;
+                        
+                        keysPerSecondEl.textContent = '0';
+                        hyyEarnedEl.textContent = '0.00000000';
+                        timeElapsedEl.textContent = '0s';
+                        projectedEarningsEl.textContent = '0.00000000';
+                        
+                        startWorkers();
+                        mine();
+                        
+                        // Show wallet info section
+                        const walletInfo = document.getElementById('walletInfo');
+                        if (walletInfo) {
+                            walletInfo.style.display = 'block';
+                        }
+                    });
+                }
+
+                if (stopButton) {
+                    stopButton.addEventListener('click', () => {
+                        console.log('Stopping mining simulation...');
+                        isRunning = false;
+                        startButton.disabled = false;
+                        stopButton.disabled = true;
+                        
+                        workers.forEach(worker => worker.terminate());
+                        workers = [];
+                    });
+                }
+
+                console.log('Mining simulator initialized and ready');
+            });
+        </script>
+
+        <script>
+            // Navigation code
+            document.addEventListener('DOMContentLoaded', function() {
+                const navToggle = document.getElementById('navToggle');
+                const offcanvasNav = document.getElementById('offcanvasNav');
+                const navOverlay = document.getElementById('navOverlay');
+                const closeNav = document.getElementById('closeNav');
+
+                if (navToggle) {
+                    navToggle.addEventListener('click', function() {
+                        offcanvasNav.classList.add('show');
+                        navOverlay.classList.add('show');
+                    });
+                }
+
+                function hideNav() {
+                    offcanvasNav.classList.remove('show');
+                    navOverlay.classList.remove('show');
+                }
+
+                if (closeNav) {
+                    closeNav.addEventListener('click', hideNav);
+                }
+
+                if (navOverlay) {
+                    navOverlay.addEventListener('click', hideNav);
+                }
+
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', hideNav);
+                });
+
+                // Add click handler for wallet generation
+                const downloadWalletBtn = document.getElementById('downloadWallet');
+                if (downloadWalletBtn) {
+                    downloadWalletBtn.addEventListener('click', generateSeedPhrase);
+                }
+            });
+        </script>
     </body>
 </html> 
