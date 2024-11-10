@@ -408,6 +408,23 @@
         }
 
         .team-avatar {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .team-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-avatar i {
+            font-size: 5rem;
             color: #fff;
             opacity: 0.8;
         }
@@ -469,6 +486,93 @@
         .nav-social-link span {
             font-family: 'Lekton', monospace;
         }
+
+        .countdown-container {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 1030;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .countdown {
+            font-family: 'Lekton', monospace;
+            color: #fff;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.5px;
+        }
+
+        .countdown span {
+            display: inline-block;
+            transition: opacity 0.2s ease-in-out;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .countdown span.fade {
+            opacity: 0;
+        }
+
+        @media (max-width: 768px) {
+            .countdown-container {
+                top: auto;
+                bottom: 1.5rem;
+                right: 1.5rem;
+                left: 1.5rem;
+                text-align: center;
+            }
+            
+            .countdown {
+                font-size: 1.1rem;
+            }
+        }
+
+        .download-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .download-overlay-content {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .download-overlay h3 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .download-overlay .countdown {
+            font-size: 2.5rem;
+            margin-top: 1rem;
+        }
+
+        .download-overlay .countdown small {
+            font-size: 1.2rem;
+            margin: 0 0.5rem;
+            opacity: 0.8;
+        }
+
+        #download {
+            position: relative;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -493,6 +597,10 @@
             </button>
         </div>
     </nav>
+
+    <div class="countdown-container">
+        <div id="countdown" class="countdown"></div>
+    </div>
 
     <!-- Add the sliding nav menu -->
     <div class="offcanvas-nav" id="offcanvasNav">
@@ -531,40 +639,45 @@
             <img src="hyyperlink.svg" alt="Hyyperlink" height="256px" width="256px" class="mb-3">
             <h1 class="display-1 mb-4">Hyyperlink</h1>
             <p class="lead mb-4">A New Paradigm for Digital Currency</p>
-            <a href="https://github.com/hyyperlink/hyyperlink/releases" class="btn download-btn">Download Wallet</a>
-            <a href="whitepaper.pdf" class="btn download-btn">Whitepaper</a>
+            <a href="whitepaper.pdf" class="btn download-btn">Download The Whitepaper</a>
         </div>
     </section>
 
     <!-- Download Section -->
     <section id="download" class="section">
+        <div class="download-overlay">
+            <div class="download-overlay-content">
+                <h3>Downloads Available in</h3>
+                <div id="download-countdown" class="countdown"></div>
+            </div>
+        </div>
         <div class="container">
             <h2 class="text-center mb-5">Download</h2>
             <div class="row justify-content-center">
                 <div class="col-md-4 text-center">
                     <img src="windows.svg" alt="Windows" class="mb-3">
                     <h3>Windows</h3>
-                    <a href="#" class="btn download-btn mt-3">Download</a>
+                    <a href="#" class="btn download-btn disabled mt-3">Download</a>
                 </div>
                 <div class="col-md-4 text-center">
                     <img src="apple.svg" alt="macOS" class="mb-3">
                     <h3>macOS</h3>
-                    <a href="#" class="btn download-btn mt-3">Download</a>
+                    <a href="#" class="btn download-btn disabled mt-3">Download</a>
                 </div>
                 <div class="col-md-4 text-center">
                     <img src="linux.svg" alt="Linux" class="mb-3">
                     <h3>Linux</h3>
-                    <a href="#" class="btn download-btn mt-3">Download</a>
+                    <a href="#" class="btn download-btn disabled mt-3">Download</a>
                 </div>
                 <div class="col-md-4 text-center">
                     <img src="firefox.svg" alt="Firefox" class="mb-3">
                     <h3>Firefox</h3>
-                    <a href="#" class="btn download-btn mt-3">Download</a>
+                    <a href="#" class="btn download-btn disabled mt-3">Download</a>
                 </div>
                 <div class="col-md-4 text-center">
                     <img src="chrome.svg" alt="Chrome" class="mb-3">
                     <h3>Chrome</h3>
-                    <a href="#" class="btn download-btn mt-3">Download</a>
+                    <a href="#" class="btn download-btn disabled mt-3">Download</a>
                 </div>
             </div>
         </div>
@@ -706,15 +819,15 @@
             <h2 class="text-center mb-5">Hyyperlink Team</h2>
             <div class="row justify-content-center mb-5">
                 <div class="col-lg-8 text-center">
-                    <p>Hyyperlink is a team project, some work in public while some prefer to collaborate in private. </p>
+                    <p>Hyyperlink is a team project, some work in public while some prefer to collaborate in private.</p>
                     <p>Thanks to those who have contributed to Hyyperlink academically or otherwise.</p>
                 </div>
             </div>
             <div class="row justify-content-center mb-5">
                 <div class="col-md-4 mb-4">
                     <div class="team-member text-center">
-                        <div class="team-avatar mb-4">
-                            <i class="fas fa-user-circle fa-4x"></i>
+                        <div class="team-avatar">
+                            <img src="hyyperdag.png" alt="Team Member">
                         </div>
                         <h4 class="mb-2">D. A. Good</h4>
                         <p class="role mb-3">Development</p>
@@ -723,20 +836,20 @@
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="team-member text-center">
-                        <div class="team-avatar mb-4">
-                            <i class="fas fa-user-circle fa-4x"></i>
+                        <div class="team-avatar">
+                            <img src="hyypercr.jpg" alt="Team Member">
                         </div>
-                        <h4 class="mb-2">CR</h4>
+                        <h4 class="mb-2">C R</h4>
                         <p class="role mb-3">Marketing</p>
                         <p class="team-description">Community engagement and strategic marketing</p>
                     </div>
                 </div>
                 <div class="col-md-4 mb-4">
                     <div class="team-member text-center">
-                        <div class="team-avatar mb-4">
-                            <i class="fas fa-user-circle fa-4x"></i>
+                        <div class="team-avatar">
+                            <img src="hyypersayuki.png" alt="Team Member">
                         </div>
-                        <h4 class="mb-2">EH</h4>
+                        <h4 class="mb-2">Sayuki</h4>
                         <p class="role mb-3">Business</p>
                         <p class="team-description">Business strategy and development</p>
                     </div>
@@ -839,7 +952,72 @@
 
         document.querySelectorAll('.download-btn').forEach(button => {
             button.addEventListener('click', function(e) {
-                if (!this.closest('.social-links') && !this.closest('section:last-of-type')) {
+                if (!this.closest('.social-links') && !this.closest('section:last-of-type') && !this.closest('.modal')) {
+                    e.preventDefault();
+                    const modal = new bootstrap.Modal(document.getElementById('comingSoonModal'));
+                    modal.show();
+                }
+            });
+        });
+
+        // Countdown timer
+        function updateCountdown() {
+            const launchDate = new Date('2024-11-28T04:00:00Z');
+            const now = new Date();
+            const diff = launchDate - now;
+
+            if (diff <= 0) {
+                document.getElementById('countdown').innerHTML = '<span style="color: #00ff00">Testnet is Live!</span>';
+                document.getElementById('download-countdown').innerHTML = '<span style="color: #00ff00">Downloads Available Now!</span>';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            const countdownEl = document.getElementById('countdown');
+            const cornerContent = `Testnet Launch: <span>${days}<small>d</small> ${hours}<small>h</small> ${minutes}<small>m</small> ${seconds}<small>s</small></span>`;
+            
+            const downloadCountdownEl = document.getElementById('download-countdown');
+            const downloadContent = `<span>${days}<small>days</small> ${hours}<small>hours</small> ${minutes}<small>minutes</small> ${seconds}<small>seconds</small></span>`;
+            
+            if (countdownEl.innerHTML !== cornerContent) {
+                const span = countdownEl.querySelector('span');
+                if (span) {
+                    span.classList.add('fade');
+                    setTimeout(() => {
+                        countdownEl.innerHTML = cornerContent;
+                        countdownEl.querySelector('span').classList.remove('fade');
+                    }, 100);
+                } else {
+                    countdownEl.innerHTML = cornerContent;
+                }
+            }
+
+            if (downloadCountdownEl.innerHTML !== downloadContent) {
+                const span = downloadCountdownEl.querySelector('span');
+                if (span) {
+                    span.classList.add('fade');
+                    setTimeout(() => {
+                        downloadCountdownEl.innerHTML = downloadContent;
+                        downloadCountdownEl.querySelector('span').classList.remove('fade');
+                    }, 100);
+                } else {
+                    downloadCountdownEl.innerHTML = downloadContent;
+                }
+            }
+        }
+
+        // Update countdown every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Update the download button click handler
+        document.querySelectorAll('.download-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                if (!this.closest('.social-links') && !this.closest('section:last-of-type') && !this.closest('.modal')) {
                     e.preventDefault();
                     const modal = new bootstrap.Modal(document.getElementById('comingSoonModal'));
                     modal.show();
