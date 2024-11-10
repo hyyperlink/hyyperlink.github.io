@@ -249,6 +249,165 @@
             font-size: 0.8rem;
             margin-top: 0.25rem;
         }
+
+        /* Add nav styles from index.html */
+        .navbar {
+            background-color: transparent;
+            backdrop-filter: none;
+        }
+
+        .navbar-toggler {
+            padding: 0.25rem;
+            border: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1050;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .navbar-toggler svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .offcanvas-nav {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            height: 100vh;
+            width: 300px;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1045;
+            padding: 4rem 2rem 2rem 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .offcanvas-nav.show {
+            transform: translateX(300px);
+        }
+
+        .navbar-nav {
+            margin-top: 1rem;
+        }
+
+        .nav-item {
+            margin: 1rem 0;
+        }
+
+        .nav-link {
+            color: white !important;
+            font-family: 'Lekton', monospace;
+            font-size: 1.2rem;
+            padding: 0.5rem 0;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-link:hover {
+            opacity: 0.8;
+        }
+
+        .navbar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 1040;
+        }
+
+        .navbar-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .close-nav {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .nav-header {
+            margin-top: -1rem;
+        }
+        
+        .nav-brand {
+            color: white;
+            font-family: 'Lekton', monospace;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        /* Add footer styles */
+        .footer-modern {
+            background-color: #111;
+            color: #888;
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+            margin-top: 4rem;
+        }
+
+        .footer-section h5 {
+            color: #fff;
+            font-family: 'Lekton', monospace;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .social-links a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .social-links a:hover {
+            color: #fff;
+        }
+
+        .footer-divider {
+            border-color: #333;
+            margin: 2rem 0;
+        }
+
+        .copyright {
+            color: #666;
+        }
     </style>
 
     <!-- Load scripts in order with defer -->
@@ -563,6 +722,23 @@
         document.getElementById('startMining').addEventListener('click', function() {
             document.getElementById('walletInfo').style.display = 'block';
         });
+
+        document.getElementById('navToggle').addEventListener('click', function() {
+            document.getElementById('offcanvasNav').classList.add('show');
+            document.getElementById('navOverlay').classList.add('show');
+        });
+
+        function closeNav() {
+            document.getElementById('offcanvasNav').classList.remove('show');
+            document.getElementById('navOverlay').classList.remove('show');
+        }
+
+        document.getElementById('closeNav').addEventListener('click', closeNav);
+        document.getElementById('navOverlay').addEventListener('click', closeNav);
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', closeNav);
+        });
     </script>
 </head>
 <body>
@@ -704,5 +880,99 @@
             </div>
         </div>
     </div>
-</body>
+
+    <nav class="navbar navbar-dark fixed-top">
+        <div class="container-fluid">
+            <button class="navbar-toggler ms-2" type="button" id="navToggle">
+                <svg width="32px" height="32px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <g id="SVGRepo_iconCarrier">
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Dribbble-Light-Preview" transform="translate(-60.000000, -4559.000000)" fill="#ffffff">
+                                <g id="icons" transform="translate(56.000000, 160.000000)">
+                                    <path d="M6.70247571,4412.07175 L12.0994757,4404.08575 C12.3864757,4403.69975 13.0004757,4403.90275 13.0004757,4404.38375 L13.0004757,4415.43475 C13.0004757,4415.82075 12.5804757,4416.06175 12.2474757,4415.86675 L6.85047571,4412.80175 C6.59347571,4412.65075 6.52447571,4412.31075 6.70247571,4412.07175 L6.70247571,4412.07175 Z M21.1494757,4412.80175 L15.7534757,4415.86675 C15.4194757,4416.06175 15.0004757,4415.82075 15.0004757,4415.43475 L15.0004757,4404.38375 C15.0004757,4403.90275 15.6134757,4403.69975 15.9014757,4404.08575 L21.2984757,4412.07175 C21.4754757,4412.31075 21.4064757,4412.65075 21.1494757,4412.80175 L21.1494757,4412.80175 Z M15.0004757,4399.52575 L15.0004757,4399.52575 C14.5184757,4398.82475 13.4824757,4398.82475 13.0004757,4399.52575 L13.0004757,4399.52575 L4.24047571,4412.02975 C3.80847571,4412.60975 3.97647571,4413.43575 4.60047571,4413.80175 L13.0004757,4418.62575 L13.4234757,4418.85375 C13.7834757,4419.04775 14.2164757,4419.04775 14.5764757,4418.85375 L15.0004757,4418.62575 L23.4004757,4413.80175 C24.0234757,4413.43575 24.1914757,4412.60975 23.7604757,4412.02975 L15.0004757,4399.52575 Z" id="3d_modelling_round-[#820]"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <div class="offcanvas-nav" id="offcanvasNav">
+            <button class="close-nav" id="closeNav">×</button>
+            <div class="nav-header text-center mb-4">
+                <img src="hyyperlink.svg" alt="Hyyperlink" height="64px" width="64px" class="mb-2">
+                <h4 class="nav-brand">Hyyperlink</h4>
+            </div>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#download">Download</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#roadmap">Roadmap</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#team">Team</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#faq">FAQ</a></li>
+                <li class="nav-item"><a class="nav-link" href="/whitepaper.pdf" download>Whitepaper</a></li>
+            </ul>
+            
+            <div class="nav-social-links mt-auto mb-4">
+                <a href="https://github.com/hyyperlink/hyyperlink" class="nav-social-link">
+                    <i class="fab fa-github"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://x.com/hyyperlink" class="nav-social-link">
+                    <i class="fab fa-x-twitter"></i>
+                    <span>X (Twitter)</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="navbar-overlay" id="navOverlay"></div>
+
+        <footer class="footer-modern">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-section">
+                            <img src="hyyperlink.svg" alt="Hyyperlink" height="48px" width="48px" class="mb-3">
+                            <h5 class="mb-3">Hyyperlink</h5>
+                            <p class="mb-3">A New Paradigm for Digital Currency</p>
+                            <div class="social-links">
+                                <a href="https://github.com/hyyperlink/hyyperlink" class="me-3"><i class="fab fa-github"></i> GitHub</a>
+                                <a href="https://x.com/hyyperlink"><i class="fab fa-x-twitter"></i> X (Twitter)</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-section">
+                            <h5 class="mb-3">Resources</h5>
+                            <ul class="footer-links">
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/mine.html">Try Mining</a></li>
+                                <li><a href="/whitepaper.pdf">Whitepaper</a></li>
+                                <li><a href="/#download">Download</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-section">
+                            <h5 class="mb-3">Community</h5>
+                            <ul class="footer-links">
+                                <li><a href="https://github.com/hyyperlink/hyyperlink">GitHub</a></li>
+                                <li><a href="https://x.com/hyyperlink">X (Twitter)</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr class="footer-divider my-4">
+                
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p class="copyright mb-0">&copy; 2025 Hyyperlink. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
 </html> 

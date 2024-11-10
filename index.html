@@ -935,6 +935,7 @@
                     <div class="footer-section">
                         <h5 class="mb-3">Resources</h5>
                         <ul class="footer-links">
+                            <li><a href="mine.html">Try Mining</a></li>
                             <li><a href="whitepaper.pdf">Whitepaper</a></li>
                             <li><a href="#">Branding Guide</a></li>
                             <li><a href="#">Press Kit</a></li>
@@ -985,7 +986,10 @@
 
         document.querySelectorAll('.download-btn').forEach(button => {
             button.addEventListener('click', function(e) {
-                if (!this.closest('.social-links') && !this.closest('section:last-of-type') && !this.closest('.modal')) {
+                if (this.classList.contains('disabled') && 
+                    !this.closest('.social-links') && 
+                    !this.closest('section:last-of-type') && 
+                    !this.closest('.modal')) {
                     e.preventDefault();
                     const modal = new bootstrap.Modal(document.getElementById('comingSoonModal'));
                     modal.show();
@@ -1050,7 +1054,10 @@
         // Update the download button click handler
         document.querySelectorAll('.download-btn').forEach(button => {
             button.addEventListener('click', function(e) {
-                if (!this.closest('.social-links') && !this.closest('section:last-of-type') && !this.closest('.modal')) {
+                if (this.classList.contains('disabled') && 
+                    !this.closest('.social-links') && 
+                    !this.closest('section:last-of-type') && 
+                    !this.closest('.modal')) {
                     e.preventDefault();
                     const modal = new bootstrap.Modal(document.getElementById('comingSoonModal'));
                     modal.show();
