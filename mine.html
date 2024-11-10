@@ -742,145 +742,6 @@
     </script>
 </head>
 <body>
-    <div class="container py-5">
-        <div class="text-center mb-5">
-            <img src="hyyperlink.svg" alt="Hyyperlink" height="128px" width="128px" class="mb-3">
-            <h1 class="display-4 mb-4">Mining Simulator</h1>
-            <p class="lead">Experience Hyyperlink's unique Key Discovery Mining system</p>
-        </div>
-
-        <div class="row mb-5">
-            <div class="col-md-4">
-                <div class="info-panel">
-                    <h3>About This Simulation</h3>
-                    <p>This is a browser-based demonstration of Hyyperlink's Key Discovery Mining system. Due to browser limitations, this simulation runs at approximately 1/8th the speed of the actual Hyyperlink wallet.</p>
-                    
-                    <h4 class="mt-4">How It Works</h4>
-                    <p>The mining process follows these steps:</p>
-                    <ol>
-                        <li>Generate an Ed25519 keypair</li>
-                        <li>Encode the public key using Base58</li>
-                        <li>Calculate the SHA3-256 hash of the Base58 string</li>
-                        <li>Count leading zeros in the hash</li>
-                    </ol>
-                    <p>Rewards are based on the number of leading zeros:</p>
-                    <ul>
-                        <li>4 zeros = 1 HYY (Common)</li>
-                        <li>5 zeros = 2 HYY (Rare)</li>
-                        <li>6 zeros = 3 HYY (Epic)</li>
-                        <li>7+ zeros = 4+ HYY (Legendary)</li>
-                    </ul>
-
-                    <h4 class="mt-4">Real Mining Performance</h4>
-                    <p>The actual Hyyperlink wallet:</p>
-                    <ul>
-                        <li>Uses all available CPU cores</li>
-                        <li>Optimized native crypto operations</li>
-                        <li>No browser limitations</li>
-                        <li>~8x faster than this simulation</li>
-                    </ul>
-                    
-                    <div class="mt-4">
-                        <a href="#download" class="btn download-btn">Download Real Wallet</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="mining-stats">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="stat-box">
-                                <div class="stat-label">Mining Rate</div>
-                                <div class="stat-value" id="keysPerSecond">0</div>
-                                <div class="stat-subtext">hashes/sec</div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="stat-box">
-                                <div class="stat-label">Time Elapsed</div>
-                                <div class="stat-value" id="timeElapsed">0s</div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="stat-box">
-                                <div class="stat-label">HYY Earned</div>
-                                <div class="stat-value" id="hyyEarned">0.00000000</div>
-                                <div class="stat-subtext">
-                                    Projected 24h: <span id="projectedEarnings">0.00000000</span> HYY
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="text-center mt-4">
-                        <button id="startMining" class="btn download-btn me-3">Start Mining</button>
-                        <button id="stopMining" class="btn download-btn" disabled>Stop Mining</button>
-                    </div>
-                </div>
-
-                <div class="performance-warning mt-3 text-center" style="color: #ff9800;">
-                    Note: Browser performance may vary. The actual Hyyperlink wallet runs significantly faster.
-                </div>
-
-                <div class="discovery-log">
-                    <h3 class="mb-4">Recent Discoveries</h3>
-                    <div class="discovery-items" id="discoveryLog">
-                        <!-- Discoveries will be added here dynamically -->
-                    </div>
-                </div>
-
-                <div class="wallet-info" id="walletInfo" style="display: none;">
-                    <h3>Your Wallet</h3>
-                    <p class="mb-3">This wallet was automatically generated for you and is stored in your browser.</p>
-                    <div class="address-box" id="walletAddress"></div>
-                    <div class="text-center mt-3">
-                        <button id="downloadWallet" class="btn download-btn">Download Wallet</button>
-                    </div>
-                </div>
-
-                <div class="mining-chart">
-                    <h3 class="mb-4">24-Hour Mining Comparison</h3>
-                    <p class="text-muted mb-4">With Hyyperlink, you earn rewards immediately and independently - no pools, no competition, no waiting:</p>
-                    
-                    <div class="comparison-grid">
-                        <div class="comparison-item active">
-                            <div class="coin-icon">
-                                <img src="hyyperlink.svg" alt="Hyyperlink" width="32" height="32">
-                            </div>
-                            <div class="coin-name">Hyyperlink</div>
-                            <div class="coin-estimate" id="hyyEstimate">
-                                <span class="estimate-value">--</span> HYY
-                            </div>
-                            <div class="coin-note">Instant rewards, no pools needed</div>
-                        </div>
-
-                        <div class="comparison-item disabled">
-                            <div class="coin-icon">
-                                <i class="fab fa-bitcoin"></i>
-                            </div>
-                            <div class="coin-name">Bitcoin</div>
-                            <div class="coin-estimate">
-                                <span class="estimate-value">0.00000000</span> BTC
-                            </div>
-                            <div class="coin-note">Requires mining pools & ASIC hardware</div>
-                        </div>
-
-                        <div class="comparison-item disabled">
-                            <div class="coin-icon">
-                                <i class="fab fa-ethereum"></i>
-                            </div>
-                            <div class="coin-name">Ethereum</div>
-                            <div class="coin-estimate">
-                                <span class="estimate-value">0.00000000</span> ETH
-                            </div>
-                            <div class="coin-note">No longer mineable at all</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <nav class="navbar navbar-dark fixed-top">
         <div class="container-fluid">
             <button class="navbar-toggler ms-2" type="button" id="navToggle">
@@ -926,6 +787,145 @@
         </div>
 
         <div class="navbar-overlay" id="navOverlay"></div>
+
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <img src="hyyperlink.svg" alt="Hyyperlink" height="128px" width="128px" class="mb-3">
+                <h1 class="display-4 mb-4">Mining Simulator</h1>
+                <p class="lead">Experience Hyyperlink's unique Key Discovery Mining system</p>
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <div class="info-panel">
+                        <h3>About This Simulation</h3>
+                        <p>This is a browser-based demonstration of Hyyperlink's Key Discovery Mining system. Due to browser limitations, this simulation runs at approximately 1/8th the speed of the actual Hyyperlink wallet.</p>
+                        
+                        <h4 class="mt-4">How It Works</h4>
+                        <p>The mining process follows these steps:</p>
+                        <ol>
+                            <li>Generate an Ed25519 keypair</li>
+                            <li>Encode the public key using Base58</li>
+                            <li>Calculate the SHA3-256 hash of the Base58 string</li>
+                            <li>Count leading zeros in the hash</li>
+                        </ol>
+                        <p>Rewards are based on the number of leading zeros:</p>
+                        <ul>
+                            <li>4 zeros = 1 HYY (Common)</li>
+                            <li>5 zeros = 2 HYY (Rare)</li>
+                            <li>6 zeros = 3 HYY (Epic)</li>
+                            <li>7+ zeros = 4+ HYY (Legendary)</li>
+                        </ul>
+
+                        <h4 class="mt-4">Real Mining Performance</h4>
+                        <p>The actual Hyyperlink wallet:</p>
+                        <ul>
+                            <li>Uses all available CPU cores</li>
+                            <li>Optimized native crypto operations</li>
+                            <li>No browser limitations</li>
+                            <li>~8x faster than this simulation</li>
+                        </ul>
+                        
+                        <div class="mt-4">
+                            <a href="#download" class="btn download-btn">Download Real Wallet</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="mining-stats">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="stat-box">
+                                    <div class="stat-label">Mining Rate</div>
+                                    <div class="stat-value" id="keysPerSecond">0</div>
+                                    <div class="stat-subtext">hashes/sec</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stat-box">
+                                    <div class="stat-label">Time Elapsed</div>
+                                    <div class="stat-value" id="timeElapsed">0s</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stat-box">
+                                    <div class="stat-label">HYY Earned</div>
+                                    <div class="stat-value" id="hyyEarned">0.00000000</div>
+                                    <div class="stat-subtext">
+                                        Projected 24h: <span id="projectedEarnings">0.00000000</span> HYY
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button id="startMining" class="btn download-btn me-3">Start Mining</button>
+                            <button id="stopMining" class="btn download-btn" disabled>Stop Mining</button>
+                        </div>
+                    </div>
+
+                    <div class="performance-warning mt-3 text-center" style="color: #ff9800;">
+                        Note: Browser performance may vary. The actual Hyyperlink wallet runs significantly faster.
+                    </div>
+
+                    <div class="discovery-log">
+                        <h3 class="mb-4">Recent Discoveries</h3>
+                        <div class="discovery-items" id="discoveryLog">
+                            <!-- Discoveries will be added here dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="wallet-info" id="walletInfo" style="display: none;">
+                        <h3>Your Wallet</h3>
+                        <p class="mb-3">This wallet was automatically generated for you and is stored in your browser.</p>
+                        <div class="address-box" id="walletAddress"></div>
+                        <div class="text-center mt-3">
+                            <button id="downloadWallet" class="btn download-btn">Download Wallet</button>
+                        </div>
+                    </div>
+
+                    <div class="mining-chart">
+                        <h3 class="mb-4">24-Hour Mining Comparison</h3>
+                        <p class="text-muted mb-4">With Hyyperlink, you earn rewards immediately and independently - no pools, no competition, no waiting:</p>
+                        
+                        <div class="comparison-grid">
+                            <div class="comparison-item active">
+                                <div class="coin-icon">
+                                    <img src="hyyperlink.svg" alt="Hyyperlink" width="32" height="32">
+                                </div>
+                                <div class="coin-name">Hyyperlink</div>
+                                <div class="coin-estimate" id="hyyEstimate">
+                                    <span class="estimate-value">--</span> HYY
+                                </div>
+                                <div class="coin-note">Instant rewards, no pools needed</div>
+                            </div>
+
+                            <div class="comparison-item disabled">
+                                <div class="coin-icon">
+                                    <i class="fab fa-bitcoin"></i>
+                                </div>
+                                <div class="coin-name">Bitcoin</div>
+                                <div class="coin-estimate">
+                                    <span class="estimate-value">0.00000000</span> BTC
+                                </div>
+                                <div class="coin-note">Requires mining pools & ASIC hardware</div>
+                            </div>
+
+                            <div class="comparison-item disabled">
+                                <div class="coin-icon">
+                                    <i class="fab fa-ethereum"></i>
+                                </div>
+                                <div class="coin-name">Ethereum</div>
+                                <div class="coin-estimate">
+                                    <span class="estimate-value">0.00000000</span> ETH
+                                </div>
+                                <div class="coin-note">No longer mineable at all</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <footer class="footer-modern">
             <div class="container">
