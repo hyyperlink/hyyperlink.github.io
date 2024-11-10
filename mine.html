@@ -740,6 +740,161 @@
             link.addEventListener('click', closeNav);
         });
     </script>
+
+    <script>
+    const WORDLIST_URL = 'https://raw.githubusercontent.com/bitcoin/bips/master/bip-0039/english.txt';
+    let WORDLIST = [];
+
+    // Fetch the wordlist before allowing seed generation
+    fetch(WORDLIST_URL)
+        .then(response => response.text())
+        .then(text => {
+            WORDLIST = text.trim().split('\n');
+            console.log(`Loaded ${WORDLIST.length} BIP39 words`);
+        })
+        .catch(error => {
+            console.error('Error loading BIP39 wordlist:', error);
+        });
+
+    function generateSeedPhrase() {
+        if (WORDLIST.length !== 2048) {
+            alert('Error: BIP39 wordlist not loaded. Please try again.');
+            return;
+        }
+        
+        let entropy = '';
+        let mouseMovements = 0;
+        let keyPresses = 0;
+        const entropyNeeded = 128; // bits of entropy needed
+        
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        `;
+        
+        const content = document.createElement('div');
+        content.style.cssText = `
+            background: #111;
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        `;
+        
+        const progress = document.createElement('div');
+        progress.style.cssText = `
+            width: 100%;
+            height: 4px;
+            background: #333;
+            margin: 1rem 0;
+            border-radius: 2px;
+        `;
+        
+        const progressBar = document.createElement('div');
+        progressBar.style.cssText = `
+            width: 0%;
+            height: 100%;
+            background: #4CAF50;
+            border-radius: 2px;
+            transition: width 0.1s ease;
+        `;
+        
+        content.innerHTML = `
+            <h3 style="margin-bottom: 1rem;">Generating Seed Phrase</h3>
+            <p>Move your mouse and press random keys to generate entropy</p>
+        `;
+        
+        progress.appendChild(progressBar);
+        content.appendChild(progress);
+        modal.appendChild(content);
+        document.body.appendChild(modal);
+        
+        function updateProgress() {
+            const total = mouseMovements + keyPresses;
+            const percentage = Math.min((total / entropyNeeded) * 100, 100);
+            progressBar.style.width = `${percentage}%`;
+            
+            if (total >= entropyNeeded) {
+                modal.remove();
+                const words = [];
+                // Use collected entropy to select 12 words
+                for (let i = 0; i < 12; i++) {
+                    const randomIndex = Math.floor(Math.abs(new Int32Array(new Uint8Array(entropy.slice(i * 4, (i + 1) * 4)).buffer)[0]) % WORDLIST.length);
+                    words.push(WORDLIST[randomIndex]);
+                }
+                
+                const seedPhrase = words.join(' ');
+                const alertContent = document.createElement('div');
+                alertContent.innerHTML = `
+                    <div style="background: #111; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+                        <p style="font-family: monospace; word-break: break-all;">${seedPhrase}</p>
+                    </div>
+                    <p style="color: #ff9800; margin-bottom: 1rem;">⚠️ Write this seed phrase down and keep it safe!</p>
+                    <p style="font-size: 0.9rem; color: #666;">This is your wallet's recovery phrase. Anyone with these words can access your wallet.</p>
+                `;
+                
+                const alertModal = new bootstrap.Modal(document.getElementById('seedPhraseModal'));
+                document.getElementById('seedPhraseContent').innerHTML = '';
+                document.getElementById('seedPhraseContent').appendChild(alertContent);
+                alertModal.show();
+            }
+        }
+        
+        document.addEventListener('mousemove', function(e) {
+            if (mouseMovements < entropyNeeded) {
+                entropy += e.clientX + e.clientY + Date.now();
+                mouseMovements++;
+                updateProgress();
+            }
+        });
+        
+        document.addEventListener('keydown', function(e) {
+            if (keyPresses < entropyNeeded) {
+                entropy += e.key + Date.now();
+                keyPresses++;
+                updateProgress();
+            }
+        });
+    }
+
+    // Replace the downloadWallet function with this
+    document.getElementById('downloadWallet').addEventListener('click', generateSeedPhrase);
+    </script>
+
+    <div class="modal fade" id="seedPhraseModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title">Your Seed Phrase</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="seedPhraseContent">
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn download-btn" data-bs-dismiss="modal">I've Written It Down</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update the wallet info section text -->
+    <div class="wallet-info" id="walletInfo" style="display: none;">
+        <h3>Your Wallet</h3>
+        <p class="mb-3">Generate a secure seed phrase to create your wallet.</p>
+        <div class="text-center mt-3">
+            <button id="downloadWallet" class="btn download-btn">Generate Seed Phrase</button>
+        </div>
+    </div>
 </head>
 <body>
     <nav class="navbar navbar-dark fixed-top">
@@ -877,10 +1032,9 @@
 
                     <div class="wallet-info" id="walletInfo" style="display: none;">
                         <h3>Your Wallet</h3>
-                        <p class="mb-3">This wallet was automatically generated for you and is stored in your browser.</p>
-                        <div class="address-box" id="walletAddress"></div>
+                        <p class="mb-3">Generate a secure seed phrase to create your wallet.</p>
                         <div class="text-center mt-3">
-                            <button id="downloadWallet" class="btn download-btn">Download Wallet</button>
+                            <button id="downloadWallet" class="btn download-btn">Generate Seed Phrase</button>
                         </div>
                     </div>
 
