@@ -494,10 +494,6 @@
                             <li>No browser limitations</li>
                             <li>~8x faster than this simulation</li>
                         </ul>
-                        
-                        <div class="mt-4">
-                            <a href="#download" class="btn download-btn">Download Real Wallet</a>
-                        </div>
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -541,14 +537,6 @@
                         <h3 class="mb-4">Recent Discoveries</h3>
                         <div class="discovery-items" id="discoveryLog">
                             <!-- Discoveries will be added here dynamically -->
-                        </div>
-                    </div>
-
-                    <div class="wallet-info" id="walletInfo" style="display: none;">
-                        <h3>Your Wallet</h3>
-                        <p class="mb-3">Generate a secure seed phrase to create your wallet.</p>
-                        <div class="text-center mt-3">
-                            <button id="downloadWallet" class="btn download-btn">Generate Seed Phrase</button>
                         </div>
                     </div>
 
@@ -1105,12 +1093,6 @@
                 document.querySelectorAll('.nav-link').forEach(link => {
                     link.addEventListener('click', hideNav);
                 });
-
-                // Add click handler for wallet generation
-                const downloadWalletBtn = document.getElementById('downloadWallet');
-                if (downloadWalletBtn) {
-                    downloadWalletBtn.addEventListener('click', generateSeedPhrase);
-                }
             });
         </script>
     </body>
