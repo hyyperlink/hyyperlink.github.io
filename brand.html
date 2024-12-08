@@ -326,6 +326,93 @@
         .nav-social-link i {
             color: #fff;
         }
+
+        .press-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .press-tag {
+            background: #000;
+            color: #fff;
+            border: 2px solid var(--tag-color, #fff);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Lekton', monospace;
+        }
+
+        .press-tag:hover {
+            background: color-mix(in srgb, var(--tag-color, #fff) 20%, transparent);
+        }
+
+        .press-tag.active {
+            background: var(--tag-color, #fff);
+            color: #000;
+        }
+
+        .press-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem 0;
+        }
+
+        .press-point {
+            transition: all 0.3s ease;
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.02);
+        }
+
+        .press-point.hidden {
+            opacity: 0.2;
+            transform: scale(0.95);
+        }
+
+        .point-categories {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--tag-color);
+            box-shadow: 0 0 15px var(--tag-color);
+        }
+
+        .press-point-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            list-style: none;
+        }
+
+        .press-point-content li {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .press-points {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .press-point:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.05);
+        }
     </style>
 </head>
 <body>
@@ -425,6 +512,7 @@
                         <ul>
                             <li><code>Hyyperlink</code> - For starting sentences and titles</li>
                             <li><code>hyyperlink</code> - For general usage</li>
+                            <li><code>HYYPERLINK</code> - For all caps logos and enthusiastically shouting</li>
                             <li><code>HYY</code> - Currency ticker</li>
                         </ul>
                     </div>
@@ -432,10 +520,10 @@
                     <div class="dont-box">
                         <h4>Incorrect Usage:</h4>
                         <ul>
-                            <li><del>HyyperLink</del></li>
-                            <li><del>hyyperLink</del></li>
-                            <li><del>hyper-link</del></li>
-                            <li><del>hyyper-link</del></li>
+                            <li><del>HyyperLink</del> (should be Hyyperlink)</li>
+                            <li><del>hyyperLink</del> (should be hyyperlink)</li>
+                            <li><del>hyper-link</del> (There are two Y's in hyyperlink)</li>
+                            <li><del>hyyper-link</del> (Never break up the word)</li>
                         </ul>
                     </div>
                 </div>
@@ -476,6 +564,134 @@
                     <h2>Press Contact</h2>
                     <p>For press inquiries and brand-related questions, please contact:</p>
                     <p><a href="mailto:press@hyyperlink.com" style="color: #fff;">press@hyyperlink.com</a></p>
+                </div>
+
+                <div class="brand-card">
+                    <h2>Key Information Takeaways</h2>
+                    
+                    <div class="press-tags mb-4">
+                        <button class="press-tag active" data-tag="all">All</button>
+                        <button class="press-tag" data-tag="tech" style="--tag-color: #00ff00">Technology</button>
+                        <button class="press-tag" data-tag="arch" style="--tag-color: #ff00ff">Architecture</button>
+                        <button class="press-tag" data-tag="eco" style="--tag-color: #00ffff">Tokenomics</button>
+                        <button class="press-tag" data-tag="mining" style="--tag-color: #ffff00">Mining</button>
+                    </div>
+
+                    <div class="press-points">
+                        <div class="press-point" data-tags="tech,arch">
+                            <div class="point-categories">
+                                <span class="category-dot" style="--tag-color: #00ff00"></span>
+                                <span class="category-dot" style="--tag-color: #ff00ff"></span>
+                            </div>
+                            <div class="press-point-content">
+                                <li>Hyyperlink is an original Layer 1 protocol developed in the United States, built from the ground up to address the scalability limitations of traditional blockchain networks</li>
+                            </div>
+                        </div>
+                        
+                        <div class="press-point" data-tags="tech,arch">
+                            <div class="point-categories">
+                                <span class="category-dot" style="--tag-color: #00ff00"></span>
+                                <span class="category-dot" style="--tag-color: #ff00ff"></span>
+                            </div>
+                            <div class="press-point-content">
+                                <li>Unlike traditional blockchains, Hyyperlink uses a Directed Acyclic Graph (DAG) architecture, enabling parallel transaction processing and eliminating block-based bottlenecks</li>
+                            </div>
+                        </div>
+                        
+                        <div class="press-point" data-tags="tech">
+                            <div class="point-categories">
+                                <span class="category-dot" style="--tag-color: #00ff00"></span>
+                            </div>
+                            <div class="press-point-content">
+                                <li>Transactions are processed asynchronously and confirm immediately, with no waiting for block confirmations</li>
+                            </div>
+                        </div>
+                        
+                        <div class="press-point" data-tags="tech,arch">
+                            <div class="point-categories">
+                                <span class="category-dot" style="--tag-color: #00ff00"></span>
+                                <span class="category-dot" style="--tag-color: #ff00ff"></span>
+                            </div>
+                            <div class="press-point-content">
+                                <li>Network performance improves with adoption - confirmation times decrease as transaction volume increases</li>
+                            </div>
+                        </div>
+                        
+                        <div class="press-point" data-tags="tech">
+                            <div class="point-categories">
+                                <span class="category-dot" style="--tag-color: #00ff00"></span>
+                            </div>
+                            <div class="press-point-content">
+                                <li>Built-in support for tokens, NFTs, and DeFi features like swaps and liquidity pools without requiring Layer 2 solutions or external protocols</li>
+                            </div>
+                        </div>
+                        
+                        <div class="press-point" data-tags="eco">
+                            <div class="point-categories">
+                                <span class="category-dot" style="--tag-color: #00ffff"></span>
+                            </div>
+                            <div class="press-point-content">
+                                <li>Fixed supply of 100 million HYY tokens with a sustainable 2% annual inflation rate</li>
+                            </div>
+                        </div>
+                        
+                        <div class="press-point" data-tags="eco">
+                            <div class="point-categories">
+                                <span class="category-dot" style="--tag-color: #00ffff"></span>
+                            </div>
+                            <div class="press-point-content">
+                                <li>Deflationary mechanism: All transaction fees are permanently removed from circulation</li>
+                            </div>
+                        </div>
+                        
+                        <div class="press-point" data-tags="tech,mining">
+                            <div class="point-categories">
+                                <span class="category-dot" style="--tag-color: #00ff00"></span>
+                                <span class="category-dot" style="--tag-color: #ffff00"></span>
+                            </div>
+                            <div class="press-point-content">
+                                <li>Novel Key Discovery Mining: Miners search for rare Ed25519 keys independently, with no competition or specialized hardware requirements</li>
+                            </div>
+                        </div>
+                        
+                        <div class="press-point" data-tags="mining,arch">
+                            <div class="point-categories">
+                                <span class="category-dot" style="--tag-color: #ffff00"></span>
+                                <span class="category-dot" style="--tag-color: #ff00ff"></span>
+                            </div>
+                            <div class="press-point-content">
+                                <li>Mining activity contributes to network throughput while being completely separate from transaction validation - the network operates independently of mining activity</li>
+                            </div>
+                        </div>
+                        
+                        <div class="press-point" data-tags="mining,eco">
+                            <div class="point-categories">
+                                <span class="category-dot" style="--tag-color: #ffff00"></span>
+                                <span class="category-dot" style="--tag-color: #00ffff"></span>
+                            </div>
+                            <div class="press-point-content">
+                                <li>Miners provide network inflation through key discovery, while all transaction fees are burned - creating a balanced economic model</li>
+                            </div>
+                        </div>
+                        
+                        <div class="press-point" data-tags="mining">
+                            <div class="point-categories">
+                                <span class="category-dot" style="--tag-color: #ffff00"></span>
+                            </div>
+                            <div class="press-point-content">
+                                <li>Significantly lower resource requirements compared to traditional cryptocurrency mining - no specialized hardware arms race</li>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="mb-3">Media Resources</h4>
+                    <div class="usage-example mb-4">
+                        <ul>
+                            <li><a href="whitepaper.pdf" class="text-white">Technical Whitepaper</a></li>
+                            <li><a href="#" class="text-white">Media Kit (Logos, Screenshots, Graphics)</a></li>
+                            <li><a href="#" class="text-white">Fact Sheet</a></li>
+                        </ul>
+                    </div>
                 </div>
             </section>
         </div>
@@ -566,6 +782,27 @@
 
                 document.querySelectorAll('.nav-link').forEach(link => {
                     link.addEventListener('click', hideNav);
+                });
+            });
+
+            // Press tags filtering
+            document.querySelectorAll('.press-tag').forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const selectedTag = this.dataset.tag;
+                    
+                    // Update active state of tags
+                    document.querySelectorAll('.press-tag').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter points
+                    document.querySelectorAll('.press-point').forEach(point => {
+                        const tags = point.dataset.tags.split(',');
+                        if (selectedTag === 'all' || tags.includes(selectedTag)) {
+                            point.classList.remove('hidden');
+                        } else {
+                            point.classList.add('hidden');
+                        }
+                    });
                 });
             });
         </script>
