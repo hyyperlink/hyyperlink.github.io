@@ -413,6 +413,92 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 20px rgba(255, 255, 255, 0.05);
         }
+
+        .correct-box {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .correct-box h4 {
+            color: rgba(0, 255, 0, 0.8);
+        }
+
+        .section-heading {
+            font-size: 4rem;
+            font-weight: bold;
+            text-align: left;
+            padding-top: 3rem;
+            padding-bottom: 1rem;
+            font-family: 'Lekton', monospace;
+            letter-spacing: -1px;
+        }
+
+        .section-divider {
+            border: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 3rem;
+            margin-top: 0;
+        }
+
+        .media-resources {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .media-resource-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            padding: 0.5rem;
+        }
+
+        .media-btn {
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 1em 2em;
+            border-radius: 1em;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: 'Lekton', monospace;
+            white-space: nowrap;
+            width: 220px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .media-btn:hover {
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.1);
+        }
+
+        .media-description {
+            color: #888;
+            margin: 0.5rem 0 0 0;
+            padding-top: 0.5rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            flex: 1;
+            max-width: 600px;
+        }
+
+        @media (max-width: 768px) {
+            .media-resource-item {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .media-btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -475,7 +561,8 @@
 
         <div class="container" style="padding-top: 80px;">
             <section class="section">
-                <h1 class="display-4 mb-5">Hyyperlink Brand Guidelines</h1>
+                <h1 class="section-heading">BRAND</h1>
+                <hr class="section-divider">
                 
                 <div class="row">
                     <div class="col-md-6">
@@ -512,24 +599,29 @@
                     <h2>Name Usage</h2>
                     <p>Consistency in naming is crucial for brand recognition.</p>
                     
-                    <div class="usage-example">
-                        <h4>Correct Usage:</h4>
-                        <ul>
-                            <li><code>Hyyperlink</code> - For starting sentences and titles</li>
-                            <li><code>hyyperlink</code> - For general usage</li>
-                            <li><code>HYYPERLINK</code> - For all caps logos and enthusiastically shouting</li>
-                            <li><code>HYY</code> - Currency ticker</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="dont-box">
-                        <h4>Incorrect Usage:</h4>
-                        <ul>
-                            <li><del>HyyperLink</del> (should be Hyyperlink)</li>
-                            <li><del>hyyperLink</del> (should be hyyperlink)</li>
-                            <li><del>hyper-link</del> (There are two Y's in hyyperlink)</li>
-                            <li><del>hyyper-link</del> (Never break up the word)</li>
-                        </ul>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="usage-example correct-box">
+                                <h4>Correct Usage:</h4>
+                                <ul>
+                                    <li><code>Hyyperlink</code> - For starting sentences and titles</li>
+                                    <li><code>hyyperlink</code> - For general usage</li>
+                                    <li><code>HYYPERLINK</code> - For all caps logos and enthusiastically shouting</li>
+                                    <li><code>HYY</code> - Currency ticker</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="dont-box">
+                                <h4>Incorrect Usage:</h4>
+                                <ul>
+                                    <li><del>HyyperLink</del> (should be Hyyperlink)</li>
+                                    <li><del>hyyperLink</del> (should be hyyperlink)</li>
+                                    <li><del>hyper-link</del> (There are two Y's in hyyperlink)</li>
+                                    <li><del>hyyper-link</del> (Never break up the word)</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -570,6 +662,9 @@
                     <p>For press inquiries and brand-related questions, please contact:</p>
                     <p><a href="mailto:press@hyyperlink.com" style="color: #fff;">press@hyyperlink.com</a></p>
                 </div>
+
+                <h1 class="section-heading">PRESS</h1>
+                <hr class="section-divider">
 
                 <div class="brand-card">
                     <h2>Key Information Takeaways</h2>
@@ -690,12 +785,23 @@
                     </div>
                     
                     <h4 class="mb-3">Media Resources</h4>
-                    <div class="usage-example mb-4">
-                        <ul>
-                            <li><a href="whitepaper.pdf" class="text-white">Technical Whitepaper</a></li>
-                            <li><a href="#" class="text-white">Media Kit (Logos, Screenshots, Graphics)</a></li>
-                            <li><a href="#" class="text-white">Fact Sheet</a></li>
-                        </ul>
+                    <div class="media-resources">
+                        <div class="media-resource-item">
+                            <a href="whitepaper.pdf" class="media-btn">Technical Whitepaper</a>
+                            <p class="media-description">Comprehensive technical documentation for developers, researchers, and technical journalists looking to understand Hyyperlink's architecture in depth.</p>
+                        </div>
+                        <div class="media-resource-item">
+                            <a href="#" class="media-btn">Media Kit</a>
+                            <p class="media-description">Complete package of high-resolution logos, screenshots, and promotional graphics for press, content creators, and marketing teams.</p>
+                        </div>
+                        <div class="media-resource-item">
+                            <a href="https://x.com/hyyperlink" class="media-btn">@hyyperlink</a>
+                            <p class="media-description">Follow us on X (Twitter) for the latest updates, announcements, and community engagement.</p>
+                        </div>
+                        <div class="media-resource-item">
+                            <a href="mailto:contact@hyyperlink.com" class="media-btn">Contact</a>
+                            <p class="media-description">Get in touch with the Hyyperlink team for press inquiries and brand-related questions.</p>
+                        </div>
                     </div>
                 </div>
             </section>
