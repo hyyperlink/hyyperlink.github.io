@@ -1,0 +1,64 @@
+{
+    "validators": [
+        {
+            "name": "core: otter",
+            "p2p_address": "/ip4/65.21.240.0/tcp/4001/p2p/12D3KooWEVVPpTq6MMMqP3Gx2z49CvdqdfEeAs6wZA5EfQyJ2PSm",
+            "wallet_address": "2UM7cKCNSj8LUU41cHfEfY5c5cj4NpssBFaL9CJEUwsh"
+        },
+        {
+            "name": "core: leopard",
+            "p2p_address": "/ip4/65.108.216.168/tcp/4001/p2p/12D3KooWEuP6446cqgL2P9kaQB2pVpYFQpwQgxNxj8KTKWdZxtN4",
+            "wallet_address": "HLgNmbLiCMzLyT8g3m1r8nsTDWvdhS2a7g3oic9hJbph"
+        },
+        {
+            "name": "core: frog",
+            "p2p_address": "/ip4/37.27.204.178/tcp/4001/p2p/12D3KooWMfJrginuAPr9nAxfcJ52AHFk32sZBYTQpQHk3xAj1unN",
+            "wallet_address": "G2i9S82odXUneoaRbL3NBfXTYJAoR4C4BuoR6EXJJvo2"
+        },
+        {
+            "name": "core: bear",
+            "p2p_address": "/ip4/135.181.203.119/tcp/4001/p2p/12D3KooWDo4Tuq2yrxHzduSXhBJ8VYxhXSoYFWwrKsdsrp1UeDXT",
+            "wallet_address": "E7h2pLrM7Z4SNx7k2SwbaYTc16hMsQhKABABFcep5BLr"
+        },
+        {
+            "name": "hyyperscale: ox",
+            "p2p_address": "/ip4/65.109.10.147/tcp/4001/p2p/12D3KooWNV8L8sgUHoCrWxrViKgzrys4V9iNx2BLcXhTUu1gYxfC",
+            "wallet_address": "8dXGkDQjMyXBhAYq5wsaHi1cJJfFUbkQBX7eKFWTHGYw"
+        },
+        {
+            "name": "hyyperscale: colibri",
+            "p2p_address": "/ip4/65.108.146.55/tcp/4001/p2p/12D3KooWSFsjVujmgJZtogkpGFfUG1hSP53UffoN1WpU87nRQHfE",
+            "wallet_address": "14Crbs46PRyUryLqVhc8bSkS7cAnGT2DjsQ2eHDQK5cA"
+        },
+        {
+            "name": "hyyperscale: rex",
+            "p2p_address": "/ip4/78.47.105.6/tcp/4001/p2p/12D3KooWCjfqV33KA3hFweFeBHHwfhmuaf9xYggd8QJVZ94DzX1U",
+            "wallet_address": "AVNqzam8Dn5c5D93Ni9UWsyy7gj5dRETDoyA6swNp3Dk"
+        },
+        {
+            "name": "hyyperscale: bunny",
+            "p2p_address": "/ip4/78.46.250.245/tcp/4001/p2p/12D3KooWFB3N6tGCm9YZYqUMBsY16W3r6ssXwQ39HxQuB52DdHDm",
+            "wallet_address": "GDpJhXfjHNeXSq7iGgyBgN3x9ePGKaKeNZkyUNDZ3Aws"
+        },
+        {
+            "name": "hyyperscale: mouse",
+            "p2p_address": "/ip4/167.235.29.224/tcp/4001/p2p/12D3KooWHdsLqYyEQNymtxduoLHG1ymhXTzr7AYLV7k7hj14nmbP",
+            "wallet_address": "HF7uc4UScqwhvjnyvoPEZkLSYQK5ZfkdJvsuSUpVT4kq"
+        },
+        {
+            "name": "hyyperscale: wasp",
+            "p2p_address": "/ip4/116.203.128.14/tcp/4001/p2p/12D3KooWCmWdc5suZD4a4VvPr2bYL3JwGfRJUHJq7fT3yuCSLPLS",
+            "wallet_address": "CwtBkn1XDWipd5MgnPtq8T3vqpkV7krTg1vmmnd2WEgF"
+        },
+        {
+            "name": "hyyperscale: guppy",
+            "p2p_address": "/ip4/157.90.172.41/tcp/4001/p2p/12D3KooWQSqBaAbfhtUHvHVpBGCgnpGqonJH9mSfk9cAWSq2nBPk",
+            "wallet_address": "AMsHk7ZCtdYDC8oRS6CMCeAmFRxyH8VmHEgXbzee8BRi"
+        },
+        {
+            "name": "hyyperscale: squirrel",
+            "p2p_address": "/ip4/188.245.185.185/tcp/4001/p2p/12D3KooWPZMUkDkMR5Pujxnie4MhuqACVp2oRLYbsDKuAPPTZ5kH",
+            "wallet_address": "4r1XaRMqCfVAgB8emMJhbVEd5EFVUfU73sSrFLSKNBwE"
+        }
+    ]
+}
