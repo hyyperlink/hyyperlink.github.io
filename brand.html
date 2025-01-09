@@ -41,11 +41,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lekton:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    
-
-    <link href="https://fonts.googleapis.com/css2?family=Lekton:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             background-color: #000;
@@ -1170,6 +1165,7 @@
                 transform: translateY(-50%) scale(0.75);
             }
         }
+
         body {
             background-color: #000;
             color: #fff;
@@ -1180,240 +1176,16 @@
             font-family: 'Lekton', monospace;
         }
 
+        .navbar {
+            background-color: transparent;
+            backdrop-filter: none;
+        }
+
         .section {
             min-height: 100vh;
             padding: 100px 0;
             position: relative;
-        }
-
-        .mining-stats {
-            background: rgba(51, 51, 51, 0.2);
-            border: 1px solid #333;
-            border-radius: 6px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-box {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 4px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .stat-label {
-            color: #888;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .stat-value {
-            color: #fff;
-            font-size: 1.5rem;
-            font-family: 'Lekton', monospace;
-        }
-
-        .download-btn {
-            background-color: #000;
-            color: #ccc;
-            border: 2px solid #ccc;
-            padding: 1em 2em;
-            border-radius: 1em;
-            transition: all 0.3s ease;
-        }
-
-        .download-btn:hover {
-            color: #fff;
-            border: 2px solid #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,255,255,0.5);
-        }
-
-        .mining-chart {
-            background: rgba(51, 51, 51, 0.2);
-            border: 1px solid #333;
-            border-radius: 6px;
-            padding: 2rem;
-            margin-top: 2rem;
-        }
-
-        #earningsChart {
-            width: 100%;
-            max-height: 400px;
-        }
-
-        .wallet-info {
-            background: rgba(51, 51, 51, 0.2);
-            border: 1px solid #333;
-            border-radius: 6px;
-            padding: 2rem;
-            margin-top: 2rem;
-            word-break: break-all;
-        }
-
-        .address-box {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 4px;
-            padding: 1rem;
-            margin: 1rem 0;
-            font-family: monospace;
-        }
-
-        .discovery-log {
-            background: rgba(51, 51, 51, 0.2);
-            border: 1px solid #333;
-            border-radius: 6px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .discovery-item {
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            border-radius: 4px;
-            font-family: 'Lekton', monospace;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .discovery-item.common {
-            background: rgba(75, 192, 192, 0.1);
-            border: 1px solid rgba(75, 192, 192, 0.2);
-        }
-
-        .discovery-item.rare {
-            background: rgba(147, 112, 219, 0.1);
-            border: 1px solid rgba(147, 112, 219, 0.2);
-        }
-
-        .discovery-item.epic {
-            background: rgba(255, 215, 0, 0.1);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-        }
-
-        .discovery-item.legendary {
-            background: rgba(255, 69, 0, 0.1);
-            border: 1px solid rgba(255, 69, 0, 0.2);
-            animation: glow 2s infinite;
-        }
-
-        @keyframes glow {
-            0% { box-shadow: 0 0 5px rgba(255, 69, 0, 0.2); }
-            50% { box-shadow: 0 0 20px rgba(255, 69, 0, 0.4); }
-            100% { box-shadow: 0 0 5px rgba(255, 69, 0, 0.2); }
-        }
-
-        .discovery-reward {
-            font-weight: bold;
-        }
-
-        .discovery-difficulty {
-            color: #888;
-            font-size: 0.9em;
-        }
-
-        .info-panel {
-            background: rgba(51, 51, 51, 0.2);
-            border: 1px solid #333;
-            border-radius: 6px;
-            padding: 2rem;
-            height: 100%;
-        }
-
-        .info-panel h4 {
-            color: #fff;
-            font-size: 1.1rem;
-        }
-
-        .info-panel p {
-            color: #ccc;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .info-panel ul {
-            color: #ccc;
-            padding-left: 1.2rem;
-        }
-
-        .info-panel ul li {
-            margin-bottom: 0.5rem;
-        }
-
-        .comparison-grid {
-            display: grid;
-            gap: 1.5rem;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        }
-
-        .comparison-item {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .comparison-item.active {
-            border-color: #4CAF50;
-        }
-
-        .comparison-item.disabled {
-            opacity: 0.7;
-        }
-
-        .comparison-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .coin-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: #666;
-        }
-
-        .coin-icon img {
-            filter: brightness(0.8);
-        }
-
-        .coin-name {
-            font-family: 'Lekton', monospace;
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: #fff;
-        }
-
-        .coin-estimate {
-            font-family: 'Lekton', monospace;
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            color: #4CAF50;
-        }
-
-        .coin-note {
-            font-size: 0.9rem;
-            color: #888;
-        }
-
-        .comparison-item.disabled .coin-estimate {
-            color: #666;
-        }
-
-        .stat-subtext {
-            color: #666;
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
-        }
-
-        /* Add nav styles from index.html */
-        .navbar {
-            background-color: transparent;
-            backdrop-filter: none;
+            z-index: 1;
         }
 
         .navbar-toggler {
@@ -1504,6 +1276,124 @@
             cursor: pointer;
         }
 
+        #dag-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Brand-specific styles */
+        .brand-card {
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .logo-display {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 1rem;
+            padding: 3rem;
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo-display img {
+            max-width: 200px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+        }
+
+        .download-btn {
+            background-color: #000;
+            color: #ccc;
+            border: 2px solid #ccc;
+            padding: 1em 2em;
+            border-radius: 1em;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.5rem;
+        }
+
+        .download-btn:hover {
+            color: #fff;
+            border: 2px solid #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.1);
+        }
+
+        .color-swatch {
+            width: 100%;
+            height: 100px;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .usage-example {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .dont-box {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .banner-example {
+            width: 100%;
+            max-width: 800px;
+            border-radius: 1rem;
+            margin: 2rem 0;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-social-links {
+            padding: 1rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-social-link {
+            display: flex;
+            align-items: center;
+            color: #888;
+            text-decoration: none;
+            padding: 0.75rem 0;
+            transition: color 0.2s ease;
+        }
+
+        .nav-social-link:hover {
+            color: #fff;
+        }
+
+        .nav-social-link img {
+            width: 24px;
+            margin-right: 12px;
+            filter: brightness(1);
+        }
+
+        .nav-social-link span {
+            font-family: 'Lekton', monospace;
+        }
+
         .nav-header {
             margin-top: -1rem;
         }
@@ -1515,13 +1405,14 @@
             margin: 0;
         }
 
-        /* Add footer styles */
+        /* Footer styles */
         .footer-modern {
             background-color: #111;
             color: #888;
-            padding-top: 4rem;
-            padding-bottom: 4rem;
+            padding: 4rem 0;
             margin-top: 4rem;
+            position: relative;
+            z-index: 1;
         }
 
         .footer-section h5 {
@@ -1550,6 +1441,15 @@
             color: #fff;
         }
 
+        .footer-divider {
+            border-color: #333;
+            margin: 2rem 0;
+        }
+
+        .copyright {
+            color: #666;
+        }
+
         .social-links a {
             color: #888;
             text-decoration: none;
@@ -1560,16 +1460,189 @@
             color: #fff;
         }
 
-        .footer-divider {
-            border-color: #333;
-            margin: 2rem 0;
+        /* Make Font Awesome icons white in footer */
+        .social-links a i {
+            color: #fff;
         }
 
-        .copyright {
-            color: #666;
+        /* Make Font Awesome icons white in nav */
+        .nav-social-link i {
+            color: #fff;
+        }
+
+        .press-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .press-tag {
+            background: #000;
+            color: #fff;
+            border: 2px solid var(--tag-color, #fff);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Lekton', monospace;
+        }
+
+        .press-tag:hover {
+            background: color-mix(in srgb, var(--tag-color, #fff) 20%, transparent);
+        }
+
+        .press-tag.active {
+            background: var(--tag-color, #fff);
+            color: #000;
+        }
+
+        .press-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem 0;
+        }
+
+        .press-point {
+            transition: all 0.3s ease;
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.02);
+        }
+
+        .press-point.hidden {
+            opacity: 0.2;
+            transform: scale(0.95);
+        }
+
+        .point-categories {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--tag-color);
+            box-shadow: 0 0 15px var(--tag-color);
+        }
+
+        .press-point-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            list-style: none;
+        }
+
+        .press-point-content li {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .press-points {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .press-point:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .correct-box {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .correct-box h4 {
+            color: rgba(0, 255, 0, 0.8);
+        }
+
+        .section-heading {
+            font-size: 4rem;
+            font-weight: bold;
+            text-align: left;
+            padding-top: 3rem;
+            padding-bottom: 1rem;
+            font-family: 'Lekton', monospace;
+            letter-spacing: -1px;
+        }
+
+        .section-divider {
+            border: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 3rem;
+            margin-top: 0;
+        }
+
+        .media-resources {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .media-resource-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            padding: 0.5rem;
+        }
+
+        .media-btn {
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 1em 2em;
+            border-radius: 1em;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: 'Lekton', monospace;
+            white-space: nowrap;
+            width: 220px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .media-btn:hover {
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.1);
+        }
+
+        .media-description {
+            color: #888;
+            margin: 0.5rem 0 0 0;
+            padding-top: 0.5rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            flex: 1;
+            max-width: 600px;
+        }
+
+        @media (max-width: 768px) {
+            .media-resource-item {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .media-btn {
+                width: 100%;
+            }
         }
     </style>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -1598,7 +1671,7 @@
     <div class="offcanvas-nav" id="offcanvasNav">
         <button class="close-nav" id="closeNav">×</button>
         <div class="nav-header text-center mb-4">
-            <img src="hyyperlink.svg" alt="Hyyperlink" height="64px" width="64px" class="mb-2">
+            <img onclick="window.location.href='https://hyyperlink.com'" style="cursor:pointer" src="hyyperlink.svg" alt="Hyyperlink" height="64px" width="64px" class="mb-2">
             <h4 class="nav-brand">Hyyperlink</h4>
         </div>
         <ul class="navbar-nav">
@@ -1609,21 +1682,21 @@
         </ul>
         
         <div class="nav-social-links mt-auto mb-4">
-            <a href="https://github.com/hyyperlink" class="nav-social-link" style="font-family: 'Lekton', monospace;">
-                <img src="github.svg" alt="GitHub" width="24" height="24" style="margin-right: 12px;">
-                <span style="background: linear-gradient(90deg, #FF4D4D, #FF8033); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">GitHub</span>
+            <a href="https://github.com/hyyperlink" class="nav-social-link">
+                <img src="github.svg" alt="GitHub" width="24" height="24">
+                <span>GitHub</span>
             </a>
-            <a href="https://x.com/hyyperlink" class="nav-social-link" style="font-family: 'Lekton', monospace;">
-                <img src="twitter.svg" alt="X (Twitter)" width="24" height="24" style="margin-right: 12px;">
-                <span style="background: linear-gradient(90deg, #FF4D4D, #FF8033); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">X (Twitter)</span>
+            <a href="https://x.com/hyyperlink" class="nav-social-link">
+                <img src="twitter.svg" alt="X (Twitter)" width="24" height="24">
+                <span>X (Twitter)</span>
             </a>
-            <a href="https://discord.gg/cNMFbwcHtM" class="nav-social-link" style="font-family: 'Lekton', monospace;">
-                <img src="discord.svg" alt="Discord" width="24" height="24" style="margin-right: 12px;">
-                <span style="background: linear-gradient(90deg, #FF4D4D, #FF8033); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Discord</span>
+            <a href="https://discord.gg/cNMFbwcHtM" class="nav-social-link">
+                <img src="discord.svg" alt="Discord" width="24" height="24">
+                <span>Discord</span>
             </a>
-            <a href="https://t.me/hyyperlink" class="nav-social-link" style="font-family: 'Lekton', monospace;">
-                <img src="telegram.svg" alt="Telegram" width="24" height="24" style="margin-right: 12px;">
-                <span style="background: linear-gradient(90deg, #FF4D4D, #FF8033); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Telegram</span>
+            <a href="https://t.me/hyyperlink" class="nav-social-link">
+                <img src="telegram.svg" alt="Telegram" width="24" height="24">
+                <span>Telegram</span>
             </a>
         </div>
     </div>
@@ -1631,142 +1704,259 @@
     <!-- Add overlay -->
     <div class="navbar-overlay" id="navOverlay"></div>
 
-    <!-- Hero Section -->
-    <section class="section d-flex align-items-center">
-        <div class="container text-center">
-            <img onclick="window.location.href='https://hyyperlink.com'" style="cursor:pointer" src="hyyperlink.svg" alt="Hyyperlink" height="256px" width="256px" class="mb-3">
-            <h1 class="display-1 mb-4">Hyyperlink</h1>
-            <p class="lead my-4">No Blocks. No Chains.</p>
-            <br><br>
-            <a href="https://discord.gg/cNMFbwcHtM" class="btn discord-button"><img src="discord.svg" alt="Discord" width="24" height="24">Join The Discord</a>
-            <a href="whitepaper.pdf" class="btn download-btn" download>Download The Whitepaper</a>
-        </div>
-    </section>
-    <div class="container py-5">
-        <div class="text-center mb-5">
-            <img src="hyyperlink.svg" alt="Hyyperlink" height="128px" width="128px" class="mb-3">
-            <h1 class="display-4 mb-4">Mining Simulator</h1>
-            <p class="lead">Experience Hyyperlink's unique Key Discovery Mining system</p>
-        </div>
 
-        <div class="row mb-5">
-            <div class="col-md-4">
-                <div class="info-panel">
-                    <h3>About This Simulation</h3>
-                    <p>This is a browser-based demonstration of Hyyperlink's Key Discovery Mining system. Due to browser limitations, this simulation runs at approximately 1/8th the speed of the actual Hyyperlink wallet. Your mileage may vary, this is just a demo to give you an idea of how the mining works in comparison to other networks.</p>
-                    
-                    <h4 class="mt-4">How It Works</h4>
-                    <p>The mining process follows these steps:</p>
-                    <ol>
-                        <li>Generate an Ed25519 keypair</li>
-                        <li>Encode the public key using Base58</li>
-                        <li>Calculate the SHA3-256 hash of the Base58 string</li>
-                        <li>Count leading zeros in the hash</li>
-                    </ol>
-                    <p>Rewards are based on the number of leading zeros:</p>
-                    <ul>
-                        <li>4 zeros = 1 HYY (Common)</li>
-                        <li>5 zeros = 2 HYY (Rare)</li>
-                        <li>6 zeros = 3 HYY (Epic)</li>
-                        <li>7+ zeros = 4+ HYY (Legendary)</li>
-                    </ul>
-
-                    <h4 class="mt-4">Real Mining Performance</h4>
-                    <p>The actual Hyyperlink wallet:</p>
-                    <ul>
-                        <li>Uses all available CPU cores</li>
-                        <li>Optimized native crypto operations</li>
-                        <li>No browser limitations</li>
-                        <li>~8x faster than this simulation</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="mining-stats">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="stat-box">
-                                <div class="stat-label">Mining Rate</div>
-                                <div class="stat-value" id="keysPerSecond">0</div>
-                                <div class="stat-subtext">hashes/sec</div>
-                            </div>
+    <div class="container" style="padding-top: 80px;">
+        <section class="section">
+            <h1 class="section-heading">BRAND</h1>
+            <hr class="section-divider">
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="brand-card">
+                        <h2>Logo</h2>
+                        <p>The Hyyperlink logo represents a key architectural innovation inherent to the Hyyperlink protocol. The geometric design symbolizes the DAG (Directed Acyclic Graph) structure and the interconnected nature of the network.</p>
+                        
+                        <div class="logo-display">
+                            <img src="hyyperlink.svg" alt="Hyyperlink Logo">
                         </div>
-                        <div class="col-md-4">
-                            <div class="stat-box">
-                                <div class="stat-label">Time Elapsed</div>
-                                <div class="stat-value" id="timeElapsed">0s</div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="stat-box">
-                                <div class="stat-label">HYY Earned</div>
-                                <div class="stat-value" id="hyyEarned">0.00000000</div>
-                                <div class="stat-subtext">
-                                    Projected 24h: <span id="projectedEarnings">0.00000000</span> HYY
-                                </div>
-                            </div>
+                        
+                        <div class="mt-4">
+                            <a href="hyyperlink.svg" download class="download-btn">Download SVG</a>
+                            <a href="hyyperlink.png" download class="download-btn">Download PNG</a>
                         </div>
                     </div>
-
-                    <div class="text-center mt-4">
-                        <button id="startMining" class="btn download-btn me-3">Start Mining</button>
-                        <button id="stopMining" class="btn download-btn" disabled>Stop Mining</button>
-                    </div>
                 </div>
-
-                <div class="performance-warning mt-3 text-center" style="color: #ff9800;">
-                    Note: Browser performance may vary. The actual Hyyperlink wallet runs significantly faster.
-                </div>
-
-                <div class="discovery-log">
-                    <h3 class="mb-4">Recent Discoveries</h3>
-                    <div class="discovery-items" id="discoveryLog">
-                        <!-- Discoveries will be added here dynamically -->
-                    </div>
-                </div>
-
-                <div class="mining-chart">
-                    <h3 class="mb-4">24-Hour Mining Comparison</h3>
-                    <p class="text-muted mb-4">With Hyyperlink, you earn rewards immediately and independently - no pools, no competition, no waiting:</p>
-                    
-                    <div class="comparison-grid">
-                        <div class="comparison-item active">
-                            <div class="coin-icon">
-                                <img src="hyyperlink.svg" alt="Hyyperlink" width="32" height="32">
-                            </div>
-                            <div class="coin-name">Hyyperlink</div>
-                            <div class="coin-estimate" id="hyyEstimate">
-                                <span class="estimate-value">--</span> HYY
-                            </div>
-                            <div class="coin-note">Instant rewards, no pools needed</div>
-                        </div>
-
-                        <div class="comparison-item disabled">
-                            <div class="coin-icon">
-                                <i class="fab fa-bitcoin"></i>
-                            </div>
-                            <div class="coin-name">Bitcoin</div>
-                            <div class="coin-estimate">
-                                <span class="estimate-value">0.00000000</span> BTC
-                            </div>
-                            <div class="coin-note">Requires mining pools & ASIC hardware</div>
-                        </div>
-
-                        <div class="comparison-item disabled">
-                            <div class="coin-icon">
-                                <i class="fab fa-ethereum"></i>
-                            </div>
-                            <div class="coin-name">Ethereum</div>
-                            <div class="coin-estimate">
-                                <span class="estimate-value">0.00000000</span> ETH
-                            </div>
-                            <div class="coin-note">No longer mineable at all</div>
+                <div class="col-md-6">
+                    <div class="brand-card">
+                        <h2>Typography</h2>
+                        <p>Hyyperlink uses the Lekton font family for its logotype and headings. This monospace typeface reflects our technical foundation while maintaining readability.</p>
+                        
+                        <div class="usage-example">
+                            <h3 style="font-family: 'Lekton', monospace;">Lekton Regular</h3>
+                            <p style="font-family: 'Lekton', monospace;">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+                            abcdefghijklmnopqrstuvwxyz<br>
+                            1234567890</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <div class="brand-card">
+                <h2>Name Usage</h2>
+                <p>Consistency in naming is crucial for brand recognition.</p>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="usage-example correct-box">
+                            <h4>Correct Usage:</h4>
+                            <ul>
+                                <li><code>Hyyperlink</code> - For starting sentences and titles</li>
+                                <li><code>hyyperlink</code> - For general usage</li>
+                                <li><code>HYYPERLINK</code> - For all caps logos and enthusiastically shouting</li>
+                                <li><code>HYY</code> - Currency ticker</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="dont-box">
+                            <h4>Incorrect Usage:</h4>
+                            <ul>
+                                <li><del>HyyperLink</del> (should be Hyyperlink)</li>
+                                <li><del>hyyperLink</del> (should be hyyperlink)</li>
+                                <li><del>hyper-link</del> (There are two Y's in hyyperlink)</li>
+                                <li><del>hyyper-link</del> (Never break up the word)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="brand-card">
+                <h2>Colors</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="color-swatch" style="background-color: #000000;"></div>
+                        <div class="color-info">Primary Black</div>
+                        <div class="color-info">#000000</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="color-swatch" style="background-color: #FFFFFF;"></div>
+                        <div class="color-info">Primary White</div>
+                        <div class="color-info">#FFFFFF</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="color-swatch" style="background-color: #333333;"></div>
+                        <div class="color-info">Accent Gray</div>
+                        <div class="color-info">#333333</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="brand-card">
+                <h2>Banner Usage</h2>
+                <p>The official Hyyperlink banner demonstrates the proper use of our brand elements in promotional materials.</p>
+                
+                <img src="banner.png" alt="Hyyperlink Banner Example" class="banner-example">
+                
+                <div class="mt-4">
+                    <a href="banner.png" download class="download-btn">Download Banner</a>
+                </div>
+            </div>
+
+            <h1 class="section-heading">PRESS</h1>
+            <hr class="section-divider">
+
+            <div class="brand-card" id="press">
+                <h2>Press Contact</h2>
+                <p>For press inquiries and brand-related questions, please contact:</p>
+                <p><a href="mailto:press@hyyperlink.com" style="color: #fff;">press@hyyperlink.com</a></p>
+            </div>
+
+            <div class="brand-card">
+                <h2 id="key-info">Key Information Takeaways</h2>
+                
+                <div class="press-tags mb-4">
+                    <button class="press-tag active" data-tag="all">All</button>
+                    <button class="press-tag" data-tag="tech" style="--tag-color: #00ff00">Technology</button>
+                    <button class="press-tag" data-tag="arch" style="--tag-color: #ff00ff">Architecture</button>
+                    <button class="press-tag" data-tag="eco" style="--tag-color: #00ffff">Tokenomics</button>
+                    <button class="press-tag" data-tag="mining" style="--tag-color: #ffff00">Mining</button>
+                </div>
+
+                <div class="press-points">
+                    <div class="press-point" data-tags="tech,arch">
+                        <div class="point-categories">
+                            <span class="category-dot" style="--tag-color: #00ff00"></span>
+                            <span class="category-dot" style="--tag-color: #ff00ff"></span>
+                        </div>
+                        <div class="press-point-content">
+                            <li>Hyyperlink is an original Layer 1 protocol developed in the United States, built from the ground up to address the scalability limitations of traditional blockchain networks</li>
+                        </div>
+                    </div>
+                    
+                    <div class="press-point" data-tags="tech,arch">
+                        <div class="point-categories">
+                            <span class="category-dot" style="--tag-color: #00ff00"></span>
+                            <span class="category-dot" style="--tag-color: #ff00ff"></span>
+                        </div>
+                        <div class="press-point-content">
+                            <li>Unlike traditional blockchains, Hyyperlink uses a Directed Acyclic Graph (DAG) architecture, enabling parallel transaction processing and eliminating block-based bottlenecks</li>
+                        </div>
+                    </div>
+                    
+                    <div class="press-point" data-tags="tech">
+                        <div class="point-categories">
+                            <span class="category-dot" style="--tag-color: #00ff00"></span>
+                        </div>
+                        <div class="press-point-content">
+                            <li>Transactions are processed asynchronously and confirm immediately, with no waiting for block confirmations</li>
+                        </div>
+                    </div>
+                    
+                    <div class="press-point" data-tags="tech,arch">
+                        <div class="point-categories">
+                            <span class="category-dot" style="--tag-color: #00ff00"></span>
+                            <span class="category-dot" style="--tag-color: #ff00ff"></span>
+                        </div>
+                        <div class="press-point-content">
+                            <li>Network performance improves with adoption - confirmation times decrease as transaction volume increases</li>
+                        </div>
+                    </div>
+                    
+                    <div class="press-point" data-tags="tech">
+                        <div class="point-categories">
+                            <span class="category-dot" style="--tag-color: #00ff00"></span>
+                        </div>
+                        <div class="press-point-content">
+                            <li>Built-in support for tokens, NFTs, and DeFi features like swaps and liquidity pools without requiring Layer 2 solutions or external protocols</li>
+                        </div>
+                    </div>
+                    
+                    <div class="press-point" data-tags="eco">
+                        <div class="point-categories">
+                            <span class="category-dot" style="--tag-color: #00ffff"></span>
+                        </div>
+                        <div class="press-point-content">
+                            <li>Fixed supply of 100 million HYY tokens with a sustainable 2% annual inflation rate</li>
+                        </div>
+                    </div>
+                    
+                    <div class="press-point" data-tags="eco">
+                        <div class="point-categories">
+                            <span class="category-dot" style="--tag-color: #00ffff"></span>
+                        </div>
+                        <div class="press-point-content">
+                            <li>Deflationary mechanism: All transaction fees are permanently removed from circulation</li>
+                        </div>
+                    </div>
+                    
+                    <div class="press-point" data-tags="tech,mining">
+                        <div class="point-categories">
+                            <span class="category-dot" style="--tag-color: #00ff00"></span>
+                            <span class="category-dot" style="--tag-color: #ffff00"></span>
+                        </div>
+                        <div class="press-point-content">
+                            <li>Novel Key Discovery Mining: Miners search for rare Ed25519 keys independently, with no competition or specialized hardware requirements</li>
+                        </div>
+                    </div>
+                    
+                    <div class="press-point" data-tags="mining,arch">
+                        <div class="point-categories">
+                            <span class="category-dot" style="--tag-color: #ffff00"></span>
+                            <span class="category-dot" style="--tag-color: #ff00ff"></span>
+                        </div>
+                        <div class="press-point-content">
+                            <li>Mining activity contributes to network throughput while being completely separate from transaction validation - the network operates independently of mining activity</li>
+                        </div>
+                    </div>
+                    
+                    <div class="press-point" data-tags="mining,eco">
+                        <div class="point-categories">
+                            <span class="category-dot" style="--tag-color: #ffff00"></span>
+                            <span class="category-dot" style="--tag-color: #00ffff"></span>
+                        </div>
+                        <div class="press-point-content">
+                            <li>Miners provide network inflation through key discovery, while all transaction fees are burned - creating a balanced economic model</li>
+                        </div>
+                    </div>
+                    
+                    <div class="press-point" data-tags="mining">
+                        <div class="point-categories">
+                            <span class="category-dot" style="--tag-color: #ffff00"></span>
+                        </div>
+                        <div class="press-point-content">
+                            <li>Significantly lower resource requirements compared to traditional cryptocurrency mining - no specialized hardware arms race</li>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="brand-card">
+                <h2>Media Resources</h2>
+                <div class="media-resources">
+                    <div class="media-resource-item">
+                        <a href="https://hyyperlink.com/whitepaper.pdf" class="media-btn">Technical Whitepaper</a>
+                        <p class="media-description">Comprehensive technical documentation for developers, researchers, and technical journalists looking to understand Hyyperlink's architecture in depth.</p>
+                    </div>
+                    <div class="media-resource-item">
+                        <a href="https://hyyperlink.com/brand.html" class="media-btn">Media Kit</a>
+                        <p class="media-description">Complete package of high-resolution logos, screenshots, and promotional graphics for press, content creators, and marketing teams.</p>
+                    </div>
+                    <div class="media-resource-item">
+                        <a href="https://x.com/hyyperlink" class="media-btn">@hyyperlink</a>
+                        <p class="media-description">Follow us on X (Twitter) for the latest updates, announcements, and community engagement.</p>
+                    </div>
+                    <div class="media-resource-item">
+                        <a href="mailto:contact@hyyperlink.com" class="media-btn">Contact</a>
+                        <p class="media-description">Get in touch with the Hyyperlink team for press inquiries and brand-related questions.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
     </div>
+
     <!-- Footer -->
     <footer id="footer" class="footer-modern py-5">
         <div class="container">
@@ -1859,7 +2049,6 @@
             });
         });
 
-
         document.querySelectorAll('.faq-question').forEach(question => {
             question.addEventListener('click', () => {
                 const isExpanded = question.getAttribute('aria-expanded') === 'true';
@@ -1872,473 +2061,29 @@
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
+
+
+        // Press tags filtering
+        document.querySelectorAll('.press-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                const selectedTag = this.dataset.tag;
+                
+                // Update active state of tags
+                document.querySelectorAll('.press-tag').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Filter points
+                document.querySelectorAll('.press-point').forEach(point => {
+                    const tags = point.dataset.tags.split(',');
+                    if (selectedTag === 'all' || tags.includes(selectedTag)) {
+                        point.classList.remove('hidden');
+                    } else {
+                        point.classList.add('hidden');
+                    }
+                });
+            });
+        });
     </script>
     <script src="dag.js"></script>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl-fast.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/base-58@0.0.1/Base58.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-base64@3.7.2/base64.min.js"></script>
-
-    <div class="modal fade" id="seedPhraseModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content bg-dark text-white">
-                <div class="modal-header border-secondary">
-                    <h5 class="modal-title">Your Seed Phrase</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="seedPhraseContent">
-                </div>
-                <div class="modal-footer border-secondary">
-                    <button type="button" class="btn download-btn" data-bs-dismiss="modal">I've Written It Down</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const WORDLIST_URL = 'https://raw.githubusercontent.com/bitcoin/bips/master/bip-0039/english.txt';
-        let WORDLIST = [];
-
-        // Fetch the wordlist before allowing seed generation
-        fetch(WORDLIST_URL)
-            .then(response => response.text())
-            .then(text => {
-                WORDLIST = text.trim().split('\n');
-                console.log(`Loaded ${WORDLIST.length} BIP39 words`);
-            })
-            .catch(error => {
-                console.error('Error loading BIP39 wordlist:', error);
-            });
-
-        function generateSeedPhrase() {
-            if (WORDLIST.length !== 2048) {
-                alert('Error: BIP39 wordlist not loaded. Please try again.');
-                return;
-            }
-            
-            let entropy = '';
-            let mouseMovements = 0;
-            let keyPresses = 0;
-            const entropyNeeded = 128; // bits of entropy needed
-            
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.9);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 9999;
-            `;
-            
-            const content = document.createElement('div');
-            content.style.cssText = `
-                background: #111;
-                padding: 2rem;
-                border-radius: 1rem;
-                max-width: 500px;
-                text-align: center;
-                border: 1px solid rgba(255,255,255,0.1);
-            `;
-            
-            const progress = document.createElement('div');
-            progress.style.cssText = `
-                width: 100%;
-                height: 4px;
-                background: #333;
-                margin: 1rem 0;
-                border-radius: 2px;
-            `;
-            
-            const progressBar = document.createElement('div');
-            progressBar.style.cssText = `
-                width: 0%;
-                height: 100%;
-                background: #4CAF50;
-                border-radius: 2px;
-                transition: width 0.1s ease;
-            `;
-            
-            content.innerHTML = `
-                <h3 style="margin-bottom: 1rem;">Generating Seed Phrase</h3>
-                <p>Move your mouse and press random keys to generate entropy</p>
-            `;
-            
-            progress.appendChild(progressBar);
-            content.appendChild(progress);
-            modal.appendChild(content);
-            document.body.appendChild(modal);
-            
-            function updateProgress() {
-                const total = mouseMovements + keyPresses;
-                const percentage = Math.min((total / entropyNeeded) * 100, 100);
-                progressBar.style.width = `${percentage}%`;
-                
-                if (total >= entropyNeeded) {
-                    modal.remove();
-                    const words = [];
-                    // Use collected entropy to select 12 words
-                    for (let i = 0; i < 12; i++) {
-                        const randomIndex = Math.floor(Math.abs(new Int32Array(new Uint8Array(entropy.slice(i * 4, (i + 1) * 4)).buffer)[0]) % WORDLIST.length);
-                        words.push(WORDLIST[randomIndex]);
-                    }
-                    
-                    const seedPhrase = words.join(' ');
-                    const alertContent = document.createElement('div');
-                    alertContent.innerHTML = `
-                        <div style="background: #111; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
-                            <p style="font-family: monospace; word-break: break-all;">${seedPhrase}</p>
-                        </div>
-                        <p style="color: #ff9800; margin-bottom: 1rem;">⚠️ Write this seed phrase down and keep it safe!</p>
-                        <p style="font-size: 0.9rem; color: #666;">This is your wallet's recovery phrase. Anyone with these words can access your wallet.</p>
-                    `;
-                    
-                    const seedPhraseModal = new bootstrap.Modal(document.getElementById('seedPhraseModal'));
-                    const seedPhraseContent = document.getElementById('seedPhraseContent');
-                    if (seedPhraseContent) {
-                        seedPhraseContent.innerHTML = '';
-                        seedPhraseContent.appendChild(alertContent);
-                        seedPhraseModal.show();
-                    }
-                }
-            }
-            
-            // Event listeners for entropy collection
-            const moveHandler = function(e) {
-                if (mouseMovements < entropyNeeded) {
-                    entropy += e.clientX + e.clientY + Date.now();
-                    mouseMovements++;
-                    updateProgress();
-                }
-            };
-            
-            const keyHandler = function(e) {
-                if (keyPresses < entropyNeeded) {
-                    entropy += e.key + Date.now();
-                    keyPresses++;
-                    updateProgress();
-                }
-            };
-            
-            document.addEventListener('mousemove', moveHandler);
-            document.addEventListener('keydown', keyHandler);
-            
-            // Cleanup function
-            function cleanup() {
-                document.removeEventListener('mousemove', moveHandler);
-                document.removeEventListener('keydown', keyHandler);
-                if (modal && modal.parentNode) {
-                    modal.parentNode.removeChild(modal);
-                }
-            }
-            
-            // Add cleanup on modal close
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    cleanup();
-                }
-            });
-        }
-    </script>
-
-    <script>
-        // Mining simulator code
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if required libraries are loaded
-            if (typeof nacl === 'undefined') {
-                console.error('TweetNaCl library not loaded');
-                alert('Error: Required crypto library not loaded. Please refresh the page.');
-                return;
-            }
-
-            function createWorker() {
-                const workerCode = `
-                    importScripts('https://cdn.jsdelivr.net/npm/tweetnacl@1.0.3/nacl-fast.min.js');
-                    
-                    self.onmessage = function(e) {
-                        if (e.data.cmd === 'mine') {
-                            const batchSize = 1000;
-                            const results = [];
-                            
-                            const hexChars = '0123456789abcdef';
-                            
-                            for (let i = 0; i < batchSize; i++) {
-                                const keyPair = nacl.sign.keyPair();
-                                
-                                let difficulty = 0;
-                                let foundNonZero = false;
-                                
-                                for (let j = 0; j < 4; j++) {
-                                    const byte = keyPair.publicKey[j];
-                                    const hi = hexChars[byte >> 4];
-                                    const lo = hexChars[byte & 0xF];
-                                    
-                                    if (!foundNonZero) {
-                                        if (hi === '0') {
-                                            difficulty++;
-                                            if (lo === '0') {
-                                                difficulty++;
-                                            } else {
-                                                foundNonZero = true;
-                                            }
-                                        } else {
-                                            foundNonZero = true;
-                                        }
-                                    }
-                                }
-                                
-                                if (difficulty >= 4) {
-                                    const pubKeyHex = Array.from(keyPair.publicKey)
-                                        .map(b => hexChars[b >> 4] + hexChars[b & 0xF])
-                                        .join('');
-                                    results.push({difficulty, pubKeyHex});
-                                }
-                            }
-                            
-                            if (results.length > 0) {
-                                self.postMessage({type: 'discoveries', results});
-                            }
-                            
-                            self.postMessage({type: 'progress', keysGenerated: batchSize});
-                        }
-                    };
-                `;
-                
-                const blob = new Blob([workerCode], { type: 'application/javascript' });
-                return new Worker(URL.createObjectURL(blob));
-            }
-
-            // Initialize UI elements
-            const startButton = document.getElementById('startMining');
-            const stopButton = document.getElementById('stopMining');
-            const keysPerSecondEl = document.getElementById('keysPerSecond');
-            const hyyEarnedEl = document.getElementById('hyyEarned');
-            const timeElapsedEl = document.getElementById('timeElapsed');
-            const projectedEarningsEl = document.getElementById('projectedEarnings');
-
-            let isRunning = false;
-            let startTime;
-            let keysGenerated = 0;
-            let hyyEarned = 0;
-            let statsInterval;
-            let lastKeysGenerated = 0;
-            let currentHashrate = 0;
-            let lastHashrateUpdate = Date.now();
-            const MinMinerDifficulty = 4;
-            const MaxUnits = 100000000;
-            const HASHRATE_SAMPLES = 1;
-            let recentHashrates = [];
-            let pendingWorkerUpdates = 0;
-            let workers = [];
-            const numWorkers = navigator.hardwareConcurrency || 4;
-
-            function calculateReward(difficulty) {
-                if (difficulty < MinMinerDifficulty) return 0;
-                const multiplier = difficulty - MinMinerDifficulty + 1;
-                return multiplier * MaxUnits;
-            }
-
-            function getRarityClass(difficulty) {
-                if (difficulty >= 7) return 'legendary';
-                if (difficulty >= 6) return 'epic';
-                if (difficulty >= 5) return 'rare';
-                return 'common';
-            }
-
-            function getRarityText(difficulty) {
-                if (difficulty >= 7) return 'LEGENDARY';
-                if (difficulty >= 6) return 'EPIC';
-                if (difficulty >= 5) return 'RARE';
-                return 'COMMON';
-            }
-
-            function addDiscovery(difficulty, reward) {
-                const discoveryLog = document.getElementById('discoveryLog');
-                const rarityClass = getRarityClass(difficulty);
-                const rarityText = getRarityText(difficulty);
-                
-                const discoveryItem = document.createElement('div');
-                discoveryItem.className = `discovery-item ${rarityClass}`;
-                discoveryItem.innerHTML = `
-                    <div class="discovery-info">
-                        <span class="discovery-difficulty">${difficulty} zeros - ${rarityText}</span>
-                    </div>
-                    <div class="discovery-reward">+${(reward / MaxUnits).toFixed(8)} HYY</div>
-                `;
-                
-                discoveryLog.insertBefore(discoveryItem, discoveryLog.firstChild);
-                
-                if (discoveryLog.children.length > 10) {
-                    discoveryLog.removeChild(discoveryLog.lastChild);
-                }
-            }
-
-            function startWorkers() {
-                pendingWorkerUpdates = 0;
-                
-                for (let i = 0; i < numWorkers; i++) {
-                    const worker = createWorker();
-                    
-                    worker.onmessage = function(e) {
-                        if (e.data.type === 'discoveries') {
-                            e.data.results.forEach(result => {
-                                const reward = calculateReward(result.difficulty);
-                                hyyEarned += reward;
-                                addDiscovery(result.difficulty, reward);
-                            });
-                        } else if (e.data.type === 'progress') {
-                            keysGenerated += e.data.keysGenerated;
-                            pendingWorkerUpdates++;
-                            
-                            if (pendingWorkerUpdates >= numWorkers) {
-                                const now = Date.now();
-                                const timeDiff = (now - lastHashrateUpdate) / 1000;
-                                
-                                const instantRate = Math.round((keysGenerated - lastKeysGenerated) / timeDiff);
-                                
-                                recentHashrates.push(instantRate);
-                                if (recentHashrates.length > HASHRATE_SAMPLES) {
-                                    recentHashrates.shift();
-                                }
-                                
-                                currentHashrate = Math.round(
-                                    recentHashrates.reduce((a, b) => a + b, 0) / recentHashrates.length
-                                );
-                                
-                                lastKeysGenerated = keysGenerated;
-                                lastHashrateUpdate = now;
-                                pendingWorkerUpdates = 0;
-                                updateStats();
-                            }
-                        }
-                    };
-
-                    worker.onerror = function(e) {
-                        console.error('Worker error:', e);
-                    };
-                    
-                    workers.push(worker);
-                }
-            }
-
-            function mine() {
-                if (!isRunning) return;
-                
-                workers.forEach(worker => {
-                    worker.postMessage({
-                        cmd: 'mine'
-                    });
-                });
-                
-                requestAnimationFrame(mine);
-            }
-
-            function updateStats() {
-                if (!isRunning) return;
-                
-                const elapsed = Math.max((Date.now() - startTime) / 1000, 0.001);
-                timeElapsedEl.textContent = `${Math.floor(elapsed)}s`;
-                
-                keysPerSecondEl.textContent = currentHashrate.toLocaleString();
-                
-                hyyEarnedEl.textContent = (hyyEarned / MaxUnits).toFixed(8);
-                
-                const dailyKeys = currentHashrate * 86400;
-                const projectedHyy = keysGenerated > 0 ? 
-                    (hyyEarned / MaxUnits) * (dailyKeys / keysGenerated) : 0;
-                
-                projectedEarningsEl.textContent = projectedHyy.toFixed(8);
-                
-                const estimateValue = document.querySelector('.comparison-item.active .estimate-value');
-                if (estimateValue) {
-                    estimateValue.textContent = projectedHyy.toFixed(8);
-                }
-            }
-
-            if (startButton) {
-                startButton.addEventListener('click', () => {
-                    console.log('Starting mining simulation...');
-                    isRunning = true;
-                    startTime = Date.now();
-                    lastHashrateUpdate = Date.now();
-                    lastKeysGenerated = 0;
-                    currentHashrate = 0;
-                    recentHashrates = [];
-                    startButton.disabled = true;
-                    stopButton.disabled = false;
-                    keysGenerated = 0;
-                    hyyEarned = 0;
-                    
-                    keysPerSecondEl.textContent = '0';
-                    hyyEarnedEl.textContent = '0.00000000';
-                    timeElapsedEl.textContent = '0s';
-                    projectedEarningsEl.textContent = '0.00000000';
-                    
-                    startWorkers();
-                    mine();
-                    
-                    // Show wallet info section
-                    const walletInfo = document.getElementById('walletInfo');
-                    if (walletInfo) {
-                        walletInfo.style.display = 'block';
-                    }
-                });
-            }
-
-            if (stopButton) {
-                stopButton.addEventListener('click', () => {
-                    console.log('Stopping mining simulation...');
-                    isRunning = false;
-                    startButton.disabled = false;
-                    stopButton.disabled = true;
-                    
-                    workers.forEach(worker => worker.terminate());
-                    workers = [];
-                });
-            }
-
-            console.log('Mining simulator initialized and ready');
-        });
-    </script>
-
-    <script>
-        // Navigation code
-        document.addEventListener('DOMContentLoaded', function() {
-            const navToggle = document.getElementById('navToggle');
-            const offcanvasNav = document.getElementById('offcanvasNav');
-            const navOverlay = document.getElementById('navOverlay');
-            const closeNav = document.getElementById('closeNav');
-
-            if (navToggle) {
-                navToggle.addEventListener('click', function() {
-                    offcanvasNav.classList.add('show');
-                    navOverlay.classList.add('show');
-                });
-            }
-
-            function hideNav() {
-                offcanvasNav.classList.remove('show');
-                navOverlay.classList.remove('show');
-            }
-
-            if (closeNav) {
-                closeNav.addEventListener('click', hideNav);
-            }
-
-            if (navOverlay) {
-                navOverlay.addEventListener('click', hideNav);
-            }
-
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', hideNav);
-            });
-        });
-    </script>
 </body>
 </html>

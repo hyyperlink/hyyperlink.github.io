@@ -3,7 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hyyperlink - Key Discovery Mining</title>
+    <title>Hyyperlink L1 Network Testnet</title>
+    
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Hyyperlink - L1 Network Testnet">
+    <meta name="description" content="Hyyperlink OG Season 1 rewards are starting soon! Hyyperlink is a high performance network with native swaps, liquidity pools, nft, tokens, and more...">
+    <meta name="keywords" content="cryptocurrency, DAG, mining, crypto, digital currency, crypto, hyyperlink">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hyyperlink.com/">
+    <meta property="og:title" content="Hyyperlink - L1 Network Testnet">
+    <meta property="og:description" content="Hyyperlink OG Season 1 rewards are starting soon! Hyyperlink is a high performance network with native swaps, liquidity pools, nft, tokens, and more...">
+    <meta property="og:image" content="https://hyyperlink.com/banner.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://hyyperlink.com/">
+    <meta property="twitter:title" content="Hyyperlink L1 Network Testnet">
+    <meta property="twitter:description" content="Hyyperlink OG Season 1 rewards are starting soon! Hyyperlink is a high performance network with native swaps, liquidity pools, nft, tokens, and more...">
+    <meta property="twitter:image" content="https://hyyperlink.com/banner.png">
+    <meta name="twitter:site" content="@hyyperlink">
+    <meta name="twitter:creator" content="@hyyperlink">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="https://hyyperlink.com/hyyperlink.svg">
+    <link rel="apple-touch-icon" href="https://hyyperlink.com/hyyperlink.svg">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#000000">
+    
+    <!-- Existing style links -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,6 +57,38 @@
             backdrop-filter: none;
         }
 
+        .discord-button {
+            font-weight: bold;
+            background-color: #000000;
+            color: rgb(114, 137, 218);
+            border: 2px solid rgb(114, 137, 218);
+            padding: 1em 2em;
+            border-radius: 1em;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5em;
+        }
+
+        .discord-button:hover {
+            background-color: rgb(114, 137, 218);
+            color: white;
+            border: 2px solid rgb(114, 137, 218);
+            transform: translateY(-2px);
+            box-shadow: 16px 16px 20px -5px rgba(114, 137, 218, 0.35);
+        }
+
+        .discord-button img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) saturate(100%) invert(67%) sepia(14%) saturate(1429%) hue-rotate(199deg) brightness(89%) contrast(84%);
+            transition: all 0.3s ease;
+        }
+
+        .discord-button:hover img {
+            filter: brightness(0) saturate(100%) invert(100%);
+        }
+
         .section {
             min-height: 100vh;
             padding: 100px 0;
@@ -32,6 +96,7 @@
         }
 
         .download-btn {
+            font-weight: bold;
             background-color: #000;
             color: #ccc;
             border: 2px solid #ccc;
@@ -44,7 +109,7 @@
             color: #fff;
             border: 2px solid #fff;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,255,255,0.5);
+            box-shadow: -16px 16px 20px -5px rgba(255, 255, 255, 0.35);
         }
 
         .roadmap-timeline {
@@ -82,6 +147,30 @@
             top: 15px;
             z-index: 1;
         }
+
+
+
+        .roadmap-item-active {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .roadmap-item-active::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #FFB23F;
+            border: 4px solid #333;
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+            animation: pulse 2s infinite;
+        }
+
+
 
         .roadmap-item.left {
             left: 0;
@@ -310,6 +399,27 @@
             transform: rotate(45deg);
         }
 
+        .social-icons {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-icon {
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+
+        .social-icon:hover {
+            opacity: 1;
+        }
+
+        .social-icon img {
+            width: 24px;
+            height: 24px;
+        } 
+
         .faq-answer {
             padding: 0 1.5rem 1.5rem 1.5rem;
             color: #ccc;
@@ -408,6 +518,23 @@
         }
 
         .team-avatar {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .team-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-avatar i {
+            font-size: 5rem;
             color: #fff;
             opacity: 0.8;
         }
@@ -469,6 +596,575 @@
         .nav-social-link span {
             font-family: 'Lekton', monospace;
         }
+
+        .countdown-container {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 1030;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .countdown {
+            font-family: 'Lekton', monospace;
+            color: #fff;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.5px;
+        }
+
+        .countdown span {
+            display: inline-block;
+            transition: opacity 0.2s ease-in-out;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .countdown span.fade {
+            opacity: 0;
+        }
+
+        @media (max-width: 768px) {
+            .countdown-container {
+                top: auto;
+                bottom: 1.5rem;
+                right: 1.5rem;
+                left: 1.5rem;
+                text-align: center;
+            }
+            
+            .countdown {
+                font-size: 1.1rem;
+            }
+        }
+
+        .download-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .download-overlay-content {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .download-overlay h3 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .download-overlay .countdown {
+            font-size: 2.5rem;
+            margin-top: 1rem;
+        }
+
+        .download-overlay .countdown small {
+            font-size: 1.2rem;
+            margin: 0 0.5rem;
+            opacity: 0.8;
+        }
+
+        #download {
+            position: relative;
+        }
+
+        .gradient-border {
+            padding: 1em !important;
+            position: relative !important;
+            background: rgb(17, 17, 23) !important;
+            border-radius: 16px !important;
+            border: none !important;
+            box-shadow: 16px 16px 20px -5px rgba(255, 75, 75, 0.35) !important;
+        }
+
+        .gradient-border::before {
+            content: '' !important;
+            position: absolute !important;
+            inset: -4px !important;
+            background: linear-gradient(90deg, #FF4B4B 0%, #FFB23F 100%) !important;
+            border-radius: 20px !important;
+            z-index: -1 !important;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #FF4B4B 0%, #FFB23F 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            font-weight: bold;
+            filter: drop-shadow(0 2px 4px rgb(0, 0, 0));
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 178, 63, 0.7);
+            }
+            
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(255, 178, 63, 0);
+            }
+            
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 178, 63, 0);
+            }
+        }
+
+        .roadmap-item-active::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #FFB23F;
+            border: 4px solid #333;
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+            animation: pulse 2s infinite;
+        }
+
+        .social-button {
+            width: 100%;
+            padding: 1.5rem;
+            background: rgb(17, 17, 23);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 4px solid #333;
+        }
+
+        /* GitHub */
+        .social-button.github:hover {
+            border-color: #666666;
+            box-shadow: 16px 16px 20px -5px rgba(102, 102, 102, 0.35);
+        }
+        
+        /* Twitter/X */
+        .social-button.twitter:hover {
+            border-color: #ffffff;
+            box-shadow: 16px 16px 20px -5px rgba(255, 255, 255, 0.35);
+        }
+        
+        /* Discord */
+        .social-button.discord:hover {
+            border-color: #7289da;
+            box-shadow: 16px 16px 20px -5px rgba(114, 137, 218, 0.35);
+        }
+        
+        /* Telegram */
+        .social-button.telegram:hover {
+            border-color: #229ED9;
+            box-shadow: 16px 16px 20px -5px rgba(34, 158, 217, 0.35);
+        }
+
+        .social-button:hover {
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .social-button img {
+            filter: brightness(0) invert(1);
+            transition: all 0.3s ease;
+        }
+
+        .social-button:hover img {
+            transform: scale(1.1);
+        }
+
+        .social-button.twitter span:first-child {
+            filter: brightness(0) invert(1);
+        }
+
+        .section h2 {
+            font-size: 3.5rem;
+            font-weight: 400;
+            margin-bottom: 5rem !important;
+            font-family: 'Lekton', monospace;
+        }
+
+        .section {
+            min-height: 100vh;
+            padding: 100px 0;
+            position: relative;
+        }
+
+        @keyframes typing {
+            0% { width: 0 }
+            30% { width: 14ch }
+            80% { width: 14ch }
+            100% { width: 0 }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #FFB23F }
+        }
+
+        .downloads-section .footer-links a {
+            position: relative;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .downloads-section .footer-links a:hover {
+            color: transparent;
+        }
+
+        .downloads-section .footer-links a::after {
+            content: 'COMING_SOON...';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0;
+            white-space: pre;
+            overflow: hidden;
+            background: linear-gradient(90deg, #FF4B4B 0%, #FFB23F 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            border-right: 0.15em solid #FFB23F;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .downloads-section .footer-links a:hover::after {
+            opacity: 1;
+            animation: typing 1.5s steps(11) infinite,
+                       blink-caret 0.75s step-end infinite;
+        }
+
+        .split-milestone {
+            position: relative;
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+
+        .split-milestone:hover .content {
+            transform: scale(1.02);
+        }
+
+        .split-milestone .mini-milestones {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            opacity: 0;
+            transition: all 0.5s ease;
+            pointer-events: none;
+        }
+
+        .split-milestone:hover .mini-milestones {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .mini-milestone {
+            flex: 1;
+            background: rgb(17, 17, 23);
+            padding: 20px;
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .split-milestone:hover .mini-milestone {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .mini-milestone::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(90deg, #FF4B4B 0%, #FFB23F 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .split-milestone:hover .mini-milestone::before {
+            opacity: 1;
+        }
+
+        .mini-milestone:first-child {
+            transition-delay: 0.1s;
+        }
+
+        .mini-milestone:last-child {
+            transition-delay: 0.2s;
+        }
+
+        .mini-milestone h5 {
+            color: #fff;
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .mini-milestone p {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .divider-glow {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #FFB23F, transparent);
+            transform: translate(-50%, -50%) scaleX(0);
+            transition: transform 0.5s ease;
+        }
+
+        .split-milestone:hover .divider-glow {
+            transform: translate(-50%, -50%) scaleX(1);
+        }
+
+        .defi-components {
+            margin-top: 1rem;
+        }
+
+        .defi-component {
+            padding-top: 1rem;
+            border-top: 1px solid rgba(51, 51, 51, 1);
+            overflow: hidden;
+        }
+
+        .defi-component:first-child {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        .milestone-dots {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 4px;
+            cursor: help;
+        }
+
+        .milestone-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #000000;
+        }
+
+        .milestone-dot.active {
+            background: #FFB23F;
+            box-shadow: 0 0 5px #FFB23F;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% {
+                box-shadow: 0 0 5px rgba(255, 178, 63, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 8px rgba(255, 178, 63, 0);
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(255, 178, 63, 0.7);
+            }
+        }
+
+        .milestone-dots[data-tooltip]:hover::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: -30px;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .roadmap-item .content {
+            padding: 20px;
+            background: rgba(51, 51, 51, 0.2);
+            border: 1px solid #333;
+            border-radius: 6px;
+            position: relative;
+        }
+
+        .mini-milestone-dots {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+            cursor: help;
+            float: right;
+            margin-left: 10px;
+        }
+
+        .mini-milestone-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #000000;
+        }
+
+        .mini-milestone-dot.active {
+            background: #FFB23F;
+            box-shadow: 0 0 5px #FFB23F;
+            animation: pulse-dot 2s infinite;
+        }
+
+        .milestone-divider {
+            border: 0;
+            height: 1px;
+            background: rgb(79, 79, 79);
+            margin: 1.5rem 0;
+        }
+
+        .glow-text {
+            font-family: 'Lekton', monospace;
+            font-style: italic;
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .glow-text .highlight {
+            color: #FFB23F;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(255, 178, 63, 0.8),
+                           0 0 20px rgba(255, 178, 63, 0.5),
+                           0 0 30px rgba(255, 178, 63, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(255, 178, 63, 0.8),
+                           0 0 30px rgba(255, 178, 63, 0.5),
+                           0 0 40px rgba(255, 178, 63, 0.3);
+            }
+        }
+
+        .status-heading {
+            font-family: 'Lekton', monospace;
+            font-style: italic;
+            font-size: 4.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-normal {
+            color: white;
+            font-size: 3.5rem;
+            opacity: 0.9;
+        }
+
+        .status-live {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: 10px;
+        }
+
+        .status-live::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            background: #00ff00;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #00ff00;
+            animation: blink 1s ease-in-out infinite;
+            margin-bottom: 0.5em;
+        }
+
+        .status-live-text {
+            background: linear-gradient(90deg, #FF4B4B, #FFB23F);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-left: 0.25em;
+            animation: pulse-text 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(0.75);
+            }
+        }
+
+        .status-subtext {
+            font-family: 'Lekton', monospace;
+            font-style: italic;
+            font-size: 1.75rem;
+            color: #b6b6b6;
+        }
+
+        @keyframes pulse-text {
+            0%, 100% {
+                filter: drop-shadow(0 0 25px rgba(255, 178, 63, 0))
+                       drop-shadow(0 0 45px rgba(255, 178, 63, 0));
+            }
+            50% {
+                filter: drop-shadow(0 0 25px rgba(255, 178, 63, 0.4))
+                       drop-shadow(0 0 45px rgba(255, 178, 63, 0.2));
+            }
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                opacity: 1;
+                transform: translateY(-50%) scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateY(-50%) scale(0.75);
+            }
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -498,26 +1194,32 @@
     <div class="offcanvas-nav" id="offcanvasNav">
         <button class="close-nav" id="closeNav">×</button>
         <div class="nav-header text-center mb-4">
-            <img src="hyyperlink.svg" alt="Hyyperlink" height="64px" width="64px" class="mb-2">
+            <img onclick="window.location.href='https://hyyperlink.com'" src="hyyperlink.svg" alt="Hyyperlink" height="64px" width="64px" class="mb-2">
             <h4 class="nav-brand">Hyyperlink</h4>
         </div>
         <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="#download">Download</a></li>
-            <li class="nav-item"><a class="nav-link" href="mine.html">Try Mining</a></li>
-            <li class="nav-item"><a class="nav-link" href="#roadmap">Roadmap</a></li>
-            <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
-            <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
-            <li class="nav-item"><a class="nav-link" href="/whitepaper.pdf">Whitepaper</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://hyyperlink.com/mine.html">Try Mining</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://hyyperlink.com/#roadmap">Roadmap</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://hyyperlink.com/#faq">FAQ</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://hyyperlink.com/whitepaper.pdf" download>Whitepaper</a></li>
         </ul>
         
         <div class="nav-social-links mt-auto mb-4">
-            <a href="https://github.com/hyyperlink/hyyperlink" class="nav-social-link">
-                <i class="fab fa-github"></i>
-                <span>GitHub</span>
+            <a href="https://github.com/hyyperlink" class="nav-social-link" style="font-family: 'Lekton', monospace;">
+                <img src="github.svg" alt="GitHub" width="24" height="24" style="margin-right: 12px;">
+                <span style="background: linear-gradient(90deg, #FF4D4D, #FF8033); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">GitHub</span>
             </a>
-            <a href="https://x.com/hyyperlink" class="nav-social-link">
-                <i class="fab fa-x-twitter"></i>
-                <span>X (Twitter)</span>
+            <a href="https://x.com/hyyperlink" class="nav-social-link" style="font-family: 'Lekton', monospace;">
+                <img src="twitter.svg" alt="X (Twitter)" width="24" height="24" style="margin-right: 12px;">
+                <span style="background: linear-gradient(90deg, #FF4D4D, #FF8033); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">X (Twitter)</span>
+            </a>
+            <a href="https://discord.gg/cNMFbwcHtM" class="nav-social-link" style="font-family: 'Lekton', monospace;">
+                <img src="discord.svg" alt="Discord" width="24" height="24" style="margin-right: 12px;">
+                <span style="background: linear-gradient(90deg, #FF4D4D, #FF8033); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Discord</span>
+            </a>
+            <a href="https://t.me/hyyperlink" class="nav-social-link" style="font-family: 'Lekton', monospace;">
+                <img src="telegram.svg" alt="Telegram" width="24" height="24" style="margin-right: 12px;">
+                <span style="background: linear-gradient(90deg, #FF4D4D, #FF8033); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Telegram</span>
             </a>
         </div>
     </div>
@@ -528,44 +1230,26 @@
     <!-- Hero Section -->
     <section class="section d-flex align-items-center">
         <div class="container text-center">
-            <img src="hyyperlink.svg" alt="Hyyperlink" height="256px" width="256px" class="mb-3">
+            <img onclick="window.location.href='https://hyyperlink.com'" style="cursor:pointer" src="hyyperlink.svg" alt="Hyyperlink" height="256px" width="256px" class="mb-3">
             <h1 class="display-1 mb-4">Hyyperlink</h1>
-            <p class="lead mb-4">A New Paradigm for Digital Currency</p>
-            <a href="https://github.com/hyyperlink/hyyperlink/releases" class="btn download-btn">Download Wallet</a>
-            <a href="whitepaper.pdf" class="btn download-btn">Whitepaper</a>
+            <p class="lead my-4">No Blocks. No Chains.</p>
+            <br><br>
+            <a href="https://discord.gg/cNMFbwcHtM" class="btn discord-button"><img src="discord.svg" alt="Discord" width="24" height="24">Join The Discord</a>
+            <a href="whitepaper.pdf" class="btn download-btn" download>Download The Whitepaper</a>
         </div>
     </section>
 
-    <!-- Download Section -->
-    <section id="download" class="section">
-        <div class="container">
-            <h2 class="text-center mb-5">Download</h2>
-            <div class="row justify-content-center">
-                <div class="col-md-4 text-center">
-                    <img src="windows.svg" alt="Windows" class="mb-3">
-                    <h3>Windows</h3>
-                    <a href="#" class="btn download-btn mt-3">Download</a>
-                </div>
-                <div class="col-md-4 text-center">
-                    <img src="apple.svg" alt="macOS" class="mb-3">
-                    <h3>macOS</h3>
-                    <a href="#" class="btn download-btn mt-3">Download</a>
-                </div>
-                <div class="col-md-4 text-center">
-                    <img src="linux.svg" alt="Linux" class="mb-3">
-                    <h3>Linux</h3>
-                    <a href="#" class="btn download-btn mt-3">Download</a>
-                </div>
-                <div class="col-md-4 text-center">
-                    <img src="firefox.svg" alt="Firefox" class="mb-3">
-                    <h3>Firefox</h3>
-                    <a href="#" class="btn download-btn mt-3">Download</a>
-                </div>
-                <div class="col-md-4 text-center">
-                    <img src="chrome.svg" alt="Chrome" class="mb-3">
-                    <h3>Chrome</h3>
-                    <a href="#" class="btn download-btn mt-3">Download</a>
-                </div>
+    <!-- Status Section -->
+    <section class="section py-4">
+        <div class="container text-center">
+            <div class="status-text">
+                <h2 class="status-heading">
+                    <span class="status-normal">Testnet is </span>
+                    <span class="status-live">
+                        <span class="status-live-text">LIVE!</span>
+                    </span>
+                </h2>
+                <p class="status-subtext">Downloads coming soon...</p>
             </div>
         </div>
     </section>
@@ -575,34 +1259,95 @@
         <div class="container">
             <h2 class="text-center mb-5">Roadmap</h2>
             <div class="roadmap-timeline">
-                <div class="roadmap-item left">
+                <div class="roadmap-item roadmap-item-active left">
+                    <div class="gradient-border">
                     <div class="content">
-                        <h4>Milestone 1 - Testnet Launch</h4>
-                        <p>Initial release of the Hyyperlink testnet, featuring core wallet functionality and key discovery mining. Early adopters can begin testing the network, providing valuable feedback for mainnet preparation.</p>
+                        <div class="milestone-dots" data-bs-toggle="tooltip" data-bs-placement="top" title="Devnet and Testnet up are running the core validator software, with a few last objectives to complete before the release of the testnet browser extension wallet.">
+                            <div class="milestone-dot active"></div>
+                            <div class="milestone-dot active"></div>
+                            <div class="milestone-dot active"></div>
+                            <div class="milestone-dot"></div>
+                        </div>
+                        <h4><span class="gradient-text">Milestone 1 - Testnet Launch</span></h4>
+                        <p>Testnet enables us to get reports about what works, what doesn't, what could be better, and what we need to fix before mainnet. We'll be using this milestone to get the network ready for prime time and build the finer details of our vision.</p>
+                    </div>
                     </div>
                 </div>
                 <div class="roadmap-item right">
                     <div class="content">
-                        <h4>Milestone 2 - Token & NFT Platform</h4>
-                        <p>Introduction of token creation capabilities and NFT support. Developers can create custom tokens and NFTs on the Hyyperlink network, expanding the ecosystem's functionality.</p>
+                        <div class="milestone-dots" data-bs-toggle="tooltip" data-bs-placement="top" title="Users can connect their socials and we can scan for their activity, but the site is still in the ugly phase. It's okay though because it depends on the testnet to link wallet activity to user rewards.">
+                            <div class="milestone-dot active"></div>
+                            <div class="milestone-dot active"></div>
+                            <div class="milestone-dot"></div>
+                            <div class="milestone-dot"></div>
+                        </div>
+                        <h4>Milestone 2 - Rewards Program</h4>
+                        <p>Testnet tokens are great, but you need a way to say thanks to the OG's who help make this thing work. The rewards program tracks who is engaging on socials, using the network, giving feedback, etc. Thanks in advance!</p>
                     </div>
                 </div>
                 <div class="roadmap-item left">
                     <div class="content">
-                        <h4>Milestone 3 - Smart Contracts</h4>
-                        <p>Launch of smart contract capabilities with developer tools and SDK. Opening the platform for DApp development and enabling complex programmable transactions.</p>
+                        <div class="milestone-dots" data-bs-toggle="tooltip" data-bs-placement="top" title="Tokens and liquidity pools are able to be created, unit tests are written, work is being done with regards to UI/UX and DX.">
+                            <div class="milestone-dot active"></div>
+                            <div class="milestone-dot active"></div>
+                            <div class="milestone-dot"></div>
+                            <div class="milestone-dot"></div>
+                        </div>
+                        <h4>Milestone 3 - Token & NFT Platform</h4>
+                        <p>Let's create tokens and NFTs on Hyyperlink! In this milestone we give easy access to creators and devs to launch their NFT or token projects on the network. This phase of testnet will be fun, but also critical to getting it right before mainnet.</p>
                     </div>
                 </div>
                 <div class="roadmap-item right">
                     <div class="content">
-                        <h4>Milestone 4 - Cross-Network Transfers</h4>
-                        <p>Implementation of cross-network functionality enabling seamless asset transfer between major blockchain networks. Enhanced interoperability features for a connected ecosystem.</p>
+                        <h4>Milestone 4 - DeFi Capabilities</h4>
+                        <p>This is special sauce behind Hyyperlink! We're building liquidity pools, swaps, AMM, and more as native features of the protocol.</p>
+                        <hr class="milestone-divider">
+                        <div class="defi-components">
+                            <div class="defi-component mb-3">
+                                <div class="mini-milestone-dots" data-bs-toggle="tooltip" data-bs-placement="top" title="Creating liquidity pools works, at a basic level, and has unit tests. More work needs to be done to handle distribution and handling of the LP tokens after creation.">
+                                    <div class="mini-milestone-dot active"></div>
+                                    <div class="mini-milestone-dot active"></div>
+                                    <div class="mini-milestone-dot"></div>
+                                    <div class="mini-milestone-dot"></div>
+                                </div>
+                                <h5 class="mb-2">Objective A: Native Liquidity Pools</h5>
+                                <p>Built directly into the protocol, providing efficient decentralized trading and automated market making.</p>
+                            </div>
+                            <div class="defi-component">
+                                <div class="mini-milestone-dots" data-bs-toggle="tooltip" data-bs-placement="top" title="Smart routed swaps are working, some tests are written. More unit tests are needed, but the swap router is reliably finding the cheapest and fastest path to complete a swap from any token to any other token.">
+                                    <div class="mini-milestone-dot active"></div>
+                                    <div class="mini-milestone-dot"></div>
+                                    <div class="mini-milestone-dot"></div>
+                                    <div class="mini-milestone-dot"></div>
+                                </div>
+                                <h5 class="mb-2">Objective B: Native Swaps</h5>
+                                <p>Seamless token exchanges directly in the protocol, without relying on third-party services.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="roadmap-item left">
                     <div class="content">
-                        <h4>Milestone 5 - Mainnet Launch</h4>
-                        <p>Official launch of the Hyyperlink mainnet, incorporating all tested features and improvements from the testnet phase. The network goes live with full functionality, security measures, and community participation.</p>
+                        <div class="milestone-dots" data-bs-toggle="tooltip" data-bs-placement="top" title="As we get closer to this objective we'll have a better status update to include here.">
+                            <div class="milestone-dot"></div>
+                            <div class="milestone-dot"></div>
+                            <div class="milestone-dot"></div>
+                            <div class="milestone-dot"></div>
+                        </div>
+                        <h4>Milestone 5 - Public Distribution</h4>
+                        <p>Fair and transparent distribution of HYY tokens to the public through a decentralized allocation mechanism.</p>
+                    </div>
+                </div>
+                <div class="roadmap-item right">
+                    <div class="content">
+                        <div class="milestone-dots" data-bs-toggle="tooltip" data-bs-placement="top" title="This is the finish line! Time to launch the mainnet and begin a new chapter of Hyyperlink together.">
+                            <div class="milestone-dot"></div>
+                            <div class="milestone-dot"></div>
+                            <div class="milestone-dot"></div>
+                            <div class="milestone-dot"></div>
+                        </div>
+                        <h4>Milestone 6 - Mainnet Launch</h4>
+                        <p>Official launch of the Hyyperlink mainnet with full functionality, including native HYY token and complete protocol features.</p>
                     </div>
                 </div>
             </div>
@@ -618,127 +1363,94 @@
                     <div class="faq-list">
                         <div class="faq-item">
                             <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq1">
-                                <h4>What makes Hyyperlink different from other cryptocurrencies?</h4>
+                                <h4><strong>What makes Hyyperlink different from other cryptocurrencies?</strong></h4>
                                 <span class="toggle-icon">+</span>
                             </div>
                             <div id="faq1" class="collapse faq-answer">
-                                <p>Hyyperlink introduces a revolutionary approach to cryptocurrency that eliminates competition between miners. Unlike Bitcoin or Ethereum, where miners compete for rewards, Hyyperlink miners work independently to discover special cryptographic keys. This means anyone can mine without expensive hardware or joining mining pools, making it truly decentralized and energy-efficient.</p>
+                                <p class="mt-3">Hyyperlink is a highly scalable DeFi-ready L1 network that speeds up confirmation time as transaction volume increases. No blocks, no chains, no extra waiting for confirmations.</p>
                             </div>
                         </div>
 
                         <div class="faq-item">
                             <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq2">
-                                <h4>How does Key Discovery Mining work?</h4>
+                                <h4><strong>What does Hyyperlink <em><strong>actually</strong></em> do?</strong></h4>
                                 <span class="toggle-icon">+</span>
                             </div>
                             <div id="faq2" class="collapse faq-answer">
-                                <p>Key Discovery Mining is like finding digital treasures. Your computer generates special cryptographic keys, and when it finds one with rare properties (like several zeros at the start), you receive a reward. The rarer the key you find, the bigger the reward. It's simple, fair, and you can mine independently on any computer without competing with others.</p>
+                                <p class="mt-3"><strong><em title="TL;DR ELI5 - MONEY GO FAST">TL;DR - Hyyperlink is a high speed network integrating DeFi at the protocol level.</em></strong> 
+                                    <p><p>Hyyperlink removes the need for L2 solutions and third party services to accomplish things like liquidity pools, smart routed swaps, AMM, and other common DeFi tasks. It's all built into the network so everything is in one place, natively supported in the protocol and fast.</p>
                             </div>
                         </div>
 
                         <div class="faq-item">
                             <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq3">
-                                <h4>What's unique about Hyyperlink's token supply?</h4>
+                                <h4><strong>How does Hyyperlink compare to Ethereum, Solana, Bitcoin?</strong></h4>
                                 <span class="toggle-icon">+</span>
                             </div>
                             <div id="faq3" class="collapse faq-answer">
-                                <p>Hyyperlink starts with zero tokens and grows naturally through mining. The supply is balanced by two forces: new tokens are created through mining, while transaction fees are permanently removed from circulation. This creates a self-regulating economy where network usage directly influences the token supply, helping maintain long-term value.</p>
+                                <ul class="mt-3">
+                                    <li><strong>Ethereum</strong> transactions take longer to confirm, cost more to send, and programming on top of it requires a little bit more learning.</li>
+                                    <li><strong>Solana</strong> is faster, but is still a linear blockchain that slows down during times of high volume.</li>
+                                    <li><strong>Bitcoin</strong> is slowest, but requires a lot of extra tech on top of it to do more than basic transactions.</li>
+                                </ul>
+                                <p>Hyyperlink is fast, easy to use, and has a lot of features built in, and because of our unique DAG structure, it's scalable and can deliver fast confirmation times when you need them most.</p>
+                                <p class="mt-3"><strong>For a thorough breakdown of what makes Hyyperlink great, check out our <a href="https://hyyperlink.com/brand.html#key-info">Key Information Takeaways</a>.</strong></p>
                             </div>
                         </div>
-
+                        
                         <div class="faq-item">
                             <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq4">
-                                <h4>How fast are transactions?</h4>
+                                <h4><strong>How fast are transactions?</strong></h4>
                                 <span class="toggle-icon">+</span>
                             </div>
                             <div id="faq4" class="collapse faq-answer">
-                                <p>Hyyperlink uses a modern DAG (Directed Acyclic Graph) structure instead of a traditional blockchain, allowing multiple transactions to be processed simultaneously. This means faster confirmations and better scalability as the network grows, without the bottlenecks found in traditional cryptocurrencies.</p>
+                                <p class="mt-3">Transactions are very fast, and get faster as more volume is added to the network. Hyyperlink doesn't wait for blocks, block times, or miners; there are no blocks, and our miners don't have anything to do with transactions - transactions are added to the DAG as soon as they are received, with each transaction helping to confirm multiple other transactions at the same time.</p>
                             </div>
                         </div>
-
+                        
                         <div class="faq-item">
                             <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq5">
-                                <h4>What can I do with Hyyperlink?</h4>
+                                <h4><strong>How do supply & tokenomics work?</strong></h4>
                                 <span class="toggle-icon">+</span>
                             </div>
                             <div id="faq5" class="collapse faq-answer">
-                                <p>Hyyperlink is designed to be a versatile digital currency. You can mine tokens, send and receive payments, and participate in the network's growth. Future updates will bring smart contracts, mobile wallets, and cross-chain capabilities, making Hyyperlink a comprehensive platform for digital transactions and decentralized applications.</p>
+                                <p class="mt-3">Hyyperlink's supply is influenced by two factors:</p>
+                                <ul>
+                                    <li>Fee burning: Decreases supply by burning all transaction fees from the global supply.</li>
+                                    <li>Mining: Increases supply by a target of 2% annually. You can try our Key Discovery Mining system here <a href="mine.html">on our demo page</a>.</li>
+                                </ul>
                             </div>
                         </div>
 
                         <div class="faq-item">
                             <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq6">
-                                <h4>How do I start mining Hyyperlink?</h4>
+                                <h4><strong>What can I do with Hyyperlink?</strong></h4>
                                 <span class="toggle-icon">+</span>
                             </div>
                             <div id="faq6" class="collapse faq-answer">
-                                <p>Getting started with Hyyperlink mining is simple: just download our wallet, create an account, and enable mining. You can mine on any computer - no special hardware required. The wallet includes an easy-to-use mining interface, and you'll start earning rewards as soon as your computer discovers special keys. The more zeros at the start of a discovered key, the bigger your reward!</p>
+                                <p class="mt-3">Hyyperlink is an L1 network ready for you to launch your next token, NFT, or DeFi application. The network is engineered from the ground up to be easily understood by developers and users alike. The code is written in popular and easily understood languages like Go, Rust, and Typescript.</p>
                             </div>
                         </div>
 
                         <div class="faq-item">
                             <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq7">
-                                <h4>Is Hyyperlink secure?</h4>
+                                <h4><strong>How can I get involved?</strong></h4>
                                 <span class="toggle-icon">+</span>
                             </div>
                             <div id="faq7" class="collapse faq-answer">
-                                <p>Yes! Hyyperlink uses advanced cryptography and a reputation-based system to ensure network security. Every transaction is cryptographically signed and verified across the network. Our unique DAG structure and consensus mechanism provide strong protection against common cryptocurrency attacks while maintaining high performance and reliability.</p>
+                                <p class="mt-3">Join the <a href="https://discord.gg/cNMFbwcHtM">discord</a> and start asking questions :) Right now we're in testnet phase, so as new bits of software and things are released, we'll need people testing them out and giving feedback.</p>
                             </div>
                         </div>
 
                         <div class="faq-item">
                             <div class="faq-question" data-bs-toggle="collapse" data-bs-target="#faq8">
-                                <h4>Is Hyyperlink based on or forked from another project?</h4>
+                                <h4><strong>Is Hyyperlink based on or forked from another project?</strong></h4>
                                 <span class="toggle-icon">+</span>
                             </div>
                             <div id="faq8" class="collapse faq-answer">
-                                <p>No - Hyyperlink is completely original and built from the ground up. Written in Go, it's not a fork, copy, or derivative of any existing cryptocurrency. Every aspect of Hyyperlink, from its innovative Key Discovery Mining to its DAG architecture, has been carefully designed and implemented from scratch to create a truly unique and forward-thinking digital currency platform.</p>
+                                <p class="mt-3">Hyyperlink is not a fork or derivative of another project. It's built from the ground up in the USA. This testnet phase is the opportunity for OG's to see something new and watch it grow from the ground up, first hand. </p>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section" id="team">
-        <div class="container">
-            <h2 class="text-center mb-5">Hyyperlink Team</h2>
-            <div class="row justify-content-center mb-5">
-                <div class="col-lg-8 text-center">
-                    <p>Hyyperlink is a team project, some work in public while some prefer to collaborate in private. </p>
-                    <p>Thanks to those who have contributed to Hyyperlink academically or otherwise.</p>
-                </div>
-            </div>
-            <div class="row justify-content-center mb-5">
-                <div class="col-md-4 mb-4">
-                    <div class="team-member text-center">
-                        <div class="team-avatar mb-4">
-                            <i class="fas fa-user-circle fa-4x"></i>
-                        </div>
-                        <h4 class="mb-2">D. A. Good</h4>
-                        <p class="role mb-3">Development</p>
-                        <p class="team-description">Core developer and architect of Hyyperlink</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="team-member text-center">
-                        <div class="team-avatar mb-4">
-                            <i class="fas fa-user-circle fa-4x"></i>
-                        </div>
-                        <h4 class="mb-2">CR</h4>
-                        <p class="role mb-3">Marketing</p>
-                        <p class="team-description">Community engagement and strategic marketing</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="team-member text-center">
-                        <div class="team-avatar mb-4">
-                            <i class="fas fa-user-circle fa-4x"></i>
-                        </div>
-                        <h4 class="mb-2">EH</h4>
-                        <p class="role mb-3">Business</p>
-                        <p class="team-description">Business strategy and development</p>
                     </div>
                 </div>
             </div>
@@ -748,50 +1460,84 @@
     <!-- Social Links -->
     <section class="section">
         <div class="container text-center">
-            <h2 class="mb-4">Connect With Us</h2>
-            <div class="d-flex justify-content-center gap-4">
-                <a href="https://github.com/hyyperlink/hyyperlink" class="btn download-btn">GitHub</a>
-                <a href="https://x.com/hyyperlink" class="btn download-btn">X (Twitter)</a>
+            <h2 class="mb-5">Connect With Us</h2>
+            <h3 class="mb-5">Excited? Join the community!</h3>
+            <div class="row g-4 justify-content-center" style="max-width: 600px; margin: 0 auto;">
+                <div class="col-6">
+                    <a href="https://github.com/hyyperlink" class="btn social-button github">
+                        <img src="github.svg" alt="GitHub" width="32" height="32">
+                        <span>GitHub</span>
+                    </a>
+                </div>
+                <div class="col-6">
+                    <a href="https://x.com/hyyperlink" class="btn social-button twitter">
+                        <span style="font-size: 32px; line-height: 1;">𝕏</span>
+                        <span>Twitter</span>
+                    </a>
+                </div>
+                <div class="col-6">
+                    <a href="https://discord.gg/cNMFbwcHtM" class="btn social-button discord">
+                        <img src="discord.svg" alt="Discord" width="32" height="32">
+                        <span>Discord</span>
+                    </a>
+                </div>
+                <div class="col-6">
+                    <a href="https://t.me/hyyperlink" class="btn social-button telegram">
+                        <img src="telegram.svg" alt="Telegram" width="32" height="32">
+                        <span>Telegram</span>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer-modern py-5">
+    <footer id="footer" class="footer-modern py-5">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6">
                     <div class="footer-section">
-                        <img src="hyyperlink.svg" alt="Hyyperlink" height="48px" width="48px" class="mb-3">
-                        <h5 class="mb-3">Hyyperlink</h5>
-                        <p class="mb-3">A New Paradigm for Digital Currency</p>
+                        <img src="hyyperlink.svg" alt="Hyyperlink" height="24px" width="24px" class="mb-3">
+                        <h5 class="mb-3"><strong>Hyyperlink</strong></h5>
+                        <p class="mb-3">No Blocks. No Chains.</p>
                         <div class="social-links">
-                            <a href="https://github.com/hyyperlink/hyyperlink" class="me-3"><i class="fab fa-github"></i> GitHub</a>
-                            <a href="https://x.com/hyyperlink"><i class="fab fa-x-twitter"></i> X (Twitter)</a>
+                            <a href="https://github.com/hyyperlink" class="me-3">
+                                <img src="github.svg" alt="GitHub" width="16" height="16" style="vertical-align: -2px"> GitHub
+                            </a>
+                            <a href="https://x.com/hyyperlink" class="me-3">
+                                <img src="twitter.svg" alt="X (Twitter)" width="16" height="16" style="vertical-align: -2px"> X (Twitter)
+                            </a>
+                            <a href="https://discord.gg/cNMFbwcHtM" class="me-3">
+                                <img src="discord.svg" alt="Discord" width="16" height="16" style="vertical-align: -2px"> Discord
+                            </a>
+                            <a href="https://t.me/hyyperlink">
+                                <img src="telegram.svg" alt="Telegram" width="16" height="16" style="vertical-align: -2px"> Telegram
+                            </a>
                         </div>
                     </div>
                 </div>
                 
                 <div class="col-lg-4 col-md-6">
-                    <div class="footer-section">
-                        <h5 class="mb-3">Downloads</h5>
+                    <div class="footer-section downloads-section">
+                        <h5 class="mb-3"><strong>Downloads</strong></h5>
                         <ul class="footer-links">
-                            <li><a href="#">Windows</a></li>
-                            <li><a href="#">macOS</a></li>
-                            <li><a href="#">Linux</a></li>
-                            <li><a href="#">Firefox Extension</a></li>
-                            <li><a href="#">Chrome Extension</a></li>
+                            <li><a href="#footer">Windows</a></li>
+                            <li><a href="#footer">macOS</a></li>
+                            <li><a href="#footer">Linux</a></li>
+                            <li><a href="#footer">Firefox Extension</a></li>
+                            <li><a href="#footer">Chrome Extension</a></li>
                         </ul>
                     </div>
                 </div>
                 
                 <div class="col-lg-4 col-md-6">
                     <div class="footer-section">
-                        <h5 class="mb-3">Resources</h5>
+                        <h5 class="mb-3"><strong>Resources</strong></h5>
                         <ul class="footer-links">
-                            <li><a href="whitepaper.pdf">Whitepaper</a></li>
-                            <li><a href="#">Branding Guide</a></li>
-                            <li><a href="#">Press Kit</a></li>
+                            <li><a href="https://hyyperlink.com/mine.html">Try Mining</a></li>
+                            <li><a href="https://hyyperlink.com/whitepaper.pdf">Whitepaper</a></li>
+                            <li><a href="https://hyyperlink.com/brand.html">Branding Guide</a></li>
+                            <li><a href="https://hyyperlink.com/brand.html#press">Press</a></li>
                         </ul>
                     </div>
                 </div>
@@ -824,27 +1570,33 @@
 
         // Close nav when clicking a link
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', closeNav);
-        });
-
-        document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                targetElement.scrollIntoView({ behavior: 'auto', block: 'start' });
+                const href = this.getAttribute('href');
+                
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(href);
+                    targetElement.scrollIntoView({ behavior: 'auto', block: 'start' });
+                }
+                
                 closeNav();
             });
         });
-    </script>
-    <script src="dag.js"></script>
-    <script>
+
         document.querySelectorAll('.faq-question').forEach(question => {
             question.addEventListener('click', () => {
                 const isExpanded = question.getAttribute('aria-expanded') === 'true';
                 question.setAttribute('aria-expanded', !isExpanded);
             });
         });
+
+        // Initialize all tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     </script>
+    <script src="dag.js"></script>
+
 </body>
-</html> 
+</html>
