@@ -1,0 +1,80 @@
+.signature {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: clamp(24px, 4vw, 48px);
+    font-weight: 100;
+    font-style: italic;
+    letter-spacing: 1px;
+    opacity: 0;
+    z-index: 15;
+}
+
+.letter {
+    display: inline-block;
+    color: #ff9500;
+    opacity: 0.7;
+    text-shadow: 
+        0 0 15px rgba(0, 0, 0, 0.5),
+        2px 2px 15px rgba(0, 0, 0, 0.5),
+        -2px -2px 15px rgba(0, 0, 0, 0.5),
+        2px -2px 15px rgba(0, 0, 0, 0.5),
+        -2px 2px 15px rgba(0, 0, 0, 0.5),
+        4px 4px 20px rgba(0, 0, 0, 0.5),
+        -4px -4px 20px rgba(0, 0, 0, 0.5),
+        4px -4px 20px rgba(0, 0, 0, 0.5),
+        -4px 4px 20px rgba(0, 0, 0, 0.5);
+    filter: blur(0px);
+    transition: opacity 2s ease-out, filter 2s ease-out;
+}
+
+.letter.fading {
+    opacity: 0;
+    filter: blur(8px);
+}
+
+.soon-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: clamp(24px, 4vw, 48px);
+    font-weight: 100;
+    font-style: italic;
+    color: #ff9500;
+    opacity: 0;
+    text-shadow: 
+        0 0 15px rgba(0, 0, 0, 0.5),
+        2px 2px 15px rgba(0, 0, 0, 0.5),
+        -2px -2px 15px rgba(0, 0, 0, 0.5),
+        2px -2px 15px rgba(0, 0, 0, 0.5),
+        -2px 2px 15px rgba(0, 0, 0, 0.5),
+        4px 4px 20px rgba(0, 0, 0, 0.5),
+        -4px -4px 20px rgba(0, 0, 0, 0.5),
+        4px -4px 20px rgba(0, 0, 0, 0.5),
+        -4px 4px 20px rgba(0, 0, 0, 0.5);
+    z-index: 20;
+    letter-spacing: 8px;
+    transition: opacity 2s ease-out, transform 2s ease-out;
+}
+
+.soon-message.visible {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+@media (max-width: 768px) {
+    .signature {
+        font-size: clamp(18px, 5vw, 32px);
+        letter-spacing: 0.5px;
+    }
+    
+    .soon-message {
+        font-size: clamp(18px, 5vw, 32px);
+        letter-spacing: 4px;
+    }
+} 

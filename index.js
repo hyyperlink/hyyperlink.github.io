@@ -1,180 +1,152 @@
-class GeometricCanvas {
+class BlockchainWall {
     constructor() {
-        this.canvas = document.getElementById('geometryCanvas');
-        this.ctx = this.canvas.getContext('2d');
-        this.particles = [];
-        this.connections = [];
+        this.svg = d3.select('#wallCanvas');
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
         this.time = 0;
+        this.lightSource = { x: this.width * 0.7, y: this.height * 0.3 };
         
         this.init();
-        this.createParticles();
+        this.createPolygons();
         this.animate();
         
         window.addEventListener('resize', () => this.handleResize());
     }
     
     init() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        this.svg
+            .attr('width', this.width)
+            .attr('height', this.height);
     }
     
-    createParticles() {
-        const numParticles = Math.floor((this.canvas.width * this.canvas.height) / 8000);
+    createPolygons() {
+        const polygons = [];
+        const gridSize = 50;
+        const cols = Math.ceil(this.width / gridSize) + 1;
+        const rows = Math.ceil(this.height / gridSize) + 1;
         
-        for (let i = 0; i < numParticles; i++) {
-            this.particles.push({
-                x: Math.random() * this.canvas.width,
-                y: Math.random() * this.canvas.height,
-                vx: (Math.random() - 0.5) * 0.3,
-                vy: (Math.random() - 0.5) * 0.3,
-                life: Math.random(),
-                maxLife: 0.3 + Math.random() * 0.7,
-                phase: Math.random() * Math.PI * 2,
-                size: 1 + Math.random() * 2,
-                connections: []
-            });
+        for (let x = 0; x < cols; x++) {
+            for (let y = 0; y < rows; y++) {
+                const centerX = x * gridSize + 25;
+                const centerY = y * gridSize + 25;
+                
+                const polygon = {
+                    id: `poly-${x}-${y}`,
+                    centerX,
+                    centerY,
+                    baseSize: 15 + Math.random() * 10,
+                    phase: Math.random() * Math.PI * 2,
+                    breathSpeed: 0.05 + Math.random() * 0.1,
+                    waveSpeed: 0.02 + Math.random() * 0.05,
+                    points: this.generateHexagon(centerX, centerY, 20)
+                };
+                
+                polygons.push(polygon);
+            }
         }
+        
+        this.polygonGroup = this.svg.append('g').attr('class', 'polygon-group');
+        
+        this.polygons = this.polygonGroup
+            .selectAll('polygon')
+            .data(polygons)
+            .enter()
+            .append('polygon')
+            .attr('points', d => d.points)
+            .attr('fill', 'none')
+            .attr('stroke', 'rgba(0, 255, 65, 0.3)')
+            .attr('stroke-width', 0.8)
+            .attr('opacity', 1);
+            
+        this.polygonData = polygons;
     }
     
-    updateParticles() {
-        this.time += 0.01;
+    generateHexagon(cx, cy, size) {
+        const points = [];
+        for (let i = 0; i < 6; i++) {
+            const angle = (i * Math.PI) / 3;
+            const x = cx + size * Math.cos(angle);
+            const y = cy + size * Math.sin(angle);
+            points.push(`${x},${y}`);
+        }
+        return points.join(' ');
+    }
+    
+    updatePolygons() {
+        this.time += 0.1;  
         
-        this.particles.forEach((particle, index) => {
-            // Organic movement with Conway's Game of Life inspired rules
-            const neighbors = this.getNeighbors(particle, 60);
-            const neighborCount = neighbors.length;
-            
-            // Cellular automata-like behavior rules
-            if (neighborCount < 2) {
-                particle.life -= 0.003; // Underpopulation
-            } else if (neighborCount === 2 || neighborCount === 3) {
-                particle.life += 0.001; // Survival
-            } else {
-                particle.life -= 0.002; // Overpopulation
-            }
-            
-            // Smooth movement influenced by neighbors
-            let avgX = 0, avgY = 0;
-            neighbors.forEach(neighbor => {
-                avgX += neighbor.x;
-                avgY += neighbor.y;
+        this.lightSource.x = this.width * 0.5 + Math.sin(this.time * 0.02) * this.width * 0.4;
+        this.lightSource.y = this.height * 0.5 + Math.cos(this.time * 0.015) * this.height * 0.3;
+        
+        this.polygons
+            .attr('points', (d, i) => {
+                const breathe = Math.sin(this.time * d.breathSpeed + d.phase) * 12;
+                
+                const wave1 = Math.sin(d.centerX * 0.02 + this.time * d.waveSpeed) * 8;
+                const wave2 = Math.cos(d.centerY * 0.015 + this.time * d.waveSpeed * 0.7) * 6;
+                
+                const centerDist = Math.sqrt(
+                    Math.pow(d.centerX - this.width/2, 2) + 
+                    Math.pow(d.centerY - this.height/2, 2)
+                );
+                const ebb = Math.sin(this.time * 0.03 + centerDist * 0.01) * 5;
+                
+                const currentSize = Math.max(5, d.baseSize + breathe + wave1 + wave2 + ebb);
+                return this.generateHexagon(d.centerX, d.centerY, currentSize);
+            })
+            .attr('stroke', (d) => {
+                const distance = Math.sqrt(
+                    Math.pow(d.centerX - this.lightSource.x, 2) + 
+                    Math.pow(d.centerY - this.lightSource.y, 2)
+                );
+                
+                const maxDistance = this.width * 0.6;
+                const lightIntensity = Math.max(0.1, 1 - distance / maxDistance);
+                
+                const connectivity = Math.sin(this.time * 0.08 + d.phase) * 0.5 + 0.5;
+                
+                const alpha = lightIntensity * connectivity * 0.8;
+                return `rgba(0, 255, 65, ${alpha})`;
+            })
+            .attr('fill', (d) => {
+                const distance = Math.sqrt(
+                    Math.pow(d.centerX - this.lightSource.x, 2) + 
+                    Math.pow(d.centerY - this.lightSource.y, 2)
+                );
+                
+                if (distance < 250) {
+                    const fillAlpha = (250 - distance) / 250 * 0.15;
+                    return `rgba(0, 255, 65, ${fillAlpha})`;
+                }
+                return 'none';
             });
-            
-            if (neighbors.length > 0) {
-                avgX /= neighbors.length;
-                avgY /= neighbors.length;
-                
-                const attraction = 0.002;
-                particle.vx += (avgX - particle.x) * attraction;
-                particle.vy += (avgY - particle.y) * attraction;
-            }
-            
-            // Add subtle wave motion
-            particle.vx += Math.sin(this.time + particle.phase) * 0.001;
-            particle.vy += Math.cos(this.time + particle.phase * 1.3) * 0.001;
-            
-            // Apply velocity damping
-            particle.vx *= 0.98;
-            particle.vy *= 0.98;
-            
-            // Update position
-            particle.x += particle.vx;
-            particle.y += particle.vy;
-            
-            // Boundary wrapping
-            if (particle.x < 0) particle.x = this.canvas.width;
-            if (particle.x > this.canvas.width) particle.x = 0;
-            if (particle.y < 0) particle.y = this.canvas.height;
-            if (particle.y > this.canvas.height) particle.y = 0;
-            
-            // Life cycle management
-            particle.life = Math.max(0, Math.min(particle.maxLife, particle.life));
-            
-            if (particle.life <= 0 && Math.random() < 0.01) {
-                // Respawn with new properties
-                particle.x = Math.random() * this.canvas.width;
-                particle.y = Math.random() * this.canvas.height;
-                particle.life = Math.random() * 0.3;
-                particle.phase = Math.random() * Math.PI * 2;
-            }
-        });
-    }
-    
-    getNeighbors(particle, radius) {
-        return this.particles.filter(other => {
-            if (other === particle) return false;
-            const dx = particle.x - other.x;
-            const dy = particle.y - other.y;
-            return Math.sqrt(dx * dx + dy * dy) < radius;
-        });
-    }
-    
-    drawConnections() {
-        this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
-        this.ctx.lineWidth = 0.5;
-        
-        this.particles.forEach(particle => {
-            if (particle.life > 0.1) {
-                const neighbors = this.getNeighbors(particle, 80);
-                neighbors.forEach(neighbor => {
-                    if (neighbor.life > 0.1) {
-                        const dx = particle.x - neighbor.x;
-                        const dy = particle.y - neighbor.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        const alpha = (1 - distance / 80) * 0.1 * particle.life * neighbor.life;
-                        
-                        this.ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
-                        this.ctx.beginPath();
-                        this.ctx.moveTo(particle.x, particle.y);
-                        this.ctx.lineTo(neighbor.x, neighbor.y);
-                        this.ctx.stroke();
-                    }
-                });
-            }
-        });
-    }
-    
-    drawParticles() {
-        this.particles.forEach(particle => {
-            if (particle.life > 0) {
-                const alpha = particle.life * 0.3;
-                const size = particle.size * (0.5 + particle.life);
-                
-                this.ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-                this.ctx.beginPath();
-                this.ctx.arc(particle.x, particle.y, size, 0, Math.PI * 2);
-                this.ctx.fill();
-                
-                // Add subtle glow
-                this.ctx.shadowColor = 'rgba(255, 255, 255, 0.2)';
-                this.ctx.shadowBlur = size * 2;
-                this.ctx.beginPath();
-                this.ctx.arc(particle.x, particle.y, size * 0.5, 0, Math.PI * 2);
-                this.ctx.fill();
-                this.ctx.shadowBlur = 0;
-            }
-        });
-    }
-    
-    render() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.drawConnections();
-        this.drawParticles();
     }
     
     animate() {
-        this.updateParticles();
-        this.render();
+        this.updatePolygons();
         requestAnimationFrame(() => this.animate());
     }
     
     handleResize() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+        this.svg
+            .attr('width', this.width)
+            .attr('height', this.height);
+        
+        this.svg.selectAll('.polygon-group').remove();
+        this.createPolygons();
     }
 }
 
-// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new GeometricCanvas();
+    
+    if (typeof d3 === 'undefined') {
+        console.error('D3 is not loaded!');
+        return;
+    }
+    
+    setTimeout(() => {
+        new BlockchainWall();
+    }, 200);
 }); 

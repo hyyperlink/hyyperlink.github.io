@@ -4,13 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hyyperlink</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="fade.css">
 </head>
 <body>
-    <canvas id="geometryCanvas"></canvas>
+    <svg id="wallCanvas"></svg>
     <div class="message-container">
-        <h1 class="main-message">Testing Phase 1 has ended.<br>Thank you to the participants,<br>phase 2 beginning shortly</h1>
+        <h1 class="main-message">
+            <span id="typewriter-text"></span>
+            <span id="typewriter-cursor" class="blinking-cursor">_</span>
+        </h1>
+        <div class="signature" id="signature">
+            <span class="letter" data-letter="H">H</span>
+            <span class="letter" data-letter="Y">Y</span>
+            <span class="letter" data-letter="Y">Y</span>
+            <span class="letter" data-letter="P">P</span>
+            <span class="letter" data-letter="E">E</span>
+            <span class="letter" data-letter="R">R</span>
+            <span class="letter" data-letter="L">L</span>
+            <span class="letter" data-letter="I">I</span>
+            <span class="letter" data-letter="N">N</span>
+            <span class="letter" data-letter="K">K</span>
+        </div>
     </div>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="index.js"></script>
+    <script src="fade.js"></script>
 </body>
 </html> 

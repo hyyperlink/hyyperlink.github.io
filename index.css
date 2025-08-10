@@ -8,17 +8,18 @@ body, html {
     height: 100%;
     overflow: hidden;
     background: #000;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
 }
 
-#geometryCanvas {
+#wallCanvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 1;
-    opacity: 0.1;
+    opacity: 0.7;
+    filter: hue-rotate(120deg) saturate(0.8);
 }
 
 .message-container {
@@ -28,37 +29,83 @@ body, html {
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 2;
+    z-index: 10;
 }
 
 .main-message {
-    color: #fff;
+    color: #ff9500;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
     font-size: clamp(24px, 4vw, 48px);
-    font-weight: 300;
-    text-align: center;
+    font-weight: 100;
+    font-style: italic;
     line-height: 1.4;
-    letter-spacing: 0.5px;
-    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
-    max-width: 90%;
-    animation: fadeIn 2s ease-out;
+    letter-spacing: 1px;
+    opacity: 0.7;
+    text-shadow: 
+        0 0 15px rgba(0, 0, 0, 0.5),
+        2px 2px 15px rgba(0, 0, 0, 0.5),
+        -2px -2px 15px rgba(0, 0, 0, 0.5),
+        2px -2px 15px rgba(0, 0, 0, 0.5),
+        -2px 2px 15px rgba(0, 0, 0, 0.5),
+        4px 4px 20px rgba(0, 0, 0, 0.5),
+        -4px -4px 20px rgba(0, 0, 0, 0.5),
+        4px -4px 20px rgba(0, 0, 0, 0.5),
+        -4px 4px 20px rgba(0, 0, 0, 0.5);
+    white-space: pre-line;
+}
+
+.blinking-cursor {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        transparent 50%,
+        rgba(0, 255, 65, 0.02) 51%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 5;
+    animation: scanlines 0.1s linear infinite;
+}
+
+@keyframes scanlines {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
 }
 
 @keyframes fadeIn {
-    from {
+    0% {
         opacity: 0;
         transform: translateY(20px);
     }
-    to {
+    100% {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
 @media (max-width: 768px) {
+    .message-container {
+        padding-left: 20px;
+    }
+    
     .main-message {
-        font-size: clamp(18px, 6vw, 32px);
-        padding: 20px;
+        font-size: clamp(18px, 5vw, 32px);
+        letter-spacing: 0.5px;
     }
 } 
